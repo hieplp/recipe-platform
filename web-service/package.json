@@ -1,0 +1,80 @@
+{
+  "name": "@nuxt-awesome/theme",
+  "version": "2.0.2",
+  "description": "a Nuxt 3 template and boilerplate with a lot of useful features. Nuxt 3 + Tailwindcss + Nuxt Layer",
+  "author": "viandwi24",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "main": "./nuxt.config.ts",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/viandwi24/nuxt3-awesome-starter"
+  },
+  "files": [
+    "assets",
+    "components",
+    "composables",
+    "layouts",
+    "modules",
+    "pages",
+    "public",
+    "stores",
+    "app.config.ts",
+    "app.vue",
+    "nuxt.config.ts",
+    "nuxt.schema.ts",
+    "tailwind.config.ts",
+    "tsconfig.json"
+  ],
+  "scripts": {
+    "build": "nuxt build ./app",
+    "dev": "nuxt dev ./app --no-clear",
+    "generate": "nuxt generate ./app",
+    "preview": "nuxt preview ./app",
+    "postinstall": "nuxt prepare ./app",
+    "dev:starter": "nuxt dev ./examples/starter",
+    "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
+    "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
+    "release": "release-it"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.2.0",
+    "@vueuse/nuxt": "^10.2.0",
+    "tailwindcss": "^3.3.2",
+    "@nuxt/content": "^2.7.0",
+    "@nuxtjs/color-mode": "^3.2.0",
+    "@nuxtjs/tailwindcss": "^6.7.2",
+    "nuxt-headlessui": "^1.1.4",
+    "nuxt-icon": "^0.4.1",
+    "nuxt-windicss": "^2.6.1",
+    "@pinia/nuxt": "^0.4.11",
+    "pinia": "^2.1.4",
+    "@nuxt/devtools": "^0.6.1"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@nuxtjs/eslint-module": "^4.1.0",
+    "consola": "^3.1.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nuxt": "^3.5.3",
+    "prettier": "^2.8.8",
+    "release-it": "^15.11.0",
+    "sass": "^1.63.4",
+    "serve": "^14.2.0",
+    "stringify": "^5.2.0",
+    "typescript": "^5.1.3",
+    "vue-tsc": "1.8.1"
+  },
+  "release-it": {
+    "github": {
+      "release": true,
+      "releaseName": "v${version}"
+    },
+    "git": {
+      "commitMessage": "chore(release): release v${version}"
+    }
+  }
+}
