@@ -11,7 +11,11 @@ type ButtonProps = {
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({label, onclick, className}, ref) => {
+    ({
+         label,
+         onclick,
+         className
+     }, ref) => {
         if (!className) {
             className = "";
         }
@@ -39,7 +43,12 @@ Button.displayName = "Button";
 // XXX Button - Primary
 // --------------------------------------------------------------------------
 const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({label, onclick, className}, ref) => {
+    ({
+         label,
+         onclick,
+         className
+     }, ref) => {
+
         if (!className) {
             className = "";
         }

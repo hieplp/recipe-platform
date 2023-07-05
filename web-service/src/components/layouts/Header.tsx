@@ -1,6 +1,8 @@
 import {HamburgerButton, Menu} from "~/components/ui/Menu";
 import {PrimaryButton} from "~/components/ui/Button";
 import {BrandIcon} from "~/components/ui/Icon";
+import Image from "next/image";
+import {Avatar} from "~/components/ui/Avatar";
 
 const links = [
     {
@@ -47,6 +49,8 @@ export function Header() {
         nav.classList.toggle("hidden");
     };
 
+    const isLogged = true;
+
     return (
         <>
             <nav className="bg-transparent fixed w-full z-20 top-0 left-0">
@@ -59,7 +63,12 @@ export function Header() {
                     <BrandIcon/>
 
                     <div className="flex md:order-2">
-                        <PrimaryButton label={"Sign In"} className={"hidden md:block"}/>
+                        {
+                            isLogged
+                                ? <Avatar avatarImage={"https://flowbite.com/docs/images/logo.svg"}/>
+                                : <PrimaryButton label={"Sign In"} className={"hidden md:block"}/>
+                        }
+
                         <HamburgerButton onclick={showMenu}/>
                     </div>
 
@@ -72,7 +81,7 @@ export function Header() {
                         <Menu links={links}
                               nonAuthLinks={nonAuthLinks}
                               authLinks={authLinks}
-                              isLogged={false}/>
+                              isLogged={isLogged}/>
                     </div>
                 </div>
             </nav>
