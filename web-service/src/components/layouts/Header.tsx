@@ -1,7 +1,6 @@
 import {HamburgerButton, Menu} from "~/components/ui/Menu";
 import {PrimaryButton} from "~/components/ui/Button";
 import {BrandIcon} from "~/components/ui/Icon";
-import Image from "next/image";
 import {Avatar} from "~/components/ui/Avatar";
 
 const links = [
