@@ -1,6 +1,6 @@
 import React from "react";
-import Image from "next/image";
 import {clsx} from "clsx"
+import NextImage from "~/components/ui/NextImage";
 
 // --------------------------------------------------------------------------
 // XXX Carousel
@@ -107,15 +107,17 @@ const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
                      className={clsx(className, "z-1 duration-700 ease-in-out")}
                      data-carousel-item="">
                     {children}
-                    <Image src={image}
-                           width={32}
-                           height={32}
-                           className="absolute block w-full
-                                      -translate-x-1/2
-                                      -translate-y-1/2
-                                      top-1/2
-                                      left-1/2"
-                           alt={alt != null ? alt : ""}/>
+                    <NextImage src={image}
+                               width={32}
+                               height={32}
+                               useSkeleton={true}
+                               className="absolute block w-full
+                                         -translate-x-1/2
+                                         -translate-y-1/2
+                                          top-1/2
+                                          left-1/2"
+                               imgClassName="w-full h-full"
+                               alt={alt != null ? alt : ""}/>
                 </div>
             </>
         )

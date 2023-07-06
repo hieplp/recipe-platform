@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {clsx} from "clsx";
+import NextImage from "~/components/ui/NextImage";
 // --------------------------------------------------------------------------
 // XXX CategorySliderItem
 // --------------------------------------------------------------------------
@@ -29,16 +29,23 @@ const CategorySliderItem = React.forwardRef<HTMLAnchorElement, CategorySliderIte
                       passHref={true}
                       className={className}>
                     <div>
-                        <Image width={1}
-                               height={1}
-                               className="w-28 h-28
-                                          md:w-40 md:h-40
-                                          lg:w-48 lg:h-48
-                                          rounded-2xl
-                                          md:rounded-2xl"
-                               src={image}
-                               alt={""}/>
-                        <p className="text-center font-bold mt-2 group-hover:text-blue-600">
+                        <NextImage width={1}
+                                   height={1}
+                                   useSkeleton={true}
+                                   className="w-28 h-28
+                                              md:w-40 md:h-40
+                                              lg:w-48 lg:h-48
+                                              rounded-2xl
+                                              md:rounded-2xl"
+                                   imgClassName="h-full w-full
+                                                 rounded-2xl
+                                                 md:rounded-2xl"
+                                   src={image}
+                                   alt={""}/>
+                        <p className="text-center
+                                      font-bold
+                                      group-hover:text-blue-600
+                                      mt-3">
                             {name}
                         </p>
                     </div>
