@@ -69,7 +69,6 @@ const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
     });
 AvatarImage.displayName = "AvatarImage";
 
-
 // --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
