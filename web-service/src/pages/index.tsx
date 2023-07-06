@@ -4,7 +4,7 @@ import {Carousel} from "~/components/ui/Carousel";
 export default function Home() {
 
 
-    const corouselItems = [
+    const carouselItems = [
         {
             image: "https://flowbite.com/docs/images/carousel/carousel-1.svg"
         },
@@ -14,13 +14,12 @@ export default function Home() {
         }
     ];
 
-
     return (
         <>
             <Layout>
 
                 <div className="relative w-full">
-                    <Carousel items={corouselItems} className="h-56 md:h-96"/>
+                    <Carousel items={carouselItems} className="h-56 md:h-96 lg:h-[48rem]"/>
                 </div>
 
             </Layout>

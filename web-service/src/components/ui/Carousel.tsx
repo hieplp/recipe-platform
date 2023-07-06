@@ -12,29 +12,57 @@ type CarouselProps = {
 }
 
 const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
-    ({className, items}, ref) => {
+    ({
+         className,
+         items
+     }, ref) => {
+
+        //
+        const [activeIndex, setActiveIndex] = React.useState(0);
+
+        //
+        const onNextClick = () => {
+            if (activeIndex === items.length - 1) {
+                setActiveIndex(0);
+            } else {
+                setActiveIndex(activeIndex + 1);
+            }
+        }
+
+        const onPrevClick = () => {
+            if (activeIndex === 0) {
+                setActiveIndex(items.length - 1);
+            } else {
+                setActiveIndex(activeIndex - 1);
+            }
+        }
+
         return (
             <>
                 <div ref={ref}
                      className={clsx(className, "relative overflow-hidden rounded-lg")}>
                     {/* Carousel items */}
-                    {items.map(({image, alt}) => (
-                        <CarouselItem key={image}
+                    {items.map(({image, alt}, index) => (
+                        <CarouselItem key={index}
                                       image={image}
-                                      alt={alt}/>
+                                      alt={alt}
+                                      isActive={activeIndex === index}
+                        />
                     ))}
 
                     {/* Carousel controls */}
-                    <SliderControllerPrev/>
-                    <SliderControllerNext/>
+                    <SliderControllerPrev onClick={onPrevClick}/>
+                    <SliderControllerNext onClick={onNextClick}/>
 
                     {/* Carousel indicators */}
-                    <div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                        {items.map((item, index) => (
+                    <div className="absolute z-5 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+                        {items.map(({image}, index) => (
                             <SliderIndicator key={index}
-                                             label={item.image}
+                                             label={image}
+                                             isActive={activeIndex === index}
                                              slideTo={index}
-                                             className="bg-gray-100 dark:bg-gray-800"
+                                             onClick={() => setActiveIndex(index)}
+                                             className=""
                             />
                         ))}
                     </div>
@@ -51,21 +79,32 @@ Carousel.displayName = "Carousel";
 
 type CarouselItemProps = {
     children?: React.ReactNode,
+    className?: string,
     image: string,
     alt?: string,
+    isActive?: boolean,
 };
 
 const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(
     ({
          children,
+         className,
          image,
-         alt
+         alt,
+         isActive
      }, ref) => {
+        if (!className) {
+            className = "";
+        }
+
+        if (!isActive) {
+            className = clsx(className, "hidden");
+        }
+
         return (
             <>
                 <div ref={ref}
-                     className="duration-700 z-1
-                                ease-in-out"
+                     className={clsx(className, "z-1 duration-700 ease-in-out")}
                      data-carousel-item="">
                     {children}
                     <Image src={image}
@@ -89,18 +128,20 @@ CarouselItem.displayName = "CarouselItem";
 type SliderControllerProps = {
     children?: React.ReactNode,
     className?: string,
+    onClick?: () => void,
 };
 const SliderController = React.forwardRef<HTMLButtonElement, SliderControllerProps>(
     ({
          children,
-         className
+         className,
+         onClick
      }, ref) => {
         if (!className) {
             className = "";
         }
         className = className
             + " absolute"
-            + " z-30"
+            + " z-5"
             + " flex"
             + " items-center justify-center"
             + " h-full"
@@ -111,21 +152,22 @@ const SliderController = React.forwardRef<HTMLButtonElement, SliderControllerPro
 
         return (
             <button ref={ref}
+                    onClick={onClick}
                     type="button"
                     className={className}
                     data-carousel-prev="">
                 <div className="inline-flex
-                            items-center justify-center
-                            w-10 h-10
-                            rounded-full
-                            bg-white/30
-                            dark:bg-gray-800/30
-                            group-hover:bg-white/50
-                            dark:group-hover:bg-gray-800/60
-                            group-focus:ring-4
-                            group-focus:ring-white
-                            dark:group-focus:ring-gray-800/70
-                            group-focus:outline-none">
+                                items-center justify-center
+                                w-10 h-10
+                                rounded-full
+                                bg-transparent
+                                dark:bg-white-800/30
+                                group-hover:bg-white/50
+                                dark:group-hover:bg-white-800/60
+                                group-focus:ring-2
+                                group-focus:ring-white
+                                dark:group-focus:ring-white-800/70
+                                group-focus:outline-none">
                     {children}
                 </div>
             </button>
@@ -136,11 +178,15 @@ SliderController.displayName = "SliderController";
 // --------------------------------------------------------------------------
 // XXX SliderController - Prev
 // --------------------------------------------------------------------------
-
-const SliderControllerPrev = React.forwardRef<HTMLButtonElement>(
-    ({}, ref) => {
+type SliderControllerPrevProps = {
+    onClick?: () => void,
+}
+const SliderControllerPrev = React.forwardRef<HTMLButtonElement, SliderControllerPrevProps>(
+    ({onClick}, ref) => {
         return (
-            <SliderController ref={ref} className="top-0 left-0">
+            <SliderController ref={ref}
+                              onClick={onClick}
+                              className="top-0 left-0">
                 <svg className="w-4 h-4 text-white dark:text-gray-800"
                      aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg"
@@ -160,10 +206,16 @@ SliderControllerPrev.displayName = "SliderControllerPrev";
 // --------------------------------------------------------------------------
 // XXX SliderController - Next
 // --------------------------------------------------------------------------
-const SliderControllerNext = React.forwardRef<HTMLButtonElement>(
-    ({}, ref) => {
+type SliderControllerNextProps = {
+    onClick?: () => void,
+}
+
+const SliderControllerNext = React.forwardRef<HTMLButtonElement, SliderControllerNextProps>(
+    ({onClick}, ref) => {
         return (
-            <SliderController ref={ref} className="top-0 right-0">
+            <SliderController ref={ref}
+                              onClick={onClick}
+                              className="top-0 right-0">
                 <svg className="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg"
                      fill="none" viewBox="0 0 6 10">
@@ -189,6 +241,9 @@ type SliderIndicatorProps = {
     isActive?: boolean,
     slideTo: number,
     className?: string,
+    activeClass?: string,
+    inactiveClass?: string,
+    onClick?: () => void,
 };
 
 const SliderIndicator = React.forwardRef<HTMLButtonElement, SliderIndicatorProps>(
@@ -196,10 +251,28 @@ const SliderIndicator = React.forwardRef<HTMLButtonElement, SliderIndicatorProps
          label,
          isActive,
          slideTo,
-         className
+         className,
+         activeClass,
+         inactiveClass,
+         onClick
      }, ref) => {
+        if (!activeClass) {
+            activeClass = "bg-white";
+        }
+
+        if (!inactiveClass) {
+            inactiveClass = "bg-white/30";
+        }
+
+        if (isActive) {
+            className = clsx(className, activeClass);
+        } else {
+            className = clsx(className, inactiveClass);
+        }
+
         return (
             <button ref={ref}
+                    onClick={onClick}
                     type="button"
                     className={clsx(className, "w-3 h-3 rounded-full")}
                     aria-current={isActive}

@@ -2,6 +2,8 @@ import {HamburgerButton, Menu} from "~/components/ui/Menu";
 import {PrimaryButton} from "~/components/ui/Button";
 import {BrandIcon} from "~/components/ui/Icon";
 import {Avatar} from "~/components/ui/Avatar";
+import React, {useEffect} from "react";
+import {clsx} from "clsx";
 
 const links = [
     {
@@ -40,6 +42,11 @@ const authLinks = [
 
 
 export function Header() {
+    //
+    const [scrolled, setScrolled] = React.useState(false);
+    const isLogged = true;
+
+    //
     const showMenu = () => {
         const nav = document.getElementById("navbar-sticky");
         if (!nav) {
@@ -48,11 +55,28 @@ export function Header() {
         nav.classList.toggle("hidden");
     };
 
-    const isLogged = true;
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 96);
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, []);
+
+    //
+    let className = "bg-white fixed w-full z-20 top-0 left-0";
+    if (scrolled) {
+        className = clsx(className, "bg-white border-b-2 shadow-sm");
+    }
 
     return (
         <>
-            <nav className="bg-transparent fixed w-full z-20 top-0 left-0">
+            <nav className={className}>
                 <div className="max-w-screen-xl
                                 flex flex-wrap
                                 items-center
