@@ -10,7 +10,7 @@ type NextImageProps = {
         alt: string;
     }
     & (
-    | { width: string | number; height: string | number }
+    | { width?: string | number; height?: string | number }
     | { layout: 'fill'; width?: string | number; height?: string | number }
     )
     & ImageProps;
@@ -55,8 +55,8 @@ export default function NextImage({
                 className={className}>
             <Image src={src}
                    className={clsx(imgClassName, status === 'loading' && clsx('animate-pulse', blurClassName))}
-                   width={width}
-                   height={height}
+                   width={width ? width : 50}
+                   height={height ? height : 50}
                    alt={alt}
                    onLoadingComplete={() => setStatus('complete')}
                    {...rest}/>

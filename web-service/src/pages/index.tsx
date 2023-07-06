@@ -2,6 +2,7 @@ import {Layout} from "~/components/layouts/Layout";
 import React from "react";
 import {Carousel} from "~/components/ui/Carousel";
 import {CategorySlider} from "~/components/category/CategorySlider";
+import {RecipeCardList} from "~/components/recipe/RecipeCard";
 
 export default function Home() {
 
@@ -26,6 +27,59 @@ export default function Home() {
         }
     ];
 
+    const recipes = [
+        {
+            recipeId: "1",
+            title: "Shoes!",
+            image: "/photo1.jpeg",
+            rating: 3,
+            name: "John Doe",
+            avatar: "/avatar.jpg",
+            time: "Yesterday",
+            totalComments: 222
+        },
+        {
+            recipeId: "1",
+            title: "Shoes!",
+            image: "/photo1.jpeg",
+            rating: 3,
+            name: "John Doe",
+            avatar: "/avatar.jpg",
+            time: "Yesterday",
+            totalComments: 222
+        },
+        {
+            recipeId: "1",
+            title: "Shoes!",
+            image: "/photo1.jpeg",
+            rating: 3,
+            name: "John Doe",
+            avatar: "/avatar.jpg",
+            time: "Yesterday",
+            totalComments: 222
+        },
+        {
+            recipeId: "1",
+            title: "Shoes!",
+            image: "/photo1.jpeg",
+            rating: 5,
+            name: "John Doe",
+            avatar: "/avatar.jpg",
+            time: "Yesterday",
+            totalComments: 222
+        },
+        {
+            recipeId: "1",
+            title: "Shoes!",
+            image: "/photo1.jpeg",
+            rating: 1,
+            name: "John Doe",
+            avatar: "/avatar.jpg",
+            time: "Yesterday",
+            totalComments: 1222
+        },
+    ]
+
     return (
         <>
             <Layout>
@@ -45,15 +99,9 @@ export default function Home() {
                     <p className="text-xl font-bold my-6">
                         Super Delicious
                     </p>
-
-                    <div className="grid grid-cols-3">
-
-                        <div className="bg-amber-200">
-                            1222
-
-                        </div>
-
-                    </div>
+                    <RecipeCardList recipes={recipes}
+                                    className="grid-cols-1 md:grid-cols-3
+                                               gap-5 md:gap-3"/>
                 </div>
 
             </Layout>
