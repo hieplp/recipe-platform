@@ -152,24 +152,31 @@ const RecipeCardList = React.forwardRef<HTMLDivElement, RecipeCardListProps>(
          recipes
      }, ref) => {
         return (
-            <div ref={ref}
-                 className={clsx(className, "grid")}>
-                {
-                    recipes.map((recipe, index) => {
-                        return (
-                            <RecipeCard key={index}
-                                        recipeId={recipe.recipeId}
-                                        title={recipe.title}
-                                        image={recipe.image}
-                                        rating={recipe.rating}
-                                        name={recipe.name}
-                                        avatar={recipe.avatar}
-                                        time={recipe.time}
-                                        totalComments={recipe.totalComments}/>
-                        )
-                    })
-                }
-            </div>
+            <>
+                <div ref={ref}
+                     className={clsx(className, "grid mb-12")}>
+                    {
+                        recipes.map((recipe, index) => {
+                            return (
+                                <RecipeCard key={index}
+                                            recipeId={recipe.recipeId}
+                                            title={recipe.title}
+                                            image={recipe.image}
+                                            rating={recipe.rating}
+                                            name={recipe.name}
+                                            avatar={recipe.avatar}
+                                            time={recipe.time}
+                                            totalComments={recipe.totalComments}/>
+                            )
+                        })
+                    }
+                </div>
+
+                <div className="w-full flex justify-center">
+                    <button className="btn w-32 btn-outline btn-primary">Load More</button>
+                </div>
+
+            </>
         )
     });
 RecipeCardList.displayName = "RecipeCardList";

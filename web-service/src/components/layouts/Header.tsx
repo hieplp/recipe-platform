@@ -101,7 +101,6 @@ export function Header() {
                     <div id="navbar-sticky"
                          className="items-center
                                     justify-between
-                                    bg-transparent
                                     hidden
                                     w-full
                                     md:flex md:w-auto md:order-1">

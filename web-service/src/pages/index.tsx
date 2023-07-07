@@ -100,30 +100,8 @@ export default function Home() {
                         Super Delicious
                     </p>
                     <RecipeCardList recipes={recipes}
-                                    className="grid-cols-1 md:grid-cols-3
-                                               gap-5 md:gap-3"/>
+                                    className="grid-cols-1 md:grid-cols-3 gap-5 md:gap-3"/>
                 </div>
-
-                <div className="hero rounded mt-5 h-[48rem]"
-                     style={{backgroundImage: 'url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)'}}>
-                    <div className="hero-overlay bg-opacity-60"></div>
-                    <div className="hero-content text-center text-neutral-content">
-                        <div className="max-w-md">
-                            <p className="mb-5 text-3xl md:text-5xl font-bold">
-                                Delicious Recipes
-                            </p>
-                            <p className="mb-5">
-                                Enjoy the best recipes shared by people all over the world.
-                            </p>
-
-                            <input type="text"
-                                   placeholder="Email Address"
-                                   className="input input-bordered w-full mb-3"/>
-                            <button className="btn btn-primary w-full text-lg">Join</button>
-                        </div>
-                    </div>
-                </div>
-
             </Layout>
         </>
     );
