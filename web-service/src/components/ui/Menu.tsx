@@ -23,11 +23,12 @@ const Menu = React.forwardRef<HTMLUListElement, MenuProps>(
                            border border-gray-100
                            rounded-lg
                            bg-gray-50
+                           dark:bg-neutral-focus dark:border-neutral-focus
                            md:flex-row
                            md:space-x-12
                            md:mt-0
                            md:border-0
-                           md:bg-white">
+                           md:bg-transparent">
                 {/*All common link*/}
                 {links.map(({
                                 href,

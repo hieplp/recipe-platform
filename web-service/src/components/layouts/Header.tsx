@@ -69,9 +69,11 @@ export function Header() {
     }, []);
 
     //
-    let className = "bg-white fixed w-full z-20 top-0 left-0";
+    let className = "fixed w-full z-20 top-0 left-0";
     if (scrolled) {
-        className = clsx(className, "bg-white border-b-2 shadow-sm");
+        className = clsx(className, "border-b-2 shadow-sm bg-white dark:bg-neutral-focus dark:border-neutral-focus");
+    } else {
+        className = clsx(className, "bg-transparent");
     }
 
     return (
@@ -81,6 +83,7 @@ export function Header() {
                                 flex flex-wrap
                                 items-center
                                 justify-between
+                                border-neutral
                                 mx-auto
                                 p-4">
                     <BrandIcon/>
@@ -98,6 +101,7 @@ export function Header() {
                     <div id="navbar-sticky"
                          className="items-center
                                     justify-between
+                                    bg-transparent
                                     hidden
                                     w-full
                                     md:flex md:w-auto md:order-1">

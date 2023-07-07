@@ -25,6 +25,7 @@ const Avatar = React.forwardRef<HTMLButtonElement, AvatarProps>(
                                mr-3 mt-1
                                text-sm
                                rounded-full
+                               bg-transparent
                                md:mr-0
                                bg-amber-100
                                focus:ring-4

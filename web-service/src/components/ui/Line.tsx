@@ -18,7 +18,7 @@ const LineBreak = React.forwardRef<HTMLDivElement>(
                            md:border-0
                            md:p-0
                            md:w-auto
-                           dark:text-white">
+                           dark:text-gray-700">
             </div>
         )
     });

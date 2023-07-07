@@ -122,7 +122,7 @@ const RecipeCardRating = React.forwardRef<HTMLDivElement, RecipeCardRatingProps>
         ]
         return (
             <div ref={ref}
-                 className={clsx(className, "rating gap-1")}>
+                 className={clsx(className, "rating rating-md gap-1")}>
                 {
                     ratingList.map((item, index) => {
                         return (

@@ -5,7 +5,7 @@ export function Layout({children}: { children: React.ReactNode }) {
     return (
         <>
             <Header/>
-            <main className="pt-28 w-full p-4 mx-auto">
+            <main className="pt-28 w-full p-4 mx-auto" >
                 {children}
             </main>
         </>
