@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import {LineBreak} from "~/components/ui/Line";
+import {clsx} from "clsx";
 
 // --------------------------------------------------------------------------
 // XXX Menu
@@ -97,14 +98,14 @@ const MenuItem = React.forwardRef<HTMLAnchorElement, MenuItemProps>(
         if (!className) {
             className = '';
         }
-        className = className
-            + ' text-lg hover:text-blue-600 font-bold md:bg-transparent'
-            + ' block py-2 pl-3 pr-4';
+        className = clsx(className,
+            'text-lg hover:text-blue-600 font-bold md:bg-transparent',
+            'block py-2 pl-3 pr-4');
         if (isActive) {
-            className = className
-                + 'font-bold rounded'
-                + ' bg-blue-700 '
-                + ' text-white md:text-blue-600';
+            className = clsx(className,
+                'font-bold rounded',
+                'bg-blue-700 ',
+                'text-white md:text-blue-600');
         }
         return (
             <Link ref={ref}
@@ -127,34 +128,55 @@ type HamburgerButtonProps = {
 
 const HamburgerButton = React.forwardRef<HTMLButtonElement, HamburgerButtonProps>(
     ({onclick}, ref) => {
+        const [isOn, setIsOn] = React.useState(false);
         return (
             <button ref={ref}
-                    onClick={onclick}
+                    onClick={() => {
+                        setIsOn(!isOn);
+                        onclick();
+                    }}
                     type="button"
-                    className="inline-flex
-                               items-center
+                    className="btn swap swap-rotate
                                p-2
-                               w-10 h-10
-                               justify-center
-                               text-sm
-                               rounded-lg
                                md:hidden
-                               hover:bg-gray-50
                                focus:outline-none
-                               focus:ring-2
-                               focus:ring-gray-100">
-                <span className="sr-only">Open main menu</span>
-                <svg className="w-5 h-5"
-                     aria-hidden="true"
-                     xmlns="http://www.w3.org/2000/svg"
-                     fill="none"
-                     viewBox="0 0 17 14">
-                    <path stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M1 1h15M1 7h15M1 13h15"/>
-                </svg>
+                               bg-transparent
+                               ring-0
+                               border-0
+                               hover:bg-gray-100
+                               ">
+
+                {/* hamburger icon */}
+                {isOn
+                    ?
+                    <>
+                        <svg className="swap-on fill-current"
+                             xmlns="http://www.w3.org/2000/svg"
+                             width="32"
+                             height="32"
+                             viewBox="0 0 512 512">
+                            <polygon
+                                points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
+                        </svg>
+                        <svg className="fill-current"
+                             xmlns="http://www.w3.org/2000/svg"
+                             width="32"
+                             height="32"
+                             viewBox="0 0 512 512">
+                            <polygon
+                                points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
+                        </svg>
+                    </>
+
+                    :
+                    <svg className="swap-off fill-current"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="32"
+                         height="32"
+                         viewBox="0 0 512 512">
+                        <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
+                    </svg>
+                }
             </button>
         )
     });

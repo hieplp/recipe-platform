@@ -3,8 +3,6 @@ import React from "react";
 import {Carousel} from "~/components/ui/Carousel";
 import {CategorySlider} from "~/components/category/CategorySlider";
 import {RecipeCardList} from "~/components/recipe/RecipeCard";
-import {PrimaryButton} from "~/components/ui/Button";
-import {PrimaryInput} from "~/components/ui/Input";
 
 export default function Home() {
 
@@ -118,12 +116,10 @@ export default function Home() {
                                 Enjoy the best recipes shared by people all over the world.
                             </p>
 
-                            <PrimaryInput placeholder="Email Address"
-                                          className="w-full mb-3"/>
-                            <PrimaryButton label={"Join"}
-                                           textSize={"lg"}
-                                           textWeight={"bold"}
-                                           className={"w-full font-bold text-lg text-center"}/>
+                            <input type="text"
+                                   placeholder="Email Address"
+                                   className="input input-bordered w-full mb-3"/>
+                            <button className="btn btn-primary w-full text-lg">Join</button>
                         </div>
                     </div>
                 </div>
