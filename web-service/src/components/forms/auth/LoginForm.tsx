@@ -27,7 +27,7 @@ const RememberMe = React.forwardRef<HTMLDivElement>(({}, ref) => {
                     </label>
                 </div>
             </div>
-            <Link href="#"
+            <Link href="/auth/forgot-password"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
                 Forgot password?
             </Link>
