@@ -1,9 +1,9 @@
 import {HamburgerButton, Menu} from "~/components/ui/Menu";
-import {PrimaryButton} from "~/components/ui/Button";
 import {BrandIcon} from "~/components/ui/Icon";
 import {Avatar} from "~/components/ui/Avatar";
 import React, {useEffect} from "react";
 import {clsx} from "clsx";
+import {useRouter} from "next/router";
 
 const links = [
     {
@@ -44,7 +44,10 @@ const authLinks = [
 export function Header() {
     //
     const [scrolled, setScrolled] = React.useState(false);
-    const isLogged = true;
+    const [isLogged, setIsLogged] = React.useState(false);
+
+    //
+    const router = useRouter();
 
     //
     const showMenu = () => {
@@ -92,7 +95,17 @@ export function Header() {
                         {
                             isLogged
                                 ? <Avatar avatarImage={"https://flowbite.com/docs/images/logo.svg"}/>
-                                : <PrimaryButton label={"Sign In"} className={"hidden md:block"}/>
+                                : <>
+                                    <button className="btn btn-primary
+                                                       px-6
+                                                       hidden md:block
+                                                       text-base normal-case"
+                                            onClick={() => {
+                                                void router.push('/auth/login');
+                                            }}>
+                                        Sign In
+                                    </button>
+                                </>
                         }
 
                         <HamburgerButton onclick={showMenu}/>

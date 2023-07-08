@@ -9,7 +9,7 @@ export default {
         themes: [
             {
                 'light': {
-                    "primary": "#2563eb",
+                    "primary": "#1d4ed8",
                     "secondary": "#f000b8",
                     "accent": "#1dcdbc",
                     "neutral": "#2b3440",

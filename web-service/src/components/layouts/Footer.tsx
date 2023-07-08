@@ -5,25 +5,6 @@ export function Footer() {
     const GIT_REPO_URL = "https://github.com/hieplp";
     return (
         <>
-            <div className="hero bg-red-50 rounded mt-5 h-[48rem]"
-                 style={{backgroundImage: 'url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)'}}>
-                <div className="hero-overlay bg-opacity-60"></div>
-                <div className="hero-content text-center text-neutral-content">
-                    <div className="max-w-md">
-                        <p className="mb-5 text-3xl md:text-5xl font-bold">
-                            Delicious Recipes
-                        </p>
-                        <p className="mb-5">
-                            Enjoy the best recipes shared by people all over the world.
-                        </p>
-
-                        <input type="text"
-                               placeholder="Email Address"
-                               className="input input-bordered w-full mb-3"/>
-                        <button className="btn btn-primary w-full text-lg">Join</button>
-                    </div>
-                </div>
-            </div>
             <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
                 <div className="grid grid-flow-col gap-4">
                     <Link href="/" className="link link-hover">Home</Link>
