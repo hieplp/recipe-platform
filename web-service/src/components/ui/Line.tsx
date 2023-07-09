@@ -1,24 +1,34 @@
 import React from "react";
+import {clsx} from "clsx";
 
 // --------------------------------------------------------------------------
 // XXX LineBreak
 // --------------------------------------------------------------------------
 
-const LineBreak = React.forwardRef<HTMLDivElement>(
-    ({}, ref) => {
+type LineBreakProps = {
+    className?: string;
+}
+
+const LineBreak = React.forwardRef<HTMLDivElement, LineBreakProps>(
+    (props, ref) => {
+        let className = props.className;
+        if (!className) {
+            className = "";
+        }
+
+        className = clsx(className,
+            "flex",
+            "items-center justify-between",
+            "w-full py-2 pl-3 pr-4",
+            "text-gray-700",
+            "border-b",
+            "border-gray-100",
+            "dark:text-gray-700"
+        );
+
         return (
-            <div
-                ref={ref}
-                className="flex
-                           items-center justify-between
-                           w-full py-2 pl-3 pr-4
-                           text-gray-700
-                           border-b
-                           border-gray-100
-                           md:border-0
-                           md:p-0
-                           md:w-auto
-                           dark:text-gray-700">
+            <div ref={ref}
+                 className={className}>
             </div>
         )
     });

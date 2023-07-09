@@ -45,7 +45,7 @@ const Menu = React.forwardRef<HTMLUListElement, MenuProps>(
                     </li>
                 ))}
 
-                <LineBreak/>
+                <LineBreak className="md:border-0 md:p-0 md:w-auto"/>
                 {
                     isLogged
                         ? authLinks.map(({

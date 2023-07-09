@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 // --------------------------------------------------------------------------
-// XXX LineBreak
+// XXX StyledLink
 // --------------------------------------------------------------------------
 
 type StyledLinkProps = {
