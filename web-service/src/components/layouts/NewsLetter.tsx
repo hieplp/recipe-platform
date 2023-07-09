@@ -1,4 +1,5 @@
 import React from "react";
+import {PrimaryButton} from "~/components/ui/Button";
 
 export function NewsLetter() {
     return (
@@ -20,7 +21,10 @@ export function NewsLetter() {
                         <input type="text"
                                placeholder="Email Address"
                                className="input input-bordered w-full mb-3"/>
-                        <button className="btn btn-primary w-full text-lg">Join</button>
+                        <PrimaryButton className="w-full normal-case text-lg"
+                                       isLoading={false}>
+                            Subscribe
+                        </PrimaryButton>
                     </div>
                 </div>
             </div>

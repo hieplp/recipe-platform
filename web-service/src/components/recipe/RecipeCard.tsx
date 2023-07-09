@@ -171,11 +171,6 @@ const RecipeCardList = React.forwardRef<HTMLDivElement, RecipeCardListProps>(
                         })
                     }
                 </div>
-
-                <div className="w-full flex justify-center">
-                    <button className="btn w-32 btn-outline btn-primary">Load More</button>
-                </div>
-
             </>
         )
     });

@@ -3,6 +3,7 @@ import React from "react";
 import {Carousel} from "~/components/ui/Carousel";
 import {CategorySlider} from "~/components/category/CategorySlider";
 import {RecipeCardList} from "~/components/recipe/RecipeCard";
+import {StyledLink} from "~/components/ui/Link";
 
 export default function Home() {
 
@@ -89,10 +90,13 @@ export default function Home() {
                 </div>
 
                 <div className="relative w-full mt-3">
-                    <p className="text-xl font-bold my-6">
+                    <StyledLink href="/categories"
+                                className="text-xl font-bold
+                                           my-6 hover:underline">
                         Popular Categories
-                    </p>
-                    <CategorySlider items={categories}/>
+                    </StyledLink>
+
+                    <CategorySlider categories={categories}/>
                 </div>
 
                 <div className="relative w-full mt-3">
@@ -101,6 +105,9 @@ export default function Home() {
                     </p>
                     <RecipeCardList recipes={recipes}
                                     className="grid-cols-1 md:grid-cols-3 gap-5 md:gap-3"/>
+                    <div className="w-full flex justify-center">
+                        <button className="btn w-32 btn-outline btn-primary">Load More</button>
+                    </div>
                 </div>
             </Layout>
         </>
