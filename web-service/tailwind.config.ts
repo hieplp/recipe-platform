@@ -20,7 +20,6 @@ export default {
                     "error": "#f87272",
                 }
             },
-            'dark',
         ],
     },
     variants: {

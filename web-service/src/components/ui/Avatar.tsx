@@ -8,16 +8,16 @@ import {clsx} from "clsx"
 
 type AvatarProps = {
     avatarImage: string,
-    onclick?: () => void,
+    onClick?: () => void,
 };
 const Avatar = React.forwardRef<HTMLButtonElement, AvatarProps>(
     ({
          avatarImage,
-         onclick
+         onClick
      }, ref) => {
         return (
             <button ref={ref}
-                    onClick={onclick}
+                    onClick={onClick}
                     type="button"
                     className="flex
                                h-8 w-8

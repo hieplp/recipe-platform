@@ -44,7 +44,7 @@ const authLinks = [
 export function Header() {
     //
     const [scrolled, setScrolled] = React.useState(false);
-    const [isLogged, setIsLogged] = React.useState(false);
+    const [isLogged, setIsLogged] = React.useState(true);
 
     //
     const router = useRouter();
@@ -94,7 +94,8 @@ export function Header() {
                     <div className="flex md:order-2">
                         {
                             isLogged
-                                ? <Avatar avatarImage={"https://flowbite.com/docs/images/logo.svg"}/>
+                                ? <Avatar avatarImage={"https://flowbite.com/docs/images/logo.svg"}
+                                          onClick={() => void router.push('/user/profile')}/>
                                 : <>
                                     <button className="btn btn-primary
                                                        px-6

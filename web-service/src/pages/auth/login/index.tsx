@@ -6,7 +6,7 @@ import {AuthLayout} from "~/pages/auth/AuthLayout";
 export default function Login() {
     return (
         <AuthLayout>
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
                 Sign in to your account
             </h1>
             <div className="space-y-4 md:space-y-6 form-control">
