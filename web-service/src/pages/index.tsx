@@ -2,11 +2,13 @@ import {Layout} from "~/components/layouts/Layout";
 import React from "react";
 import {Carousel} from "~/components/ui/Carousel";
 import {CategorySlider} from "~/components/category/CategorySlider";
-import {RecipeCardList} from "~/components/recipe/RecipeCard";
 import {StyledLink} from "~/components/ui/Link";
-import {router} from "next/client";
+import {useRouter} from "next/router";
+import {RecipeCardList} from "~/components/recipe/RecipeCardList";
 
 export default function Home() {
+
+    const router = useRouter();
 
     const carouselItems = [
         {

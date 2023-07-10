@@ -44,6 +44,20 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
 PrimaryButton.displayName = "PrimaryButton";
 
 // --------------------------------------------------------------------------
+// XXX Button - Icon
+// --------------------------------------------------------------------------
+const OnlyIconButton = React.forwardRef<HTMLDivElement, ButtonProps>(
+    (props, ref) => {
+        return (
+            <div ref={ref}
+                 className={clsx(props.className, "hover:cursor-pointer hover:text-blue-700")}>
+                {props.children}
+            </div>
+        )
+    });
+OnlyIconButton.displayName = "OnlyIconButton";
+
+// --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
-export {PrimaryButton}
+export {PrimaryButton, OnlyIconButton}

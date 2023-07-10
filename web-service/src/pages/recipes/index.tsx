@@ -1,7 +1,7 @@
 import React from "react";
 import {Layout} from "~/components/layouts/Layout";
-import {RecipeCardList} from "~/components/recipe/RecipeCard";
 import {Title} from "~/components/ui/Title";
+import {RecipeCardList} from "~/components/recipe/RecipeCardList";
 
 export default function Recipes() {
 
@@ -63,8 +63,8 @@ export default function Recipes() {
             <div className="relative w-full mt-3">
                 <Title text="Recipes" className="my-3"/>
                 <RecipeCardList className="grid mt-5
-                                         grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5
-                                         gap-5 md:gap-5"
+                                           grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5
+                                           gap-5 md:gap-5"
                                 recipes={recipes}/>
 
                 <div className="w-full flex justify-center mt-10">

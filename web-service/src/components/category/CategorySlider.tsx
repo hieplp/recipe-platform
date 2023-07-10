@@ -19,11 +19,10 @@ const CategorySliderItem = React.forwardRef<HTMLAnchorElement, CategorySliderIte
         className = clsx(className, "flex flex-none mr-3 items-center justify-center text-center group")
 
         return (
-            <>
-                <CategoryCard name={props.name}
-                              image={props.image}
-                              className={className}/>
-            </>
+            <CategoryCard ref={ref}
+                          name={props.name}
+                          image={props.image}
+                          className={className}/>
         )
     });
 CategorySliderItem.displayName = "CategorySliderItem";

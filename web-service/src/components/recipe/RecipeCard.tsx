@@ -33,7 +33,7 @@ const RecipeCard = React.forwardRef<HTMLAnchorElement, RecipeCardProps>(
      }, ref) => {
         return (
             <Link ref={ref}
-                  href={`/recipe/${recipeId}`}
+                  href={`/recipes/${recipeId}`}
                   passHref={true}
                   className={clsx(className, "card w-full bg-base-100 shadow-xl")}>
                 <figure className="w-full h-44">
@@ -138,45 +138,7 @@ const RecipeCardRating = React.forwardRef<HTMLDivElement, RecipeCardRatingProps>
     });
 RecipeCardRating.displayName = "RecipeCardRating";
 
-
-// --------------------------------------------------------------------------
-// XXX RecipeCardList
-// --------------------------------------------------------------------------
-type RecipeCardListProps = {
-    className?: string,
-    recipes: RecipeCardProps[]
-}
-const RecipeCardList = React.forwardRef<HTMLDivElement, RecipeCardListProps>(
-    ({
-         className,
-         recipes
-     }, ref) => {
-        return (
-            <>
-                <div ref={ref}
-                     className={clsx(className, "grid mb-12")}>
-                    {
-                        recipes.map((recipe, index) => {
-                            return (
-                                <RecipeCard key={index}
-                                            recipeId={recipe.recipeId}
-                                            title={recipe.title}
-                                            image={recipe.image}
-                                            rating={recipe.rating}
-                                            name={recipe.name}
-                                            avatar={recipe.avatar}
-                                            time={recipe.time}
-                                            totalComments={recipe.totalComments}/>
-                            )
-                        })
-                    }
-                </div>
-            </>
-        )
-    });
-RecipeCardList.displayName = "RecipeCardList";
-
 // --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
-export {RecipeCard, RecipeCardList}
+export {RecipeCard, RecipeCardRating, type RecipeCardProps}
