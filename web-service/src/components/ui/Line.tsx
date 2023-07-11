@@ -19,7 +19,7 @@ const LineBreak = React.forwardRef<HTMLDivElement, LineBreakProps>(
         className = clsx(className,
             "flex",
             "items-center justify-between",
-            "w-full py-2 pl-3 pr-4",
+            "w-full",
             "text-gray-700",
             "border-b",
             "border-gray-100",

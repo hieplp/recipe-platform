@@ -17,3 +17,7 @@
     border-radius: 1px;
 }
 
+input[type=checkbox]:checked + p {
+    text-decoration: line-through;
+    color: #9CA3AF;
+}
