@@ -17,7 +17,8 @@ const RecipeBasicInfoTab = React.forwardRef<HTMLDivElement, RecipeBasicInfoTabPr
         return (
             <div ref={ref}
                  className={props.className}>
-                <p className="text-neutral-content ">
+                <p className="text-neutral-content
+                              text-sm md:text-md">
                     {props.title}
                 </p>
                 <div className="flex space-x-1">

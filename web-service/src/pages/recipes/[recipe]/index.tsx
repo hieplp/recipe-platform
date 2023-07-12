@@ -7,12 +7,13 @@ import NextImage from "~/components/ui/NextImage";
 import RecipeBasicInformation from "~/pages/recipes/[recipe]/RecipeBasicInformation";
 import RecipeIngredients from "~/pages/recipes/[recipe]/RecipeIngredients";
 import {RecipeNutritionFacts} from "~/pages/recipes/[recipe]/RecipeNutritionFacts";
+import {RecipeInstructions} from "~/pages/recipes/[recipe]/RecipeInstructions";
 
 export default function Recipe() {
 
     const ingredients = [
         {
-            label: "For the dough",
+            label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
             checked: true
 
         },
@@ -51,7 +52,17 @@ export default function Recipe() {
             value: "200",
             unit: "kcal"
         }
-    ]
+    ];
+
+    const instructions = [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+    ];
+
 
     return (
         <Layout>
@@ -83,11 +94,13 @@ export default function Recipe() {
                     />
                 </div>
 
-                <RecipeBasicInformation/>
+                <RecipeBasicInformation className=""/>
 
-
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-5">
-
+                <div className="grid
+                                grid-cols-1 md:grid-cols-12
+                                gap-0 md:gap-5
+                                space-y-5 md:space-y-0
+                                ">
                     <div className="col-span-4
                                     space-y-5">
                         <p className="text-2xl font-bold">
@@ -101,8 +114,13 @@ export default function Recipe() {
                         <RecipeNutritionFacts facts={nutritionFacts}/>
                     </div>
 
-                    <div className="col-span-8 bg-amber-200">
-                        2
+                    <div className="col-span-8 space-y-3">
+                        <p className="text-2xl font-bold">
+                            Instructions
+                        </p>
+
+                        <RecipeInstructions className="space-y-2"
+                                            instructions={instructions}/>
                     </div>
 
                 </div>
