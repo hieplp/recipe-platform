@@ -9,6 +9,7 @@ import RecipeIngredients from "~/pages/recipes/[recipe]/RecipeIngredients";
 import {RecipeNutritionFacts} from "~/pages/recipes/[recipe]/RecipeNutritionFacts";
 import {RecipeInstructions} from "~/pages/recipes/[recipe]/RecipeInstructions";
 import RecipeRating from "~/pages/recipes/[recipe]/RecipeRating";
+import {RecipeReviews} from "~/pages/recipes/[recipe]/RecipeReviews";
 
 export default function Recipe() {
 
@@ -63,6 +64,36 @@ export default function Recipe() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
     ];
+
+    const reviews = [
+        {
+            avatar: "/avatar.jpg",
+            name: "John Doe",
+            time: "45 minutes ago",
+            rating: 4,
+            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+            likes: 12,
+            isLiked: false
+        },
+        {
+            avatar: "/avatar.jpg",
+            name: "John Doe",
+            time: "45 minutes ago",
+            rating: 3,
+            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+            likes: 22,
+            isLiked: true
+        },
+        {
+            avatar: "/avatar.jpg",
+            name: "John Doe",
+            time: "45 minutes ago",
+            rating: 1,
+            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
+            likes: 12,
+            isLiked: false
+        }
+    ]
 
     const ratingRef = useRef(null);
 
@@ -154,7 +185,17 @@ export default function Recipe() {
                 </div>
 
                 {/*Rating List*/}
-                <div className="">
+                <div className=" space-y-2">
+                    <p className="text-2xl font-bold">
+                        Reviews
+                    </p>
+                    <LineBreak/>
+
+                    <RecipeReviews reviews={reviews}/>
+
+                    <div className="w-full flex justify-center mt-10">
+                        <button className="btn w-32 btn-outline btn-primary">Load More</button>
+                    </div>
 
                 </div>
 

@@ -41,16 +41,13 @@ const RecipeNutritionFacts = React.forwardRef<HTMLDivElement, RecipeNutritionFac
                 <p className="text-2xl font-bold">
                     Nutrition Facts
                 </p>
-                <div className="mt-2 space-y-2">
+                <div className="mt-5 space-y-2">
                     {
                         props.facts.map((fact, index) => {
                             return (
                                 <RecipeNutrition key={index}
-                                                 label={fact.label}
-                                                 value={fact.value}
-                                                 unit={fact.unit}
                                                  className={index === 0 ? "" : "border-t pt-1"}
-
+                                                 {...fact}
                                 />
                             )
                         })

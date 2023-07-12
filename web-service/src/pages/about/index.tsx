@@ -6,17 +6,21 @@ import NextImage from "~/components/ui/NextImage";
 export default function About() {
     return (
         <Layout>
-            <div className="relative w-full mt-3">
+            <div className="relative w-full mt-3 space-y-2">
                 <Title text="About" className="my-3"/>
 
                 <p className="font-bold text-2xl">
                     We are a team of passionate foodies who love to cook and bake delicious meals.
                 </p>
 
-                <NextImage alt=""
-                           width={1200}
-                           src="/newsletter.jpg"
-                           className="w-full my-5"/>
+                <div className="flex justify-center">
+                    <NextImage alt=""
+                               src="/newsletter.jpg"
+                               imgClassName="rounded-xl w-full"
+                               width={1500}
+                               height={300}
+                    />
+                </div>
 
                 <p className="my-5">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit
@@ -34,9 +38,11 @@ export default function About() {
                                 grid
                                 grid-cols-1 md:grid-cols-2
                                 gap-2">
+
                     <NextImage alt=""
                                width={1200}
                                className="w-full h-full"
+                               imgClassName="rounded-xl w-full"
                                src="/about_1.jpeg"/>
 
                     <div className="">

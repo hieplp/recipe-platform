@@ -1,7 +1,7 @@
 import React from "react";
-import Image from "next/image";
 import {CalendarIcon, ChatBubbleLeftIcon} from "@heroicons/react/24/outline";
 import {RecipeCardRating} from "~/components/recipe/RecipeCard";
+import NextImage from "~/components/ui/NextImage";
 
 type RecipeSubTitleProps = {
     className?: string,
@@ -20,12 +20,12 @@ const RecipeSubTitle = React.forwardRef<HTMLDivElement, RecipeSubTitleProps>(
                             space-x-1 md:space-x-5
                             space-y-3 md:space-y-0">
                 <div className="avatar space-x-2">
-                    <div className="w-10 rounded-full">
-                        <Image src="/avatar.jpg"
+                    <NextImage src={props.avatar}
                                alt=""
+                               className="w-10"
+                               imgClassName="rounded-full"
                                width={50}
                                height={50}/>
-                    </div>
 
                     <p className="flex items-center font-bold">
                         {props.author}

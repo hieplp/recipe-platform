@@ -70,12 +70,12 @@ const RecipeCard = React.forwardRef<HTMLAnchorElement, RecipeCardProps>(
                                     justify-end
                                     text-sm
                                     text-gray-500">
-                        <div className="flex mr-3">
-                            <ChatBubbleBottomCenterIcon className="w-5 h-5 mr-1"/>
+                        <div className="flex mr-2 space-x-1">
+                            <ChatBubbleBottomCenterIcon className="w-5 h-5"/>
                             <p>{totalComments < 1000 ? totalComments : '999+'}</p>
                         </div>
-                        <div className="flex">
-                            <CalendarIcon className="w-5 h-5 mr-1"/>
+                        <div className="flex space-x-1">
+                            <CalendarIcon className="w-5 h-5"/>
                             <p>{time}</p>
                         </div>
                     </div>

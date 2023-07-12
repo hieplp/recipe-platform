@@ -17,7 +17,7 @@ const Title = React.forwardRef<HTMLDivElement, TitleProps>(
             <>
                 <div ref={ref}
                      className={clsx(props.className, "")}>
-                    <p className="text-xl font-bold b-">
+                    <p className="text-3xl font-bold">
                         {props.text}
                     </p>
                     <LineBreak/>
