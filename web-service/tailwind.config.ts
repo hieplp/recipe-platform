@@ -12,7 +12,7 @@ export default {
             {
                 'light': {
                     "primary": "#1d4ed8",
-                    "secondary": "#f000b8",
+                    "secondary": "#e9f0ff",
                     "accent": "#1dcdbc",
                     "neutral": "#2b3440",
                     "base-100": "#ffffff",

@@ -128,7 +128,8 @@ const RecipeCardRating = React.forwardRef<HTMLDivElement, RecipeCardRatingProps>
                         return (
                             <input key={index}
                                    checked={rating == item.rating}
-                                   disabled={true} type="radio"
+                                   disabled={true}
+                                   type="radio"
                                    className={`mask mask-heart ${item.color}`}/>
                         )
                     })

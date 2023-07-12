@@ -1,5 +1,5 @@
 import {Layout} from "~/components/layouts/Layout";
-import React from "react";
+import React, {useRef} from "react";
 import {LineBreak} from "~/components/ui/Line";
 import RecipeTitle from "~/pages/recipes/[recipe]/RecipeTitle";
 import RecipeSubTitle from "~/pages/recipes/[recipe]/RecipeSubTitle";
@@ -8,6 +8,7 @@ import RecipeBasicInformation from "~/pages/recipes/[recipe]/RecipeBasicInformat
 import RecipeIngredients from "~/pages/recipes/[recipe]/RecipeIngredients";
 import {RecipeNutritionFacts} from "~/pages/recipes/[recipe]/RecipeNutritionFacts";
 import {RecipeInstructions} from "~/pages/recipes/[recipe]/RecipeInstructions";
+import RecipeRating from "~/pages/recipes/[recipe]/RecipeRating";
 
 export default function Recipe() {
 
@@ -63,6 +64,7 @@ export default function Recipe() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
     ];
 
+    const ratingRef = useRef(null);
 
     return (
         <Layout>
@@ -94,13 +96,16 @@ export default function Recipe() {
                     />
                 </div>
 
+                <LineBreak/>
                 <RecipeBasicInformation className=""/>
+                <LineBreak/>
 
                 <div className="grid
                                 grid-cols-1 md:grid-cols-12
                                 gap-0 md:gap-5
                                 space-y-5 md:space-y-0
                                 ">
+                    {/*Ingredients*/}
                     <div className="col-span-4
                                     space-y-5">
                         <p className="text-2xl font-bold">
@@ -114,6 +119,7 @@ export default function Recipe() {
                         <RecipeNutritionFacts facts={nutritionFacts}/>
                     </div>
 
+                    {/*Instructions*/}
                     <div className="col-span-8 space-y-3">
                         <p className="text-2xl font-bold">
                             Instructions
@@ -122,8 +128,40 @@ export default function Recipe() {
                         <RecipeInstructions className="space-y-2"
                                             instructions={instructions}/>
                     </div>
+                </div>
+                <LineBreak/>
+
+                {/*Rating*/}
+                <div className="space-y-2
+                                pb-2
+                                border-b-8 border-b-blue-700">
+                    <p className="text-2xl font-bold">
+                        Already made this?
+                    </p>
+
+                    <button className="btn btn-outline btn-primary"
+                            onClick={() => {
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                                ratingRef.current.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "start"
+                                });
+                            }}>
+                        Share your feedback
+                    </button>
+                </div>
+
+                {/*Rating List*/}
+                <div className="">
 
                 </div>
+
+                {/*Rating*/}
+                <LineBreak/>
+                <RecipeRating ref={ratingRef} isLogin={false}/>
+
             </div>
         </Layout>
     )

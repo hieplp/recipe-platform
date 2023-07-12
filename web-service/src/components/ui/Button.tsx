@@ -19,17 +19,9 @@ type ButtonProps = {
 // --------------------------------------------------------------------------
 const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     (props, ref) => {
-        //
-        let className = props.className;
-        if (!className) {
-            className = "";
-        }
-
-        //
-
         return (
             <button ref={ref}
-                    className={clsx(className, "btn btn-primary")}
+                    className={clsx(props.className, "btn btn-primary")}
                     onClick={props.onClick}
                     disabled={props.isLoading}
             >
@@ -42,6 +34,27 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )
     });
 PrimaryButton.displayName = "PrimaryButton";
+
+// --------------------------------------------------------------------------
+// XXX Button - Secondary
+// --------------------------------------------------------------------------
+const SecondaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    (props, ref) => {
+        return (
+            <button ref={ref}
+                    className={clsx(props.className, "btn btn-secondary text-blue-500")}
+                    onClick={props.onClick}
+                    disabled={props.isLoading}
+            >
+                {props.isLoading &&
+                    <div hidden={!props.isLoading}
+                         className="loading loading-sm loading-spinner"/>
+                }
+                {props.children}
+            </button>
+        )
+    });
+SecondaryButton.displayName = "SecondaryButton";
 
 // --------------------------------------------------------------------------
 // XXX Button - Icon
@@ -60,4 +73,8 @@ OnlyIconButton.displayName = "OnlyIconButton";
 // --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
-export {PrimaryButton, OnlyIconButton}
+export {
+    PrimaryButton,
+    SecondaryButton,
+    OnlyIconButton
+}
