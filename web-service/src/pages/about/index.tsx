@@ -7,7 +7,9 @@ export default function About() {
     return (
         <Layout>
             <div className="relative w-full mt-3 space-y-2">
-                <Title text="About" className="my-3"/>
+                <Title className="my-3">
+                    About
+                </Title>
 
                 <p className="font-bold text-2xl">
                     We are a team of passionate foodies who love to cook and bake delicious meals.

@@ -3,7 +3,7 @@ import {Layout} from "~/components/layouts/Layout";
 import {Title} from "~/components/ui/Title";
 import {RecipeCardList} from "~/components/recipe/RecipeCardList";
 
-export default function Recipes() {
+export default function RecipesByCategory() {
 
     const recipes = [
         {

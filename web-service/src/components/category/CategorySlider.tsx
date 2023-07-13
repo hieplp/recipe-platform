@@ -1,60 +1,55 @@
 import React from "react";
 import {clsx} from "clsx";
 import {CategoryCard} from "~/components/category/CategoryCard";
+import type Category from "~/types/Category";
 // --------------------------------------------------------------------------
 // XXX CategorySliderItem
 // --------------------------------------------------------------------------
-type CategorySliderItemProps = {
-    className?: string,
-    image: string,
-    name: string,
-}
 
-const CategorySliderItem = React.forwardRef<HTMLAnchorElement, CategorySliderItemProps>(
-    (props, ref) => {
-        let className = props.className;
-        if (!className) {
-            className = "";
-        }
-        className = clsx(className, "flex flex-none mr-3 items-center justify-center text-center group")
 
-        return (
-            <CategoryCard ref={ref}
-                          name={props.name}
-                          image={props.image}
-                          className={className}/>
-        )
-    });
+const CategorySliderItem = React.forwardRef<
+    HTMLAnchorElement,
+    React.HTMLAttributes<HTMLAnchorElement> & Category
+>(({
+       className,
+       ...props
+   }, ref) => (
+    <CategoryCard ref={ref}
+                  className={clsx(
+                      "flex flex-none mr-3 items-center justify-center text-center group",
+                      className,
+                  )}
+                  {...props}
+    />
+));
 CategorySliderItem.displayName = "CategorySliderItem";
 
 // --------------------------------------------------------------------------
 // XXX CategorySlider
 // --------------------------------------------------------------------------
 
-type CategorySliderProps = {
-    className?: string,
-    categories: CategorySliderItemProps[],
-}
-
-const CategorySlider = React.forwardRef<HTMLDivElement, CategorySliderProps>(
-    (props, ref) => {
-        let className = props.className;
-        if (!className) {
-            className = "";
+const CategorySlider = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement> & { categories: Category[] }
+>(({
+       className,
+       ...props
+   }, ref) => (
+    <div ref={ref}
+         className={clsx(
+             className,
+             "flex overflow-x-scroll"
+         )}
+    >
+        {
+            props.categories.map(category => (
+                <CategorySliderItem key={category.categoryId}
+                                    {...category}
+                />
+            ))
         }
-        className = clsx(className, "flex overflow-x-scroll")
-        return (
-            <div ref={ref} className={className}>
-                {
-                    props.categories.map(({name, image}, index) => (
-                        <CategorySliderItem name={name}
-                                            image={image}
-                                            key={index}/>
-                    ))
-                }
-            </div>
-        )
-    });
+    </div>
+));
 CategorySlider.displayName = "CategorySlider";
 
 // --------------------------------------------------------------------------

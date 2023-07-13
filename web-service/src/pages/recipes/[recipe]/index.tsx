@@ -98,17 +98,17 @@ export default function Recipe() {
 
     const recommendedRecipes = [
         {
-            recipeId: 1,
+            recipeId: "1",
             image: "/photo1.jpeg",
             title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         },
         {
-            recipeId: 2,
+            recipeId: "2",
             image: "/photo1.jpeg",
             title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         },
         {
-            recipeId: 2,
+            recipeId: "3",
             image: "/photo1.jpeg",
             title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         }

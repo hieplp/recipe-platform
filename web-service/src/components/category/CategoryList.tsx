@@ -1,33 +1,27 @@
-import {CategoryCard, type CategoryCardProps} from "~/components/category/CategoryCard";
+import {CategoryCard} from "~/components/category/CategoryCard";
 import React from "react";
+import type Category from "~/types/Category";
 
 // --------------------------------------------------------------------------
 // XXX CategoryList
 // --------------------------------------------------------------------------
-type CategoryListProps = {
-    className?: string,
-    categories: CategoryCardProps[],
-}
-
-const CategoryList = React.forwardRef<HTMLDivElement, CategoryListProps>(
-    (props, ref) => {
-        let className = props.className;
-        if (!className) {
-            className = "";
+const CategoryList = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement> & { categories: Category[] }
+>(({
+       className,
+       ...props
+   }, ref) => (
+    <div ref={ref} className={className}>
+        {
+            props.categories.map(category => (
+                <CategoryCard key={category.categoryId}
+                              {...category}
+                />
+            ))
         }
-
-        return (
-            <div ref={ref} className={className}>
-                {
-                    props.categories.map(({name, image}, index) => (
-                        <CategoryCard name={name}
-                                      image={image}
-                                      key={index}/>
-                    ))
-                }
-            </div>
-        )
-    });
+    </div>
+));
 CategoryList.displayName = "CategoryList";
 
 // --------------------------------------------------------------------------

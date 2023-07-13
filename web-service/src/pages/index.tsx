@@ -22,10 +22,12 @@ export default function Home() {
 
     const categories = [
         {
+            categoryId: "1",
             name: "Pasta",
             image: "https://flowbite.com/docs/images/carousel/carousel-1.svg"
         },
         {
+            categoryId: "2",
             name: "Pasta",
             image: "https://flowbite.com/docs/images/carousel/carousel-1.svg"
         }

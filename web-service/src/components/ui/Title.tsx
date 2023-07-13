@@ -8,7 +8,6 @@ import {LineBreak} from "~/components/ui/Line";
 type TitleProps = {
     children?: React.ReactNode;
     className?: string;
-    text: string;
 }
 
 const Title = React.forwardRef<HTMLDivElement, TitleProps>(
@@ -18,7 +17,7 @@ const Title = React.forwardRef<HTMLDivElement, TitleProps>(
                 <div ref={ref}
                      className={clsx(props.className, "")}>
                     <p className="text-3xl font-bold">
-                        {props.text}
+                        {props.children}
                     </p>
                     <LineBreak/>
                 </div>

@@ -1,25 +1,27 @@
-import Link from "next/link";
 import NextImage from "~/components/ui/NextImage";
 import React from "react";
 import {clsx} from "clsx";
+import type Category from "~/types/Category";
+import Link from "next/link";
 
 // --------------------------------------------------------------------------
 // XXX CategoryCard
 // --------------------------------------------------------------------------
-type CategoryCardProps = {
-    className?: string,
-    name: string,
-    image: string,
-}
 
-const CategoryCard = React.forwardRef<HTMLAnchorElement, CategoryCardProps>(
-    (props, ref) => {
+const CategoryCard = React.forwardRef<
+    HTMLAnchorElement,
+    React.HTMLAttributes<HTMLAnchorElement> & Category
+>(
+    ({
+         className,
+         ...props
+     }, ref) => {
         return (
             <>
-                <Link href={`/categories/${props.name}`}
+                <Link href={`/categories/${props.categoryId}`}
                       ref={ref}
                       passHref={true}
-                      className={clsx(props.className, "flex items-center justify-center text-center group")}>
+                      className={clsx(className, "flex items-center justify-center text-center group")}>
                     <div>
                         <NextImage width={150}
                                    height={150}
@@ -32,7 +34,7 @@ const CategoryCard = React.forwardRef<HTMLAnchorElement, CategoryCardProps>(
                                    imgClassName="h-full w-full
                                                  rounded-2xl
                                                  md:rounded-2xl"
-                                   src={props.image}
+                                   src={props.image ? props.image : '/avatar.jpg'}
                                    alt={""}/>
                         <p className="text-center
                                       font-bold
@@ -51,6 +53,5 @@ CategoryCard.displayName = "CategoryCard";
 // XXX Export
 // --------------------------------------------------------------------------
 export {
-    type CategoryCardProps,
     CategoryCard
 }
