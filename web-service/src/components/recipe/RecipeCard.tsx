@@ -3,58 +3,38 @@ import NextImage from "~/components/ui/NextImage";
 import {AlignVerticalText} from "~/components/ui/Text";
 import {CalendarIcon, ChatBubbleBottomCenterIcon} from "@heroicons/react/24/outline";
 import {clsx} from "clsx";
-import Link from "next/link";
+import {Card, CardContent, CardFooter, CardImage, CardTitle} from "~/components/ui/Card";
+import type Recipe from "~/types/Recipe";
 
 // --------------------------------------------------------------------------
 // XXX RecipeCard
 // --------------------------------------------------------------------------
-type RecipeCardProps = {
-    recipeId: string,
-    className?: string,
-    title: string,
-    image: string,
-    rating: number,
-    name: string,
-    avatar: string,
-    time: string,
-    totalComments: number,
-};
-const RecipeCard = React.forwardRef<HTMLAnchorElement, RecipeCardProps>(
+const RecipeCard = React.forwardRef<
+    HTMLAnchorElement,
+    React.HTMLAttributes<HTMLAnchorElement> & Recipe
+>(
     ({
-         recipeId,
          className,
-         title,
-         image,
-         rating,
-         name,
-         avatar,
-         time,
-         totalComments
+         ...props
      }, ref) => {
         return (
-            <Link ref={ref}
-                  href={`/recipes/${recipeId}`}
+            <Card ref={ref}
+                  href={`/recipes/${props.recipeId}`}
                   passHref={true}
-                  className={clsx(className, "card w-full bg-base-100 shadow-xl")}>
-                <figure className="w-full h-44">
-                    <NextImage src={image}
-                               useSkeleton={true}
-                               height={550}
-                               width={760}
-                               className="h-64 w-full"
-                               imgClassName="h-full w-full"
-                               alt=""/>
-                </figure>
-                <div className="card-body">
-                    <RecipeCardRating rating={rating}/>
+                  className={clsx(className, "bg-base-100 shadow-xl")}>
+                <CardImage src={props.image}
+                           className="h-44 w-full"
+                />
+                <CardContent>
+                    <RecipeCardRating rating={props.rating ? props.rating : 0}/>
 
-                    <h2 className="card-title">
-                        {title}
-                    </h2>
+                    <CardTitle>
+                        {props.title}
+                    </CardTitle>
 
                     <div className="flex mt-3">
                         <div className="avatar">
-                            <NextImage src={avatar}
+                            <NextImage src={props.authorAvatar ? props.authorAvatar : '/avatar.jpg'}
                                        height={50}
                                        width={50}
                                        className="w-10 rounded-full"
@@ -62,25 +42,31 @@ const RecipeCard = React.forwardRef<HTMLAnchorElement, RecipeCardProps>(
                                        alt=""/>
                         </div>
 
-                        <AlignVerticalText text={name}
+                        <AlignVerticalText text={props.authorName ? props.authorName : 'Anonymous'}
                                            className="h-full font-bold ml-3"/>
                     </div>
+                </CardContent>
 
-                    <div className="card-actions
-                                    justify-end
-                                    text-sm
-                                    text-gray-500">
-                        <div className="flex mr-2 space-x-1">
-                            <ChatBubbleBottomCenterIcon className="w-5 h-5"/>
-                            <p>{totalComments < 1000 ? totalComments : '999+'}</p>
-                        </div>
-                        <div className="flex space-x-1">
-                            <CalendarIcon className="w-5 h-5"/>
-                            <p>{time}</p>
-                        </div>
+                <CardFooter className="card-actions
+                                       justify-end
+                                       text-sm
+                                       text-gray-500">
+                    <div className="flex mr-2 space-x-1">
+                        <ChatBubbleBottomCenterIcon className="w-5 h-5"/>
+                        <p>
+                            {
+                                props.totalComments
+                                    ? (props.totalComments < 1000 ? props.totalComments : '999+')
+                                    : 0
+                            }
+                        </p>
                     </div>
-                </div>
-            </Link>
+                    <div className="flex space-x-1">
+                        <CalendarIcon className="w-5 h-5"/>
+                        <p>{props.time}</p>
+                    </div>
+                </CardFooter>
+            </Card>
         )
     });
 RecipeCard.displayName = "RecipeCard";
@@ -142,4 +128,7 @@ RecipeCardRating.displayName = "RecipeCardRating";
 // --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
-export {RecipeCard, RecipeCardRating, type RecipeCardProps}
+export {
+    RecipeCard,
+    RecipeCardRating,
+}

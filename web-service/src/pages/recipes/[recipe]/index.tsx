@@ -10,6 +10,7 @@ import {RecipeNutritionFacts} from "~/pages/recipes/[recipe]/RecipeNutritionFact
 import {RecipeInstructions} from "~/pages/recipes/[recipe]/RecipeInstructions";
 import RecipeRating from "~/pages/recipes/[recipe]/RecipeRating";
 import {RecipeReviews} from "~/pages/recipes/[recipe]/RecipeReviews";
+import {RecipeRecommendation} from "~/pages/recipes/[recipe]/RecipeRecommendation";
 
 export default function Recipe() {
 
@@ -92,6 +93,24 @@ export default function Recipe() {
             review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae lacus est. Proin elementum dolor sed augue gravida, dapibus finibus diam.",
             likes: 12,
             isLiked: false
+        }
+    ]
+
+    const recommendedRecipes = [
+        {
+            recipeId: 1,
+            image: "/photo1.jpeg",
+            title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        },
+        {
+            recipeId: 2,
+            image: "/photo1.jpeg",
+            title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        },
+        {
+            recipeId: 2,
+            image: "/photo1.jpeg",
+            title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         }
     ]
 
@@ -185,7 +204,7 @@ export default function Recipe() {
                 </div>
 
                 {/*Rating List*/}
-                <div className=" space-y-2">
+                <div className="space-y-2">
                     <p className="text-2xl font-bold">
                         Reviews
                     </p>
@@ -202,6 +221,16 @@ export default function Recipe() {
                 {/*Rating*/}
                 <LineBreak/>
                 <RecipeRating ref={ratingRef} isLogin={false}/>
+
+                {/*You might also like*/}
+                <LineBreak/>
+                <div className="space-y-2 group">
+                    <p className="text-2xl font-bold">
+                        You might also like
+                    </p>
+
+                    <RecipeRecommendation recipes={recommendedRecipes}/>
+                </div>
 
             </div>
         </Layout>

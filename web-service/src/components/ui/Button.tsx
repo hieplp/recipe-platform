@@ -63,7 +63,7 @@ const OnlyIconButton = React.forwardRef<HTMLDivElement, ButtonProps>(
     (props, ref) => {
         return (
             <div ref={ref}
-                 className={clsx(props.className, "hover:cursor-pointer hover:text-blue-700")}>
+                 className={clsx(props.className, "hover:cursor-pointer hover:text-primary")}>
                 {props.children}
             </div>
         )

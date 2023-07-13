@@ -99,13 +99,13 @@ const MenuItem = React.forwardRef<HTMLAnchorElement, MenuItemProps>(
             className = '';
         }
         className = clsx(className,
-            'text-lg hover:text-blue-600 font-bold md:bg-transparent',
+            'text-lg hover:text-primary font-bold md:bg-transparent',
             'block py-2 pl-3 pr-4');
         if (isActive) {
             className = clsx(className,
                 'font-bold rounded',
                 'bg-blue-700 ',
-                'text-white md:text-blue-600');
+                'text-white md:text-primary');
         }
         return (
             <Link ref={ref}

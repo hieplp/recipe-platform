@@ -53,7 +53,7 @@ const RecipeReview = React.forwardRef<HTMLDivElement, RecipeReviewProps>(
                                       rating={props.rating}/>
 
                     <div className={clsx(props.isLiked ? "text-red-600" : "text-gray-300", "text-sm mt-2")}>
-                        <div className="flex items-center">
+                        <div className="flex items-center hover:cursor-pointer hover:text-red-600">
                             <HeartIcon className="w-5 h-5 mr-1"/>
                             <p>{props.likes}</p>
                         </div>

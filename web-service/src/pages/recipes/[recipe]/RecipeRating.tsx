@@ -33,7 +33,7 @@ const RecipeRating = React.forwardRef<HTMLDivElement, RecipeRatingProps>(
                         !props.isLogin &&
                         <div className="flex space-x-1 ml-auto">
                             <Link href="/auth/login"
-                                  className="text-blue-700 hover:underline">
+                                  className="text-primary hover:underline">
                                 Login
                             </Link>
                             <p className="">to share your feedback</p>

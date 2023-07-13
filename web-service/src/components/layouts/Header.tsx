@@ -28,7 +28,7 @@ const nonAuthLinks = [
         label: 'Sign In',
         href: '/sign-in',
         isActive: false,
-        className: 'text-blue-600'
+        className: 'text-primary'
     }
 ];
 const authLinks = [

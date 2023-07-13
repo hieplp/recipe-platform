@@ -11,6 +11,7 @@ const BrandIcon = React.forwardRef<HTMLAnchorElement>(
         return (
             <Link ref={ref}
                   href="/"
+                  passHref={true}
                   className="flex items-center">
                 <Image src="https://flowbite.com/docs/images/logo.svg"
                        width={32}
@@ -21,7 +22,7 @@ const BrandIcon = React.forwardRef<HTMLAnchorElement>(
                                  text-2xl
                                  font-semibold
                                  whitespace-nowrap
-                                 hover:text-blue-600">
+                                 hover:text-primary">
                       Recipe.IT
                 </span>
             </Link>

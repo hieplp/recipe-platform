@@ -17,7 +17,7 @@ const RecipeIngredients = React.forwardRef<HTMLDivElement, RecipeIngredientsProp
                     {props.title}
                 </p>
                 <Checklist list={props.ingredients}
-                           itemClassName="hover:text-blue-700 hover:font-bold"
+                           itemClassName="hover:text-primary hover:font-bold"
                 />
             </div>
         )

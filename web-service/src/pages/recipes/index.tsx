@@ -11,50 +11,50 @@ export default function Recipes() {
             title: "Shoes!",
             image: "/photo1.jpeg",
             rating: 3,
-            name: "John Doe",
-            avatar: "/avatar.jpg",
+            authorName: "John Doe",
+            authorAvatar: "/avatar.jpg",
             time: "Yesterday",
             totalComments: 222
         },
         {
-            recipeId: "1",
+            recipeId: "2",
             title: "Shoes!",
             image: "/photo1.jpeg",
             rating: 3,
-            name: "John Doe",
-            avatar: "/avatar.jpg",
+            authorName: "John Doe",
+            authorAvatar: "/avatar.jpg",
             time: "Yesterday",
-            totalComments: 222
+            totalComments: 221
         },
         {
-            recipeId: "1",
+            recipeId: "3",
             title: "Shoes!",
             image: "/photo1.jpeg",
             rating: 3,
-            name: "John Doe",
-            avatar: "/avatar.jpg",
+            authorName: "John Doe",
+            authorAvatar: "/avatar.jpg",
             time: "Yesterday",
             totalComments: 222
         },
         {
-            recipeId: "1",
+            recipeId: "4",
             title: "Shoes!",
             image: "/photo1.jpeg",
-            rating: 5,
-            name: "John Doe",
-            avatar: "/avatar.jpg",
+            rating: 3,
+            authorName: "John Doe",
+            authorAvatar: "/avatar.jpg",
             time: "Yesterday",
             totalComments: 222
         },
         {
-            recipeId: "1",
+            recipeId: "5",
             title: "Shoes!",
             image: "/photo1.jpeg",
-            rating: 1,
-            name: "John Doe",
-            avatar: "/avatar.jpg",
+            rating: 3,
+            authorName: "John Doe",
+            authorAvatar: "/avatar.jpg",
             time: "Yesterday",
-            totalComments: 1222
+            totalComments: 222
         },
     ]
 

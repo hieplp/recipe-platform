@@ -8,6 +8,7 @@ type NextImageProps = {
         imgClassName?: string;
         blurClassName?: string;
         alt: string;
+        ref?: React.ForwardedRef<HTMLDivElement>;
     }
     & (
     | { width?: string | number; height?: string | number }
@@ -26,6 +27,7 @@ type NextImageProps = {
  * @param className
  * @param imgClassName
  * @param blurClassName
+ * @param ref
  * @param rest
  */
 export default function NextImage({
@@ -37,6 +39,7 @@ export default function NextImage({
                                       className,
                                       imgClassName,
                                       blurClassName,
+                                      ref,
                                       ...rest
                                   }: NextImageProps) {
     const [status, setStatus] = React.useState(
@@ -51,7 +54,8 @@ export default function NextImage({
     blurClassName = blurClassName == null ? 'filter blur bg-gray-300' : blurClassName;
 
     return (
-        <figure style={!widthIsSet ? {width: `${width}px`} : undefined}
+        <figure ref={ref}
+                style={!widthIsSet ? {width: `${width}px`} : undefined}
                 className={className}>
             <Image src={src}
                    className={clsx(imgClassName, status === 'loading' && clsx('animate-pulse', blurClassName))}
