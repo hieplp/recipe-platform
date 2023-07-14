@@ -23,7 +23,7 @@ const links = [
             },
             {
                 label: 'Add Recipe',
-                href: '/recipes/add',
+                href: '/recipes/create',
                 isActive: false
             },
             {
