@@ -2,7 +2,7 @@ import React from "react";
 import {clsx} from "clsx";
 import NextImage from "~/components/ui/NextImage";
 import Link from "next/link";
-import {LinkProps} from "next/dist/client/link";
+import {type LinkProps} from "next/dist/client/link";
 
 // --------------------------------------------------------------------------
 // XXX Card

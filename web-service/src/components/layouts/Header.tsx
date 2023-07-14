@@ -14,7 +14,24 @@ const links = [
     {
         label: 'Recipes',
         href: '/recipes',
-        isActive: false
+        isActive: false,
+        childMenu: [
+            {
+                label: 'All Recipes',
+                href: '/recipes',
+                isActive: false
+            },
+            {
+                label: 'Add Recipe',
+                href: '/recipes/add',
+                isActive: false
+            },
+            {
+                label: 'My Recipes',
+                href: '/recipes/my',
+                isActive: false
+            }
+        ],
     },
     {
         label: 'About',
@@ -57,7 +74,6 @@ export function Header() {
         }
         nav.classList.toggle("hidden");
     };
-
 
     useEffect(() => {
         const handleScroll = () => {

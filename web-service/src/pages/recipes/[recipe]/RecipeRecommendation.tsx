@@ -16,7 +16,7 @@ const RecommendedRecipe = React.forwardRef<
    }, ref) => (
     <Card ref={ref}
           href={`/recipes/${props.recipeId}`}
-          className={clsx(className, "space-y-2")}>
+          className={clsx(className, "space-y-2 group")}>
         <CardImage src={props.image}
                    className="h-44 xl:h-52 w-full rounded"
         />

@@ -64,6 +64,24 @@ export default function Recipes() {
                 <Title className="my-3">
                     Recipes
                 </Title>
+
+                <div className="flex justify-end w-full">
+                    <select className="select select-bordered w-full md:max-w-xs">
+                        <option selected>
+                            Created Date (Desc)
+                        </option>
+                        <option>
+                            Created Date (Asc)
+                        </option>
+                        <option>
+                            Rating (Desc)
+                        </option>
+                        <option>
+                            Rating (Asc)
+                        </option>
+                    </select>
+                </div>
+
                 <RecipeCardList className="grid mt-5
                                            grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4
                                            gap-5 md:gap-5"

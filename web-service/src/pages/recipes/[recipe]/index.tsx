@@ -222,9 +222,8 @@ export default function Recipe() {
                 <LineBreak/>
                 <RecipeRating ref={ratingRef} isLogin={false}/>
 
-                {/*You might also like*/}
                 <LineBreak/>
-                <div className="space-y-2 group">
+                <div className="space-y-2">
                     <p className="text-2xl font-bold">
                         You might also like
                     </p>
