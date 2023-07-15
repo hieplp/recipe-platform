@@ -1,52 +1,79 @@
 import React from "react";
-import {clsx} from "clsx";
 
 // --------------------------------------------------------------------------
 // XXX Button
 // --------------------------------------------------------------------------
 
 type InputProps = {
-    className?: string;
-    placeholder?: string;
+    label?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    type?: "text" | "number" | "email" | "password";
 };
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    (props, ref) => {
-        if (!props.placeholder) {
-            props.placeholder = "";
-        }
-        return (
-            <input ref={ref}
-                   type="text"
-                   placeholder={props.placeholder}
-                   className="input text-black"/>
-        )
-    });
+const Input = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLInputElement> & InputProps
+>(({
+       className,
+       ...props
+   }, ref) => {
+    return (
+        <div ref={ref}
+             className={className}>
+            <label className="label">
+                <div className="flex label-text space-x-1">
+                    <p className="">
+                        {props.label}
+                    </p>
+                    {props.isRequired && <span className="text-red-500">(*)</span>}
+                </div>
+            </label>
+            <input type={props.type || "text"}
+                   className="input input-md w-full input-bordered"
+                   disabled={props.isDisabled}
+                   {...props}
+            />
+        </div>
+    )
+});
 Input.displayName = "Input";
 
 // --------------------------------------------------------------------------
-// XXX PrimaryButton
+// XXX Textarea
 // --------------------------------------------------------------------------
-const PrimaryInput = React.forwardRef<HTMLInputElement, InputProps>(
-    (props, ref) => {
-        let className = props.className;
-        if (!className) {
-            className = "";
-        }
-        className = clsx(className,
-            "input",
-            "text-black",
-            "focus:ring-blue-700",
-            "dark:text-white");
-        return (
-            <input type="text"
-                   placeholder={props.placeholder}
-                   className={className}/>
-        )
-    });
-PrimaryInput.displayName = "PrimaryInput";
+type TextareaProps = {
+    cols?: number;
+}
+
+const Textarea = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLTextAreaElement> & InputProps & TextareaProps
+>(({
+       className,
+       ...props
+   }, ref) => {
+    return (
+        <div ref={ref}
+             className={className}>
+            <label className="label">
+                <div className="flex label-text space-x-1">
+                    <p className="">
+                        {props.label}
+                    </p>
+                    {props.isRequired && <span className="text-red-500">(*)</span>}
+                </div>
+            </label>
+            <textarea placeholder={props.placeholder}
+                      className="textarea textarea-bordered w-full"
+                      {...props}
+            />
+        </div>
+    )
+});
+Textarea.displayName = "Textarea";
 
 // --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
 
-export {Input, PrimaryInput};
+export {Input, Textarea};

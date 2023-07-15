@@ -1,6 +1,7 @@
 import React from "react";
 import {useRouter} from "next/router";
 import {PrimaryButton} from "~/components/ui/Button";
+import {Input} from "~/components/ui/Input";
 
 // --------------------------------------------------------------------------
 // XXX RegisterForm
@@ -14,56 +15,39 @@ export function RegisterForm() {
     }
 
     return (
-        <section className="form-control">
+        <section className="form-control space-y-3">
             {/*Username*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Username</span>
-                </label>
-                <input type="text"
-                       placeholder="hieplp"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Username"
+                   placeholder="hieplp"
+                   isRequired={true}
+            />
 
             {/*Email*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Email</span>
-                </label>
-                <input type="email"
-                       placeholder="hiepphuocly@gmail.com"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Email"
+                   placeholder="hiepphuocly@gmail.com"
+                   isRequired={true}
+                   type="email"
+            />
 
             {/*FullName*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Full Name</span>
-                </label>
-                <input type="text"
-                       placeholder="HiepLP"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Full Name"
+                   placeholder="HiepLP"
+                   isRequired={true}
+            />
 
             {/*Password*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Password</span>
-                </label>
-                <input type="password"
-                       placeholder="••••••••"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Password"
+                   placeholder="••••••••"
+                   isRequired={true}
+                   type="password"
+            />
 
             {/*Confirm Password*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Confirm Password</span>
-                </label>
-                <input type="password"
-                       placeholder="••••••••"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Confirm Password"
+                   placeholder="••••••••"
+                   isRequired={true}
+                   type="password"
+            />
 
             {/**/}
             <PrimaryButton className="btn btn-primary w-full normal-case text-lg"

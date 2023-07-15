@@ -1,6 +1,7 @@
 import {PrimaryButton} from "~/components/ui/Button";
 import React from "react";
 import {useRouter} from "next/router";
+import {Input} from "~/components/ui/Input";
 
 export function ForgotPasswordForm() {
     //
@@ -12,15 +13,12 @@ export function ForgotPasswordForm() {
     }
 
     return (
-        <section className="form-control">
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Email</span>
-                </label>
-                <input type="email"
-                       placeholder="hiepphuocly@gmail.com"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+        <section className="form-control space-y-5">
+            <Input label="Email"
+                   placeholder="hiepphuocly@gmail.com"
+                   isRequired={true}
+                   type="email"
+            />
 
             {/**/}
             <PrimaryButton className="w-full normal-case text-lg"

@@ -1,59 +1,50 @@
 import {SingleImageUpload} from "~/components/ui/ImageUpload";
 import React from "react";
+import {Input, Textarea} from "~/components/ui/Input";
 
 export function CreateRecipeBasicInformationForm() {
     return (
         <section className="form-control space-y-3">
-            <div className="w-full">
-                <label className="label">
-                    <span className="label-text">Title</span>
-                </label>
-                <input type="text"
-                       placeholder="This is a title"
-                       className="input input-md w-full input-bordered"/>
-            </div>
 
-            <div className="w-full">
-                <label className="label">
-                    <span className="label-text">Description</span>
-                </label>
-                <textarea placeholder="This is a description"
-                          className="textarea textarea-bordered w-full"/>
-            </div>
+            <Input label="Title"
+                   placeholder="This is a title"
+                   isRequired={true}
+            />
+
+            <Textarea label="Description"
+                      placeholder="This is a description"
+                      isRequired={true}
+            />
 
             <label className="label">
-                <span className="label-text">Image</span>
+                <p className="label-text">
+                    Image
+                    <span className="ml-1 text-red-500">(*)</span>
+                </p>
             </label>
             <SingleImageUpload/>
 
             <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-1">
                 {/*Preparation Time*/}
-                <div className="">
-                    <label className="label">
-                        <span className="label-text">Preparation Time</span>
-                    </label>
-                    <input type="number"
-                           placeholder="How long does it take to prepare?"
-                           className="input input-md w-full input-bordered"/>
-                </div>
+                <Input label="Preparation Time"
+                       placeholder="How long does it take to prepare?"
+                       isRequired={true}
+                       type="number"
+                />
+
                 {/*Cooking Time*/}
-                <div className="">
-                    <label className="label">
-                        <span className="label-text">Cooking Time</span>
-                    </label>
-                    <input type="number"
-                           placeholder="How long does it take to cook?"
-                           className="input input-md w-full input-bordered"/>
-                </div>
-                {/**/}
-                <div className="">
-                    <label className="label">
-                        <span className="label-text">Servings</span>
-                    </label>
-                    <input type="number"
-                           placeholder="How many servings?"
-                           className="input input-md w-full input-bordered"/>
-                </div>
+                <Input label="Cooking Time"
+                       placeholder="How long does it take to cook?"
+                       isRequired={true}
+                       type="number"
+                />
+
+                {/*Servings*/}
+                <Input label="Servings"
+                       placeholder="How many servings?"
+                       isRequired={true}
+                       type="number"
+                />
             </div>
         </section>
     )

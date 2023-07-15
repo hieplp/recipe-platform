@@ -110,6 +110,16 @@ export default function CreateRecipe() {
                         currentStep === 0 &&
                         <CreateRecipeBasicInformationForm/>
                     }
+
+                    {/*Ingredients*/}
+                    {
+                        currentStep === 1 &&
+                        <>
+                            <div className="">
+
+                            </div>
+                        </>
+                    }
                 </WhiteDiv>
 
                 <div className="w-full flex ">

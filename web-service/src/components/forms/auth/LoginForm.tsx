@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import {PrimaryButton} from "~/components/ui/Button";
+import {Input} from "~/components/ui/Input";
 
 // --------------------------------------------------------------------------
 // XXX RememberMe
@@ -41,26 +42,19 @@ RememberMe.displayName = 'RememberMe';
 // --------------------------------------------------------------------------
 export function LoginForm() {
     return (
-        <section className="form-control">
+        <section className="form-control space-y-3">
             {/*Username*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Username</span>
-                </label>
-                <input type="text"
-                       placeholder="hieplp"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Username"
+                   placeholder="hieplp"
+                   isRequired={true}
+            />
 
             {/*Password*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Password</span>
-                </label>
-                <input type="password"
-                       placeholder="••••••••"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+            <Input label="Password"
+                   placeholder="••••••••"
+                   isRequired={true}
+                   type="password"
+            />
 
             {/*Remember me*/}
             <RememberMe/>

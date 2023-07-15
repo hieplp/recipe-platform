@@ -1,6 +1,7 @@
 import React from "react";
 import {useRouter} from "next/router";
 import {PrimaryButton} from "~/components/ui/Button";
+import {Input} from "~/components/ui/Input";
 
 export function VerifyEmailForm() {
     const router = useRouter();
@@ -10,16 +11,13 @@ export function VerifyEmailForm() {
     }
 
     return (
-        <section className="form-control">
-            {/*Username*/}
-            <div className="w-full mb-5">
-                <label className="label">
-                    <span className="label-text">Verification Code</span>
-                </label>
-                <input type="number"
-                       placeholder="000000"
-                       className="input input-md w-full input-bordered"/>
-            </div>
+        <section className="form-control space-y-5">
+            {/*Verification Code*/}
+            <Input label="Verification Code"
+                   placeholder="000000"
+                   isRequired={true}
+                   type="number"
+            />
 
             {/**/}
             <PrimaryButton className="w-full normal-case text-lg"
