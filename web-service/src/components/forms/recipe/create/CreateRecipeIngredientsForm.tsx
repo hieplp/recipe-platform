@@ -20,7 +20,6 @@ interface Ingredient {
 
 export function CreateRecipeIngredientsForm() {
 
-
     const [checklists, setChecklists] = React.useState<IngredientChecklist[]>(
         [
             {
@@ -122,7 +121,6 @@ export function CreateRecipeIngredientsForm() {
                                              className="flex items-center space-x-3">
                                             <Input className="w-full"
                                                    placeholder="This is an ingredient"
-                                                   isRequired={true}
                                             />
 
                                             {

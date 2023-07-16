@@ -89,9 +89,12 @@ const Textarea = React.forwardRef<
     return (
         <div ref={ref}
              className={className}>
-            <InputLabel isRequired={props.isRequired}>
-                {props.label}
-            </InputLabel>
+            {
+                props.label &&
+                <InputLabel isRequired={props.isRequired}>
+                    {props.label}
+                </InputLabel>
+            }
             <textarea placeholder={props.placeholder}
                       className={clsx(
                           props.inputClassName,
