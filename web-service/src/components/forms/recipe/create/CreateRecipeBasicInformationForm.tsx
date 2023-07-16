@@ -1,10 +1,11 @@
 import {SingleImageUpload} from "~/components/ui/ImageUpload";
 import React from "react";
 import {Input, Textarea} from "~/components/ui/Input";
+import {WhiteDiv} from "~/components/ui/StyledDiv";
 
 export function CreateRecipeBasicInformationForm() {
     return (
-        <section className="form-control space-y-3">
+        <WhiteDiv className="form-control space-y-3">
 
             <Input label="Title"
                    placeholder="This is a title"
@@ -46,6 +47,6 @@ export function CreateRecipeBasicInformationForm() {
                        type="number"
                 />
             </div>
-        </section>
+        </WhiteDiv>
     )
 }

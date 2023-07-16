@@ -7,17 +7,26 @@ import {clsx} from "clsx";
 
 type WhiteDivProps = {
     className?: string,
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    xPadding?: number,
+    yPadding?: number,
+    xSpace?: number,
+    ySpace?: number,
 }
 const WhiteDiv = React.forwardRef<HTMLDivElement, WhiteDivProps>(
     (props, ref) => {
         return (
             <>
                 <div ref={ref}
-                     className={clsx(props.className, "bg-white rounded-lg shadow")}>
-                    <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        {props.children}
-                    </div>
+                     className={clsx(
+                         props.className,
+                         "bg-white rounded-lg shadow",
+                         `px-${(props.xPadding ? props.xPadding : 8)}`,
+                         `py-${(props.yPadding ? props.yPadding : 8)}`,
+                         `space-x-${(props.xSpace ? props.xSpace : 0)}`,
+                         `space-y-${(props.ySpace ? props.ySpace : 3)}`,
+                     )}>
+                    {props.children}
                 </div>
             </>
         )

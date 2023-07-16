@@ -2,11 +2,9 @@ import {Layout} from "~/components/layouts/Layout";
 import {Title} from "~/components/ui/Title";
 import React, {useState} from "react";
 import {clsx} from "clsx";
-import {WhiteDiv} from "~/components/ui/StyledDiv";
 import {PrimaryButton} from "~/components/ui/Button";
 import {CreateRecipeBasicInformationForm} from "~/components/forms/recipe/create/CreateRecipeBasicInformationForm";
-import {Input} from "~/components/ui/Input";
-import {PlusCircleIcon, XCircleIcon} from "@heroicons/react/24/outline";
+import {CreateRecipeIngredientsForm} from "~/components/forms/recipe/create/CreateRecipeIngredientsForm";
 
 interface Step {
     id: number;
@@ -82,7 +80,7 @@ export default function CreateRecipe() {
 
     return (
         <Layout>
-            <div className="relative w-full mt-3">
+            <div className="relative w-full space-y-5">
                 <Title className="my-3">
                     Create A Recipe
                 </Title>
@@ -96,6 +94,7 @@ export default function CreateRecipe() {
                                     className={clsx(
                                         "step ml-4",
                                         "hover:text-primary hover:cursor-pointer",
+                                        "dark:text-white",
                                         currentStep >= step.id && "step-primary"
                                     )}>
                                     {step.title}
@@ -106,38 +105,19 @@ export default function CreateRecipe() {
                     </ul>
                 </div>
 
-                <WhiteDiv className="my-5">
-                    {/*Basic Information*/}
-                    {
-                        currentStep === 0 &&
-                        <CreateRecipeBasicInformationForm/>
-                    }
+                {/*Basic Information*/}
+                {
+                    currentStep === 0 &&
+                    <CreateRecipeBasicInformationForm/>
+                }
 
-                    {/*Ingredients*/}
-                    {
-                        currentStep === 1 &&
-                        <>
-                            <div className="">
-                                <div className="flex items-center space-x-1">
-                                    <Input className="w-full"
-                                           placeholder="Search for ingredients"/>
+                {/*Ingredients*/}
+                {
+                    currentStep === 1 &&
+                    <CreateRecipeIngredientsForm/>
+                }
 
-                                    <button className="text-gray-300 hover:text-primary">
-                                        <PlusCircleIcon className="w-10 h-10"/>
-                                    </button>
-
-                                    <button className="text-gray-300 hover:text-error">
-                                        <XCircleIcon className="w-10 h-10"/>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </>
-                    }
-                </WhiteDiv>
-
-                <div className="w-full flex ">
-
+                <div className="w-full flex">
                     {
                         currentStep > 0 &&
                         <PrimaryButton className="normal-case" onClick={previousStep}>

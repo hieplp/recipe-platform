@@ -2,7 +2,37 @@ import React from "react";
 import {clsx} from "clsx";
 
 // --------------------------------------------------------------------------
-// XXX Button
+// XXX Input - Label
+// --------------------------------------------------------------------------
+type InputLabelProps = {
+    children?: React.ReactNode;
+    isRequired?: boolean;
+}
+const InputLabel = React.forwardRef<
+    HTMLLabelElement,
+    React.HTMLAttributes<HTMLLabelElement> & InputLabelProps
+>(({
+       className,
+       ...props
+   }, ref) => {
+    return (
+        <label className={clsx(
+            className,
+            "label"
+        )}>
+            <div className="flex label-text space-x-1">
+                <p className="">
+                    {props.children}
+                </p>
+                {props.isRequired && <span className="text-red-500">(*)</span>}
+            </div>
+        </label>
+    )
+});
+InputLabel.displayName = "InputLabel";
+
+// --------------------------------------------------------------------------
+// XXX Input
 // --------------------------------------------------------------------------
 
 type InputProps = {
@@ -24,14 +54,9 @@ const Input = React.forwardRef<
              className={className}>
             {
                 props.label &&
-                <label className="label">
-                    <div className="flex label-text space-x-1">
-                        <p className="">
-                            {props.label}
-                        </p>
-                        {props.isRequired && <span className="text-red-500">(*)</span>}
-                    </div>
-                </label>
+                <InputLabel isRequired={props.isRequired}>
+                    {props.label}
+                </InputLabel>
             }
 
             <input type={props.type || "text"}
@@ -40,7 +65,7 @@ const Input = React.forwardRef<
                        "input input-md w-full input-bordered")
                    }
                    disabled={props.isDisabled}
-                   {...props}
+                   placeholder={props.placeholder}
             />
         </div>
     )
@@ -64,20 +89,14 @@ const Textarea = React.forwardRef<
     return (
         <div ref={ref}
              className={className}>
-            <label className="label">
-                <div className="flex label-text space-x-1">
-                    <p className="dark:text-white">
-                        {props.label}
-                    </p>
-                    {props.isRequired && <span className="text-red-500">(*)</span>}
-                </div>
-            </label>
+            <InputLabel isRequired={props.isRequired}>
+                {props.label}
+            </InputLabel>
             <textarea placeholder={props.placeholder}
                       className={clsx(
                           props.inputClassName,
                           "textarea textarea-bordered w-full"
                       )}
-                      {...props}
             />
         </div>
     )
@@ -88,4 +107,8 @@ Textarea.displayName = "Textarea";
 // XXX Export
 // --------------------------------------------------------------------------
 
-export {Input, Textarea};
+export {
+    Input,
+    Textarea,
+    InputLabel
+};
