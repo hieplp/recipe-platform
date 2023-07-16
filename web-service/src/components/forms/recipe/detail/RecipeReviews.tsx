@@ -37,7 +37,7 @@ const RecipeReview = React.forwardRef<HTMLDivElement, RecipeReviewProps>(
                 </div>
 
                 <div className="col-span-10 md:col-span-11">
-                    <p className="font-bold">
+                    <p className="font-bold dark:text-white">
                         {props.name}
                     </p>
 
@@ -45,7 +45,7 @@ const RecipeReview = React.forwardRef<HTMLDivElement, RecipeReviewProps>(
                         {props.time}
                     </p>
 
-                    <p className="mt-2">
+                    <p className="mt-2 dark:text-white">
                         {props.review}
                     </p>
 

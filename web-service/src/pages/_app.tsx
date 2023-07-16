@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 
 const MyApp: AppType = ({Component, pageProps}) => {
-    return <Component {...pageProps} />;
+    return <Component {...pageProps}/>;
 };
 
 export default MyApp;

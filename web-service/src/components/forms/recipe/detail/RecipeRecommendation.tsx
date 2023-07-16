@@ -21,7 +21,7 @@ const RecommendedRecipe = React.forwardRef<
                    className="h-44 xl:h-52 w-full rounded"
         />
 
-        <CardTitle className="group-hover:text-primary">
+        <CardTitle className="group-hover:text-primary dark:text-white">
             {props.title}
         </CardTitle>
     </Card>

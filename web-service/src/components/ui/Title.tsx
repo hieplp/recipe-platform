@@ -18,7 +18,7 @@ const Title = React.forwardRef<
    }, ref) => (
     <div ref={ref}
          className={clsx(className, "space-y-2")}>
-        <p className="text-3xl font-bold">
+        <p className="text-3xl font-bold dark:text-white">
             {props.children}
         </p>
         <LineBreak/>
@@ -38,7 +38,7 @@ const SubTitle = React.forwardRef<
    }, ref) => (
     <div ref={ref}
          className={clsx(className, "space-y-2")}>
-        <p className="text-md -bold">
+        <p className="text-md text-gray-100">
             {props.children}
         </p>
         <LineBreak/>

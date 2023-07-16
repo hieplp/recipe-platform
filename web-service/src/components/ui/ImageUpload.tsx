@@ -107,8 +107,10 @@ const SingleImageUpload = React.forwardRef<
                            className="w-fit"
                            width={150} height={150}/>
 
-                    <button className="text-gray-300 hover:text-error" onClick={removeImage}>
-                        <XCircleIcon className="absolute right-6 top-6 w-6 h-6"/>
+                    <button className="absolute right-6 top-6
+                                       text-gray-300 hover:text-error"
+                            onClick={removeImage}>
+                        <XCircleIcon className="w-6 h-6"/>
                     </button>
                 </>
             }

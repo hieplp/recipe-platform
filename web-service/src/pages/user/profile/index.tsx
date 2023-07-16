@@ -27,10 +27,8 @@ export default function Profile() {
 
                         <div className="col-span-8 mt-5 md:mt-0">
                             <UpdateProfileForm/>
-
                         </div>
                     </div>
-
                 </WhiteDiv>
             </div>
         </Layout>

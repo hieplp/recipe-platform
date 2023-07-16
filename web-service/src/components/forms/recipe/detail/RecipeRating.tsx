@@ -3,6 +3,7 @@ import Link from "next/link";
 import {RecipeCardRating} from "~/components/recipe/RecipeCard";
 import {PrimaryButton, SecondaryButton} from "~/components/ui/Button";
 import {clsx} from "clsx";
+import {Textarea} from "~/components/ui/Input";
 
 type RecipeRatingProps = {
     className?: string,
@@ -23,8 +24,11 @@ const RecipeRating = React.forwardRef<HTMLDivElement, RecipeRatingProps>(
 
         return (
             <div ref={ref}
-                 className={clsx(props.className, "space-y-3")}>
-                <div className="md:flex items-center">
+                 className={clsx(
+                     props.className,
+                     "space-y-3",
+                 )}>
+                <div className="md:flex items-center dark:text-white">
                     <p className="text-2xl font-bold">
                         Share your feedback
                     </p>
@@ -42,7 +46,7 @@ const RecipeRating = React.forwardRef<HTMLDivElement, RecipeRatingProps>(
                 </div>
 
                 <div className="space-y-2">
-                    <div className="">
+                    <div className="dark:text-white">
                         <p className="label">
                             How was your experience with this recipe?
                         </p>
@@ -51,13 +55,10 @@ const RecipeRating = React.forwardRef<HTMLDivElement, RecipeRatingProps>(
                                           rating={3}/>
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            Your Feedback
-                        </label>
-                        <textarea className="textarea textarea-bordered h-24"
-                                  placeholder="This recipe is good <3"></textarea>
-                    </div>
+                    <Textarea label="Your Feedback"
+                              inputClassName="h-32"
+                              placeholder="This recipe is good <3"
+                    />
 
                     <div className="w-full flex justify-end space-x-2">
                         <SecondaryButton className="" onClick={cancel}>

@@ -11,19 +11,14 @@ type LineBreakProps = {
 
 const LineBreak = React.forwardRef<HTMLDivElement, LineBreakProps>(
     (props, ref) => {
-        let className = props.className;
-        if (!className) {
-            className = "";
-        }
-
-        className = clsx(className,
+        let className = clsx(props.className,
             "flex",
             "items-center justify-between",
             "w-full",
             "text-gray-700",
             "border-b",
             "border-gray-100",
-            "dark:text-gray-700"
+            "dark:border-gray-800",
         );
 
         return (

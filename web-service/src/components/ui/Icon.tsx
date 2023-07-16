@@ -22,7 +22,9 @@ const BrandIcon = React.forwardRef<HTMLAnchorElement>(
                                  text-2xl
                                  font-semibold
                                  whitespace-nowrap
-                                 hover:text-primary">
+                                 hover:text-primary
+                                 dark:text-white
+                                 ">
                       Recipe.IT
                 </span>
             </Link>

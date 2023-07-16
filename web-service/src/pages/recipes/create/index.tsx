@@ -4,7 +4,9 @@ import React, {useState} from "react";
 import {clsx} from "clsx";
 import {WhiteDiv} from "~/components/ui/StyledDiv";
 import {PrimaryButton} from "~/components/ui/Button";
-import {CreateRecipeBasicInformationForm} from "~/components/forms/recipe/CreateRecipeBasicInformationForm";
+import {CreateRecipeBasicInformationForm} from "~/components/forms/recipe/create/CreateRecipeBasicInformationForm";
+import {Input} from "~/components/ui/Input";
+import {PlusCircleIcon, XCircleIcon} from "@heroicons/react/24/outline";
 
 interface Step {
     id: number;
@@ -13,7 +15,7 @@ interface Step {
 }
 
 export default function CreateRecipe() {
-    const [currentStep, setCurrentStep] = useState<number>(0);
+    const [currentStep, setCurrentStep] = useState<number>(1);
     const [steps, setSteps] = useState<Step[]>(
         [
             {
@@ -116,7 +118,19 @@ export default function CreateRecipe() {
                         currentStep === 1 &&
                         <>
                             <div className="">
+                                <div className="flex items-center space-x-1">
+                                    <Input className="w-full"
+                                           placeholder="Search for ingredients"/>
 
+                                    <button className="text-gray-300 hover:text-primary">
+                                        <PlusCircleIcon className="w-10 h-10"/>
+                                    </button>
+
+                                    <button className="text-gray-300 hover:text-error">
+                                        <XCircleIcon className="w-10 h-10"/>
+                                    </button>
+
+                                </div>
                             </div>
                         </>
                     }

@@ -1,16 +1,16 @@
 import {Layout} from "~/components/layouts/Layout";
 import React, {useRef} from "react";
 import {LineBreak} from "~/components/ui/Line";
-import RecipeTitle from "~/pages/recipes/[recipe]/RecipeTitle";
-import RecipeSubTitle from "~/pages/recipes/[recipe]/RecipeSubTitle";
+import RecipeTitle from "~/components/forms/recipe/detail/RecipeTitle";
+import RecipeSubTitle from "~/components/forms/recipe/detail/RecipeSubTitle";
 import NextImage from "~/components/ui/NextImage";
-import RecipeBasicInformation from "~/pages/recipes/[recipe]/RecipeBasicInformation";
-import RecipeIngredients from "~/pages/recipes/[recipe]/RecipeIngredients";
-import {RecipeNutritionFacts} from "~/pages/recipes/[recipe]/RecipeNutritionFacts";
-import {RecipeInstructions} from "~/pages/recipes/[recipe]/RecipeInstructions";
-import RecipeRating from "~/pages/recipes/[recipe]/RecipeRating";
-import {RecipeReviews} from "~/pages/recipes/[recipe]/RecipeReviews";
-import {RecipeRecommendation} from "~/pages/recipes/[recipe]/RecipeRecommendation";
+import RecipeBasicInformation from "~/components/forms/recipe/detail/RecipeBasicInformation";
+import RecipeIngredients from "~/components/forms/recipe/detail/RecipeIngredients";
+import {RecipeNutritionFacts} from "~/components/forms/recipe/detail/RecipeNutritionFacts";
+import {RecipeInstructions} from "~/components/forms/recipe/detail/RecipeInstructions";
+import RecipeRating from "~/components/forms/recipe/detail/RecipeRating";
+import {RecipeReviews} from "~/components/forms/recipe/detail/RecipeReviews";
+import {RecipeRecommendation} from "~/components/forms/recipe/detail/RecipeRecommendation";
 
 export default function Recipe() {
 
@@ -128,7 +128,7 @@ export default function Recipe() {
                                 totalComments={88}/>
                 <LineBreak/>
 
-                <p className="">
+                <p className="dark:text-white">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean venenatis a sem hendrerit
                     consectetur. Sed vitae purus tortor. Duis facilisis, eros nec dignissim eleifend, felis tortor
                     tempus eros, sagittis molestie leo mi non leo. Interdum et malesuada fames ac ante ipsum primis
@@ -158,7 +158,7 @@ export default function Recipe() {
                     {/*Ingredients*/}
                     <div className="col-span-4
                                     space-y-5">
-                        <p className="text-2xl font-bold">
+                        <p className="text-2xl font-bold dark:text-white">
                             Ingredients
                         </p>
 
@@ -171,11 +171,11 @@ export default function Recipe() {
 
                     {/*Instructions*/}
                     <div className="col-span-8 space-y-3">
-                        <p className="text-2xl font-bold">
+                        <p className="text-2xl font-bold dark:text-white">
                             Instructions
                         </p>
 
-                        <RecipeInstructions className="space-y-2"
+                        <RecipeInstructions className="space-y-2 dark:text-white"
                                             instructions={instructions}/>
                     </div>
                 </div>
@@ -185,7 +185,7 @@ export default function Recipe() {
                 <div className="space-y-2
                                 pb-2
                                 border-b-8 border-b-blue-700">
-                    <p className="text-2xl font-bold">
+                    <p className="text-2xl font-bold text-white">
                         Already made this?
                     </p>
 
@@ -205,7 +205,7 @@ export default function Recipe() {
 
                 {/*Rating List*/}
                 <div className="space-y-2">
-                    <p className="text-2xl font-bold">
+                    <p className="text-2xl font-bold dark:text-white">
                         Reviews
                     </p>
                     <LineBreak/>
@@ -224,7 +224,7 @@ export default function Recipe() {
 
                 <LineBreak/>
                 <div className="space-y-2">
-                    <p className="text-2xl font-bold">
+                    <p className="text-2xl font-bold dark:text-white">
                         You might also like
                     </p>
 

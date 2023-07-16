@@ -1,6 +1,7 @@
 import React from "react";
 import {ArrowTrendingUpIcon, ArrowUpOnSquareIcon, BookmarkIcon} from "@heroicons/react/24/outline";
 import {OnlyIconButton} from "~/components/ui/Button";
+import {clsx} from "clsx";
 
 type RecipeTitleProps = {
     className?: string,
@@ -10,7 +11,10 @@ type RecipeTitleProps = {
 const RecipeTitle = React.forwardRef<HTMLDivElement, RecipeTitleProps>(
     (props, ref) => {
         return (
-            <div ref={ref} className={props.className}>
+            <div ref={ref} className={clsx(
+                props.className,
+                "dark:text-white"
+            )}>
                 <div className="flex">
                     <div className="flex space-x-2">
                         <ArrowTrendingUpIcon className="w-8 h-8"/>

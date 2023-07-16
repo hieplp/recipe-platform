@@ -13,11 +13,13 @@ const RecipeIngredients = React.forwardRef<HTMLDivElement, RecipeIngredientsProp
         return (
             <div ref={ref}
                  className={clsx(props.className, "")}>
-                <p className="text-md font-bold">
+                <p className="text-md font-bold dark:text-white">
                     {props.title}
                 </p>
                 <Checklist list={props.ingredients}
-                           itemClassName="hover:text-primary hover:font-bold"
+                           itemClassName="hover:text-primary
+                                          dark:text-gray-400
+                                          hover:font-bold"
                 />
             </div>
         )

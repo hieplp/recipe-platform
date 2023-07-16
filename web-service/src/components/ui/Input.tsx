@@ -1,4 +1,5 @@
 import React from "react";
+import {clsx} from "clsx";
 
 // --------------------------------------------------------------------------
 // XXX Button
@@ -9,6 +10,7 @@ type InputProps = {
     isRequired?: boolean;
     isDisabled?: boolean;
     type?: "text" | "number" | "email" | "password";
+    inputClassName?: string;
 };
 const Input = React.forwardRef<
     HTMLDivElement,
@@ -20,16 +22,23 @@ const Input = React.forwardRef<
     return (
         <div ref={ref}
              className={className}>
-            <label className="label">
-                <div className="flex label-text space-x-1">
-                    <p className="">
-                        {props.label}
-                    </p>
-                    {props.isRequired && <span className="text-red-500">(*)</span>}
-                </div>
-            </label>
+            {
+                props.label &&
+                <label className="label">
+                    <div className="flex label-text space-x-1">
+                        <p className="">
+                            {props.label}
+                        </p>
+                        {props.isRequired && <span className="text-red-500">(*)</span>}
+                    </div>
+                </label>
+            }
+
             <input type={props.type || "text"}
-                   className="input input-md w-full input-bordered"
+                   className={clsx(
+                       props.inputClassName,
+                       "input input-md w-full input-bordered")
+                   }
                    disabled={props.isDisabled}
                    {...props}
             />
@@ -57,14 +66,17 @@ const Textarea = React.forwardRef<
              className={className}>
             <label className="label">
                 <div className="flex label-text space-x-1">
-                    <p className="">
+                    <p className="dark:text-white">
                         {props.label}
                     </p>
                     {props.isRequired && <span className="text-red-500">(*)</span>}
                 </div>
             </label>
             <textarea placeholder={props.placeholder}
-                      className="textarea textarea-bordered w-full"
+                      className={clsx(
+                          props.inputClassName,
+                          "textarea textarea-bordered w-full"
+                      )}
                       {...props}
             />
         </div>

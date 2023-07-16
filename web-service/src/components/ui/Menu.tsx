@@ -100,7 +100,7 @@ const MenuItem = React.forwardRef<
     if (props.isActive) {
         className = clsx(className,
             'font-bold rounded',
-            'bg-blue-700 ',
+            'bg-blue-700',
             'text-white md:text-primary');
     }
     return (
@@ -112,6 +112,7 @@ const MenuItem = React.forwardRef<
                   "text-lg hover:text-primary font-bold md:bg-transparent",
                   "block py-2 pl-3 pr-4",
                   "flex items-center",
+                  "text-gray-400 dark:hover:text-primary",
               )}
               aria-current="page">
             {props.label}
@@ -150,7 +151,7 @@ const MenuItemChild = React.forwardRef<
               "block",
               "px-4 py-2",
               "hover:bg-gray-100 dark:hover:bg-gray-600",
-              "dark:text-gray-400 dark:hover:text-whit"
+              "dark:text-gray-400 dark:hover:text-white"
           )}
           aria-current="page">
         {props.label}

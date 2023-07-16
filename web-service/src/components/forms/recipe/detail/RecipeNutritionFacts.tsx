@@ -37,7 +37,12 @@ const RecipeNutritionFacts = React.forwardRef<HTMLDivElement, RecipeNutritionFac
     (props, ref) => {
         return (
             <div ref={ref}
-                 className="bg-gray-100 p-2 rounded">
+                 className="bg-gray-100
+                            dark:bg-gray-800
+                            text-black
+                            dark:text-white
+                            p-2 rounded
+                 ">
                 <p className="text-2xl font-bold">
                     Nutrition Facts
                 </p>

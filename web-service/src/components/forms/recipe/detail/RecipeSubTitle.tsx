@@ -18,7 +18,9 @@ const RecipeSubTitle = React.forwardRef<HTMLDivElement, RecipeSubTitleProps>(
                  className="grid md:flex
                             items-center
                             space-x-1 md:space-x-5
-                            space-y-3 md:space-y-0">
+                            space-y-3 md:space-y-0
+                            dark:text-white
+                            ">
                 <div className="avatar space-x-2">
                     <NextImage src={props.avatar}
                                alt=""
