@@ -36,7 +36,6 @@ export function CreateRecipeIngredientsForm() {
         ]
     );
 
-
     const addChecklist = () => {
         setChecklists([
             ...checklists,
@@ -112,7 +111,7 @@ export function CreateRecipeIngredientsForm() {
                             />
 
 
-                            <InputLabel>
+                            <InputLabel isRequired={true}>
                                 Ingredients
                             </InputLabel>
 

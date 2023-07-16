@@ -5,6 +5,7 @@ import {clsx} from "clsx";
 import {PrimaryButton} from "~/components/ui/Button";
 import {CreateRecipeBasicInformationForm} from "~/components/forms/recipe/create/CreateRecipeBasicInformationForm";
 import {CreateRecipeIngredientsForm} from "~/components/forms/recipe/create/CreateRecipeIngredientsForm";
+import {CreateRecipeNutritionFactsForm} from "~/components/forms/recipe/create/CreateRecipeNutritionFactsForm";
 
 interface Step {
     id: number;
@@ -13,7 +14,7 @@ interface Step {
 }
 
 export default function CreateRecipe() {
-    const [currentStep, setCurrentStep] = useState<number>(1);
+    const [currentStep, setCurrentStep] = useState<number>(2);
     const [steps, setSteps] = useState<Step[]>(
         [
             {
@@ -115,6 +116,12 @@ export default function CreateRecipe() {
                 {
                     currentStep === 1 &&
                     <CreateRecipeIngredientsForm/>
+                }
+
+                {/*Nutrition Facts*/}
+                {
+                    currentStep === 2 &&
+                    <CreateRecipeNutritionFactsForm/>
                 }
 
                 <div className="w-full flex">
