@@ -19,12 +19,9 @@ const RecipeCardList = React.forwardRef<
                  className={clsx(className, "grid mb-12")}>
                 {
                     props.recipes.map(recipe => (
-                        <>
-                            <RecipeCard key={recipe.recipeId}
-                                        {...recipe}
-                            />
-                        </>
-
+                        <RecipeCard key={recipe.recipeId}
+                                    {...recipe}
+                        />
                     ))
                 }
             </div>

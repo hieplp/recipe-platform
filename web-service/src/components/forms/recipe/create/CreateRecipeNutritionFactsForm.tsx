@@ -25,6 +25,133 @@ type NutritionFacts = {
     value: number;
 }
 
+// TODO: Fix this later. this is only for development purposes
+export const _nutritionUnits: NutritionUnit[] = [
+    {
+        type: 0,
+        name: "kilocalories",
+        shortName: "kcal"
+    },
+    {
+        type: 1,
+        name: "grams",
+        shortName: "g"
+    },
+    {
+        type: 2,
+        name: "milligrams",
+        shortName: "mg"
+    },
+    {
+        type: 3,
+        name: "varies",
+        shortName: "varies"
+    },
+    {
+        type: 4,
+        name: "liters",
+        shortName: "l"
+    },
+    {
+        type: 5,
+        name: "milliliters",
+        shortName: "ml"
+    }
+];
+
+export const _nutritionTypes: NutritionType[] = [
+    {
+        type: 0,
+        name: "Calories",
+        units: [0],
+        isShown: false
+    },
+    {
+        type: 1,
+        name: "Carbohydrates",
+        units: [1, 2],
+        isShown: true
+    },
+    {
+        type: 2,
+        name: "Proteins",
+        units: [1, 2],
+        isShown: true
+    },
+    {
+        type: 3,
+        name: "Fats",
+        units: [1, 2],
+        isShown: true
+    },
+    {
+        type: 4,
+        name: "Vitamins",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 5,
+        name: "Minerals",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 6,
+        name: "Water",
+        units: [4, 5],
+        isShown: true
+    },
+    {
+        type: 7,
+        name: "Fiber",
+        units: [1, 2],
+        isShown: true
+    },
+    {
+        type: 8,
+        name: "Phytochemicals",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 9,
+        name: "Antioxidants",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 10,
+        name: "Omega-3 Fatty Acids",
+        units: [1, 2],
+        isShown: true
+    },
+    {
+        type: 11,
+        name: "Probiotics",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 12,
+        name: "Prebiotics",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 13,
+        name: "Nutrient Timing",
+        units: [3],
+        isShown: true
+    },
+    {
+        type: 14,
+        name: "Caloric Intake",
+        units: [1, 2],
+        isShown: true
+    }
+];
+
 
 export function CreateRecipeNutritionFactsForm() {
 
@@ -37,132 +164,8 @@ export function CreateRecipeNutritionFactsForm() {
         }
     ]);
 
-    const [nutritionTypes, setNutritionTypes] = React.useState<NutritionType[]>([
-        {
-            type: 0,
-            name: "Calories",
-            units: [0],
-            isShown: false
-        },
-        {
-            type: 1,
-            name: "Carbohydrates",
-            units: [1, 2],
-            isShown: true
-        },
-        {
-            type: 2,
-            name: "Proteins",
-            units: [1, 2],
-            isShown: true
-        },
-        {
-            type: 3,
-            name: "Fats",
-            units: [1, 2],
-            isShown: true
-        },
-        {
-            type: 4,
-            name: "Vitamins",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 5,
-            name: "Minerals",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 6,
-            name: "Water",
-            units: [4, 5],
-            isShown: true
-        },
-        {
-            type: 7,
-            name: "Fiber",
-            units: [1, 2],
-            isShown: true
-        },
-        {
-            type: 8,
-            name: "Phytochemicals",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 9,
-            name: "Antioxidants",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 10,
-            name: "Omega-3 Fatty Acids",
-            units: [1, 2],
-            isShown: true
-        },
-        {
-            type: 11,
-            name: "Probiotics",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 12,
-            name: "Prebiotics",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 13,
-            name: "Nutrient Timing",
-            units: [3],
-            isShown: true
-        },
-        {
-            type: 14,
-            name: "Caloric Intake",
-            units: [1, 2],
-            isShown: true
-        }
-    ]);
-
-
-    const nutritionUnits = [
-        {
-            type: 0,
-            name: "kilocalories",
-            shortName: "kcal"
-        },
-        {
-            type: 1,
-            name: "grams",
-            shortName: "g"
-        },
-        {
-            type: 2,
-            name: "milligrams",
-            shortName: "mg"
-        },
-        {
-            type: 3,
-            name: "varies",
-            shortName: "varies"
-        },
-        {
-            type: 4,
-            name: "liters",
-            shortName: "l"
-        },
-        {
-            type: 5,
-            name: "milliliters",
-            shortName: "ml"
-        }
-    ] as NutritionUnit[];
+    const [nutritionTypes, setNutritionTypes] = React.useState<NutritionType[]>(_nutritionTypes);
+    const nutritionUnits = _nutritionUnits;
 
     //
     const addNutritionFact = () => {

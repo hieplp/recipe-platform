@@ -16,10 +16,11 @@ const InputLabel = React.forwardRef<
        ...props
    }, ref) => {
     return (
-        <label className={clsx(
-            className,
-            "label"
-        )}>
+        <label ref={ref}
+               className={clsx(
+                   className,
+                   "label"
+               )}>
             <div className="flex label-text space-x-1">
                 <p className="">
                     {props.children}

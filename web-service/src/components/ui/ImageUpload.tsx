@@ -95,7 +95,7 @@ const SingleImageUpload = React.forwardRef<
             {
                 !uploadedImage &&
                 <ImageUploader onImageUpload={uploadImage}
-                               className="h-52 w-full"
+                               className="h-56 w-full"
                 />
             }
             {/**/}

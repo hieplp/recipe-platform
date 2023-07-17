@@ -8,7 +8,6 @@ import {clsx} from "clsx";
 type WhiteDivProps = {
     className?: string,
     children?: React.ReactNode,
-    padding?: number,
     xSpace?: number,
     ySpace?: number,
 }
@@ -19,10 +18,10 @@ const WhiteDiv = React.forwardRef<HTMLDivElement, WhiteDivProps>(
             <section ref={ref}
                      className={clsx(
                          props.className,
-                         `p-${(props.padding ? props.padding : 5)}`,
                          "bg-white rounded-lg shadow",
                          `space-x-${(props.xSpace ? props.xSpace : 0)}`,
                          `space-y-${(props.ySpace ? props.ySpace : 3)}`,
+                         "p-5"
                      )}>
                 {props.children}
             </section>

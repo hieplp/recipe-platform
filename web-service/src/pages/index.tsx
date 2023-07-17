@@ -87,39 +87,37 @@ export default function Home() {
     ]
 
     return (
-        <>
-            <Layout>
+        <Layout>
 
-                <div className="relative w-full">
-                    <Carousel items={carouselItems} className="h-56 md:h-96 lg:h-[48rem]"/>
+            <div className="relative w-full">
+                <Carousel items={carouselItems} className="h-56 md:h-96 lg:h-[48rem]"/>
+            </div>
+
+            <div className="relative w-full mt-3">
+                <StyledLink href="/categories"
+                            className="text-xl font-bold
+                                       my-6 hover:underline">
+                    Popular Categories
+                </StyledLink>
+
+                <CategorySlider categories={categories}/>
+            </div>
+
+            <div className="relative w-full mt-3">
+                <StyledLink href="/recipes"
+                            className="text-xl font-bold
+                                       my-6 hover:underline">
+                    Super Delicious
+                </StyledLink>
+                <RecipeCardList recipes={recipes}
+                                className="grid-cols-1 md:grid-cols-3 gap-5 md:gap-3"/>
+                <div className="w-full flex justify-center">
+                    <button className="btn w-32 btn-outline btn-primary"
+                            onClick={() => void router.push("/recipes")}>
+                        Show All
+                    </button>
                 </div>
-
-                <div className="relative w-full mt-3">
-                    <StyledLink href="/categories"
-                                className="text-xl font-bold
-                                           my-6 hover:underline">
-                        Popular Categories
-                    </StyledLink>
-
-                    <CategorySlider categories={categories}/>
-                </div>
-
-                <div className="relative w-full mt-3">
-                    <StyledLink href="/recipes"
-                                className="text-xl font-bold
-                                           my-6 hover:underline">
-                        Super Delicious
-                    </StyledLink>
-                    <RecipeCardList recipes={recipes}
-                                    className="grid-cols-1 md:grid-cols-3 gap-5 md:gap-3"/>
-                    <div className="w-full flex justify-center">
-                        <button className="btn w-32 btn-outline btn-primary"
-                                onClick={() => void router.push("/recipes")}>
-                            Show All
-                        </button>
-                    </div>
-                </div>
-            </Layout>
-        </>
+            </div>
+        </Layout>
     );
 }

@@ -2,11 +2,12 @@ import {Layout} from "~/components/layouts/Layout";
 import {Title} from "~/components/ui/Title";
 import React, {useState} from "react";
 import {clsx} from "clsx";
-import {PrimaryButton} from "~/components/ui/Button";
+import {PrimaryButton, SecondaryButton} from "~/components/ui/Button";
 import {CreateRecipeBasicInformationForm} from "~/components/forms/recipe/create/CreateRecipeBasicInformationForm";
 import {CreateRecipeIngredientsForm} from "~/components/forms/recipe/create/CreateRecipeIngredientsForm";
 import {CreateRecipeNutritionFactsForm} from "~/components/forms/recipe/create/CreateRecipeNutritionFactsForm";
 import {CreateRecipeInstructionsForm} from "~/components/forms/recipe/create/CreateRecipeInstructionsForm";
+import {CreateRecipeReviewForm} from "~/components/forms/recipe/create/CreateRecipeReviewForm";
 
 interface Step {
     id: number;
@@ -15,7 +16,7 @@ interface Step {
 }
 
 export default function CreateRecipe() {
-    const [currentStep, setCurrentStep] = useState<number>(3);
+    const [currentStep, setCurrentStep] = useState<number>(0);
     const [steps, setSteps] = useState<Step[]>(
         [
             {
@@ -131,18 +132,31 @@ export default function CreateRecipe() {
                     <CreateRecipeInstructionsForm/>
                 }
 
+                {/*Review*/}
+                {
+                    currentStep === 4 &&
+                    <CreateRecipeReviewForm/>
+                }
+
                 <div className="w-full flex">
                     {
                         currentStep > 0 &&
-                        <PrimaryButton className="normal-case" onClick={previousStep}>
+                        <SecondaryButton className="normal-case" onClick={previousStep}>
                             Back ({getStep(currentStep - 1).title})
-                        </PrimaryButton>
+                        </SecondaryButton>
                     }
 
                     {
                         currentStep < steps.length - 1 &&
-                        <PrimaryButton className="normal-case ml-auto" onClick={nextStep}>
+                        <SecondaryButton className="normal-case ml-auto" onClick={nextStep}>
                             Next ({getStep(currentStep + 1).title})
+                        </SecondaryButton>
+                    }
+
+                    {
+                        currentStep === steps.length - 1 &&
+                        <PrimaryButton className="normal-case ml-auto">
+                            Finish
                         </PrimaryButton>
                     }
                 </div>
