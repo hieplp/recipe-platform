@@ -1,0 +1,12 @@
+server:
+  port: 8671
+
+eureka:
+  client:
+    register-with-eureka: false # Do not register with Eureka
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8671/eureka
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
