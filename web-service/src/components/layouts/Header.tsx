@@ -30,6 +30,11 @@ const links = [
                 label: 'My Recipes',
                 href: '/recipes/my',
                 isActive: false
+            },
+            {
+                label: 'My Favorites',
+                href: '/recipes/favorites',
+                isActive: false
             }
         ],
     },

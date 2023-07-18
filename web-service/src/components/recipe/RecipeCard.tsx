@@ -125,9 +125,33 @@ const RecipeCardRating = React.forwardRef<HTMLDivElement, RecipeCardRatingProps>
 RecipeCardRating.displayName = "RecipeCardRating";
 
 // --------------------------------------------------------------------------
+// XXX RecipeCard - Mini
+// --------------------------------------------------------------------------
+const RecipeCardMini = React.forwardRef<
+    HTMLAnchorElement,
+    React.HTMLAttributes<HTMLAnchorElement> & Recipe
+>(({
+       className,
+       ...props
+   }, ref) => (
+    <Card ref={ref}
+          href={`/recipes/${props.recipeId}`}
+          className={clsx(className, "space-y-2 group")}>
+        <CardImage src={props.image}
+                   className="h-44 xl:h-52 w-full rounded"/>
+
+        <CardTitle className="group-hover:text-primary dark:text-white">
+            {props.title}
+        </CardTitle>
+    </Card>
+));
+RecipeCardMini.displayName = "RecipeCardMini";
+
+// --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
 export {
     RecipeCard,
+    RecipeCardMini,
     RecipeCardRating,
 }

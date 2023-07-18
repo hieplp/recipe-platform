@@ -80,12 +80,11 @@ const RecipeReviews = React.forwardRef<HTMLDivElement, RecipeReviewsProps>(
             <div ref={ref}
                  className={clsx(props.className, "space-y-5")}>
                 {props.reviews.map((review, index) => (
-                    <>
-                        <RecipeReview key={index}
-                                      className="space-y-2"
+                    <div key={index}>
+                        <RecipeReview className="space-y-2"
                                       {...review}/>
                         <LineBreak/>
-                    </>
+                    </div>
                 ))}
             </div>
         )

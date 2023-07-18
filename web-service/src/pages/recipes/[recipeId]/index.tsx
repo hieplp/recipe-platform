@@ -119,7 +119,9 @@ export default function Recipe() {
     return (
         <Layout>
             <div className="relative w-full mt-3 space-y-3">
-                <RecipeTitle percent={98}/>
+                <RecipeTitle percent={98}
+                             isOwner={true}
+                />
                 <LineBreak/>
 
                 <RecipeSubTitle avatar="/avatar.jpg"

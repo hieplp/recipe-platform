@@ -1,6 +1,14 @@
 import React from "react";
 import {clsx} from "clsx";
 
+type CommonProps = {
+    label?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    labelClassName?: string;
+    itemClassName?: string;
+}
+
 // --------------------------------------------------------------------------
 // XXX Input - Label
 // --------------------------------------------------------------------------
@@ -37,15 +45,11 @@ InputLabel.displayName = "InputLabel";
 // --------------------------------------------------------------------------
 
 type InputProps = {
-    label?: string;
-    isRequired?: boolean;
-    isDisabled?: boolean;
     type?: "text" | "number" | "email" | "password";
-    inputClassName?: string;
 };
 const Input = React.forwardRef<
     HTMLDivElement,
-    React.HTMLAttributes<HTMLInputElement> & InputProps
+    React.HTMLAttributes<HTMLInputElement> & CommonProps & InputProps
 >(({
        className,
        ...props
@@ -55,14 +59,14 @@ const Input = React.forwardRef<
              className={className}>
             {
                 props.label &&
-                <InputLabel isRequired={props.isRequired}>
+                <InputLabel isRequired={props.isRequired} className={props.labelClassName}>
                     {props.label}
                 </InputLabel>
             }
 
             <input type={props.type || "text"}
                    className={clsx(
-                       props.inputClassName,
+                       props.itemClassName,
                        "input input-md w-full input-bordered")
                    }
                    disabled={props.isDisabled}
@@ -82,7 +86,7 @@ type TextareaProps = {
 
 const Textarea = React.forwardRef<
     HTMLDivElement,
-    React.HTMLAttributes<HTMLTextAreaElement> & InputProps & TextareaProps
+    React.HTMLAttributes<HTMLTextAreaElement> & CommonProps & TextareaProps
 >(({
        className,
        ...props
@@ -92,13 +96,13 @@ const Textarea = React.forwardRef<
              className={className}>
             {
                 props.label &&
-                <InputLabel isRequired={props.isRequired}>
+                <InputLabel isRequired={props.isRequired} className={props.labelClassName}>
                     {props.label}
                 </InputLabel>
             }
             <textarea placeholder={props.placeholder}
                       className={clsx(
-                          props.inputClassName,
+                          props.itemClassName,
                           "textarea textarea-bordered w-full"
                       )}
             />
@@ -108,11 +112,60 @@ const Textarea = React.forwardRef<
 Textarea.displayName = "Textarea";
 
 // --------------------------------------------------------------------------
+// XXX Select
+// --------------------------------------------------------------------------
+
+interface SelectOption {
+    value: string | number;
+    label: string;
+}
+
+type SelectProps = {
+    label?: string;
+    options: SelectOption[];
+}
+
+const Select = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLSelectElement> & CommonProps & SelectProps
+>(({
+       className,
+       ...props
+   }, ref) => {
+    return (
+        <div ref={ref}
+             className={className}>
+            {
+                props.label &&
+                <InputLabel isRequired={props.isRequired} className={props.labelClassName}>
+                    {props.label}
+                </InputLabel>
+            }
+
+            <select className={clsx("select select-bordered w-full", props.itemClassName)}>
+                {
+                    props.options.map((option: SelectOption) => {
+                        return (
+                            <option key={option.value}
+                                    value={option.value}>
+                                {option.label}
+                            </option>
+                        )
+                    })
+                }
+            </select>
+        </div>
+    )
+});
+Select.displayName = "Select";
+
+// --------------------------------------------------------------------------
 // XXX Export
 // --------------------------------------------------------------------------
 
 export {
     Input,
     Textarea,
+    Select,
     InputLabel
 };

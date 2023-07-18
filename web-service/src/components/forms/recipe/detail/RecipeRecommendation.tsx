@@ -1,32 +1,7 @@
 import React from "react";
 import type Recipe from "~/types/Recipe";
-import {Card, CardImage, CardTitle} from "~/components/ui/Card";
 import {clsx} from "clsx";
-
-// --------------------------------------------------------------------------
-// XXX RecommendedRecipe
-// --------------------------------------------------------------------------
-
-const RecommendedRecipe = React.forwardRef<
-    HTMLAnchorElement,
-    React.HTMLAttributes<HTMLAnchorElement> & Recipe
->(({
-       className,
-       ...props
-   }, ref) => (
-    <Card ref={ref}
-          href={`/recipes/${props.recipeId}`}
-          className={clsx(className, "space-y-2 group")}>
-        <CardImage src={props.image}
-                   className="h-44 xl:h-52 w-full rounded"
-        />
-
-        <CardTitle className="group-hover:text-primary dark:text-white">
-            {props.title}
-        </CardTitle>
-    </Card>
-));
-RecommendedRecipe.displayName = "RecommendedRecipe";
+import {RecipeCardMini} from "~/components/recipe/RecipeCard";
 
 // --------------------------------------------------------------------------
 // XXX RecipeRecommendation
@@ -48,8 +23,8 @@ const RecipeRecommendation = React.forwardRef<
          )}>
         {
             props.recipes.map((recipe) => (
-                <RecommendedRecipe key={recipe.recipeId}
-                                   {...recipe}/>
+                <RecipeCardMini key={recipe.recipeId}
+                                {...recipe}/>
             ))
         }
     </div>

@@ -56,7 +56,7 @@ const RecipeRating = React.forwardRef<HTMLDivElement, RecipeRatingProps>(
                     </div>
 
                     <Textarea label="Your Feedback"
-                              inputClassName="h-32"
+                              itemClassName="h-32"
                               placeholder="This recipe is good <3"
                     />
 

@@ -4,7 +4,7 @@ import {Title} from "~/components/ui/Title";
 import {RecipeCardList} from "~/components/recipe/RecipeCardList";
 import {Select} from "~/components/ui/Input";
 
-export default function Recipes() {
+export default function FavoriteRecipes() {
 
     const recipes = [
         {
@@ -82,7 +82,7 @@ export default function Recipes() {
         <Layout>
             <div className="relative w-full mt-3">
                 <Title className="my-3">
-                    Recipes
+                    Favorite Recipes
                 </Title>
 
                 <div className="flex justify-end w-full">

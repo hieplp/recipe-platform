@@ -9,6 +9,7 @@ type ChecklistItemProps = {
     className?: string;
     label: string;
     checked: boolean;
+    onChange?: () => void;
 }
 
 const ChecklistItem = React.forwardRef<HTMLLabelElement, ChecklistItemProps>(
@@ -19,6 +20,7 @@ const ChecklistItem = React.forwardRef<HTMLLabelElement, ChecklistItemProps>(
                 <input type="checkbox"
                        className="checkbox checkbox-sm checkbox-primary"
                        checked={props.checked}
+                       onChange={props.onChange}
                 />
                 <p className="">
                     {props.label}
@@ -49,6 +51,9 @@ const Checklist = React.forwardRef<HTMLDivElement, ChecklistProps>(
                                            label={item.label}
                                            checked={item.checked}
                                            className={props.itemClassName}
+                                           onChange={() => {
+                                               console.log("ChecklistItem.onChange")
+                                           }}
                             />
                         )
                     })
