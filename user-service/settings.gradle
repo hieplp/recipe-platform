@@ -1,3 +1,7 @@
 rootProject.name = 'user-service'
+
 include(":service-common")
 project(":service-common").projectDir = file("../service-common")
+
+include(":jooq-common")
+project(":jooq-common").projectDir = file("../jooq-common")

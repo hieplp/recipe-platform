@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jooq:jooq:3.14.16"
+        classpath "org.jooq:jooq-meta:3.14.16"
+        classpath "org.jooq:jooq-codegen:3.14.16"
+        classpath 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.13'
@@ -26,11 +38,31 @@ ext {
 }
 
 dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-jooq'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    // Internal
+    implementation project(':service-common')
+    implementation project(':jooq-common')
+
+    // Spring
+    implementation(
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    )
+
+    // Database
+    implementation(
+            'org.mariadb.jdbc:mariadb-java-client:2.7.2'
+    )
+
+    // Json
+    implementation(
+            'com.google.code.gson:gson'
+    )
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -43,3 +75,31 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// ------------------------------------------------------------
+// XXX: Generate SQL. Should be commented after first run
+// ------------------------------------------------------------
+
+//import org.jooq.codegen.GenerationTool
+//import org.jooq.meta.jaxb.*
+//
+//GenerationTool.generate(new Configuration()
+//
+//        .withJdbc(new Jdbc()
+//                .withDriver('org.mariadb.jdbc.Driver')
+//                .withUrl('jdbc:mariadb://127.0.0.1:3306/user')
+//                .withUser('root')
+//                .withPassword('123456'))
+//
+//        .withGenerator(new Generator()
+//                .withDatabase(new Database()
+//                        .withName("org.jooq.meta.mysql.MySQLDatabase")
+//                        .withInputSchema("user")
+//                        .withOutputSchema("user"))
+//                .withGenerate(new Generate()
+//                        .withFluentSetters(true)
+//                        .withPojos(true)
+//                        .withDaos(true))
+//                .withTarget(new Target()
+//                        .withPackageName('com.hieplp.service.user.repository.generate')
+//                        .withDirectory('/home/hieplp/Projects/recipe-sharing-platform/user-service/src/main/java'))))

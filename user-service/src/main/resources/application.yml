@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8080
   error:
     include-message: always
     include-binding-errors: always
@@ -7,6 +7,16 @@ server:
 spring:
   application:
     name: user-service
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/user
+    username: root
+    password: 123456
+    driver-class-name: org.mariadb.jdbc.Driver
+  jooq:
+    sql-dialect: mariadb
+  mvc:
+    converters:
+      preferred-json-mapper: gson
 
 eureka:
   client:
