@@ -1,3 +1,6 @@
 rootProject.name = 'auth-service'
 include(":service-common")
 project(":service-common").projectDir = file("../service-common")
+
+include(":grpc-common")
+project(":grpc-common").projectDir = file("../grpc-common")

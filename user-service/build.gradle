@@ -41,12 +41,19 @@ dependencies {
     // Internal
     implementation project(':service-common')
     implementation project(':jooq-common')
+    implementation project(':grpc-common')
 
     // Spring
     implementation(
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     )
+
+    implementation(
+            'io.github.lognet:grpc-spring-boot-starter:4.9.1'
+    )
+
+//    implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
 
     // Database
     implementation(

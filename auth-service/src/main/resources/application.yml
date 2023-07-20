@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8081
   error:
     include-message: always
     include-binding-errors: always
@@ -14,3 +14,8 @@ eureka:
       defaultZone: http://localhost:8671/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+grpc:
+  client:
+    __name__:
+      negotiation-type: PLAINTEXT
