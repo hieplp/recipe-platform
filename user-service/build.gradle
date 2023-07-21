@@ -49,11 +49,8 @@ dependencies {
             'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     )
 
-    implementation(
-            'io.github.lognet:grpc-spring-boot-starter:4.9.1'
-    )
-
-//    implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
+    // GRPC
+    implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
 
     // Database
     implementation(

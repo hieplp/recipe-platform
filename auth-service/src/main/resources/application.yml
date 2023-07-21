@@ -17,5 +17,7 @@ eureka:
 
 grpc:
   client:
-    __name__:
-      negotiation-type: PLAINTEXT
+    user-service:
+      security:
+        authority-override: HiepLP # Should be the same with the server's authority
+        trustCertCollection: classpath:certificates/trusted-servers-collection.crt.list

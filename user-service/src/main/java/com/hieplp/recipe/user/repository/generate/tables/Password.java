@@ -5,8 +5,8 @@ package com.hieplp.recipe.user.repository.generate.tables;
 
 
 import com.hieplp.recipe.user.repository.generate.Keys;
-import com.hieplp.recipe.user.repository.generate.tables.records.PasswordRecord;
 import com.hieplp.recipe.user.repository.generate.User;
+import com.hieplp.recipe.user.repository.generate.tables.records.PasswordRecord;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
