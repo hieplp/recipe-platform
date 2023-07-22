@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  axon_server:
+    container_name: axon_server
+    image: axoniq/axonserver
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+    volumes:
+      - axon_data:/axonserver/data
+      - axon_config:/axonserver/config
+      - axon_eventdata:/axonserver/eventdata
+
+volumes:
+  axon_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hieplp/Projects/docker-data/data
+  axon_config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hieplp/Projects/docker-data/config
+  axon_eventdata:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hieplp/Projects/docker-data/eventdata

@@ -105,5 +105,5 @@ tasks.named('test') {
 //                        .withPojos(true)
 //                        .withDaos(true))
 //                .withTarget(new Target()
-//                        .withPackageName('com.hieplp.service.user.repository.generate')
+//                        .withPackageName('com.hieplp.recipe.user.repository.generate')
 //                        .withDirectory('/home/hieplp/Projects/recipe-sharing-platform/user-service/src/main/java'))))
