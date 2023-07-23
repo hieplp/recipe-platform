@@ -7,11 +7,17 @@ server:
 spring:
   application:
     name: auth-service
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/authentication
     username: root
     password: 123456
     driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: update
   jooq:
     sql-dialect: mariadb
   mvc:
@@ -31,3 +37,9 @@ grpc:
       security:
         authority-override: HiepLP # Should be the same with the server's authority
         trustCertCollection: classpath:certificates/trusted-servers-collection.crt.list
+
+#axon:
+#  event-handling:
+#    processors:
+#      auth-group:
+#        mode: subscribing

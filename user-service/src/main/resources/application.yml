@@ -7,6 +7,8 @@ server:
 spring:
   application:
     name: user-service
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/user
     username: root
@@ -18,13 +20,13 @@ spring:
     converters:
       preferred-json-mapper: gson
 
-grpc:
-  server:
-    security:
-      enabled: true
-      certificate-chain: classpath:certificates/cert.crt
-      private-key: classpath:certificates/private.key
-    port: 0
+#grpc:
+#  server:
+#    security:
+#      enabled: true
+#      certificate-chain: classpath:certificates/cert.crt
+#      private-key: classpath:certificates/private.key
+#    port: 0
 
 eureka:
   client:
@@ -32,3 +34,9 @@ eureka:
       defaultZone: http://localhost:8671/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+axon:
+  event-handling:
+    processors:
+      product-group:
+        mode: subscribing
