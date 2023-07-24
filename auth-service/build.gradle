@@ -52,6 +52,8 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-data-jpa',
     )
 
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
     // GRPC
     implementation(
             'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
@@ -99,11 +101,14 @@ tasks.named('test') {
 //                .withDatabase(new Database()
 //                        .withName("org.jooq.meta.mysql.MySQLDatabase")
 //                        .withInputSchema("authentication")
-//                        .withOutputSchema("authentication"))
+//                        .withOutputSchema("authentication")
+//                        .withExcludes(
+//                                "association_value_entry | dead_letter_entry | domain_event_entry | hibernate_sequence | saga_entry | token_entry | snapshot_event_entry"
+//                        ))
 //                .withGenerate(new Generate()
 //                        .withFluentSetters(true)
 //                        .withPojos(true)
 //                        .withDaos(true))
 //                .withTarget(new Target()
-//                        .withPackageName('com.hieplp.recipe.auth.repository.generate')
+//                        .withPackageName('com.hieplp.recipe.auth.common.repository.generate')
 //                        .withDirectory('/home/hieplp/Projects/recipe-sharing-platform/auth-service/src/main/java'))))

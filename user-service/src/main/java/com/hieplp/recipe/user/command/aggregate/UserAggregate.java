@@ -17,10 +17,13 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
+import java.util.UUID;
+
 @Aggregate
 @Slf4j
 public class UserAggregate {
     @AggregateIdentifier
+    private final String id = UUID.randomUUID().toString();
     private String userId;
     private String username;
     private String email;
@@ -34,6 +37,9 @@ public class UserAggregate {
     protected UserAggregate() {
     }
 
+    // -------------------------------------------------------------------------
+    // XXX Create user
+    // -------------------------------------------------------------------------
     @CommandHandler
     public UserAggregate(CreateUserCommand command) {
         log.info("Create user command: {}", command);
@@ -57,8 +63,9 @@ public class UserAggregate {
         this.modifiedAt = event.getModifiedAt();
     }
 
-    //
-
+    // -------------------------------------------------------------------------
+    // XXX Verify username
+    // -------------------------------------------------------------------------
     @CommandHandler
     public UserAggregate(VerifyUsernameCommand command) {
         try {
@@ -67,6 +74,8 @@ public class UserAggregate {
                     .userId(command.getUserId())
                     .username(command.getUsername())
                     .build();
+            var t = 0;
+            System.out.printf(String.valueOf(0 / t));
             AggregateLifecycle.apply(usernameVerifiedEvent);
         } catch (Exception e) {
             var usernameDuplicatedEvent = UsernameDuplicatedEvent.builder()
@@ -91,36 +100,39 @@ public class UserAggregate {
         this.username = event.getUsername();
     }
 
-    //
+    // -------------------------------------------------------------------------
+    // XXX Verify email
+    // -------------------------------------------------------------------------
+    @CommandHandler
+    public UserAggregate(VerifyEmailCommand event) {
+        try {
+            log.info("VerifyEmailCommand: {}", event);
+            var emailVerifiedEvent = EmailVerifiedEvent.builder()
+                    .userId(event.getUserId())
+                    .email(event.getEmail())
+                    .build();
+            AggregateLifecycle.apply(emailVerifiedEvent);
+        } catch (Exception e) {
+            var emailDuplicatedEvent = EmailDuplicatedEvent.builder()
+                    .userId(event.getUserId())
+                    .email(event.getEmail())
+                    .build();
+            AggregateLifecycle.apply(emailDuplicatedEvent);
+        }
+    }
 
-//    @CommandHandler
-//    public UserAggregate(VerifyEmailCommand event) {
-//        try {
-//            log.info("VerifyEmailCommand: {}", event);
-//            var emailVerifiedEvent = EmailVerifiedEvent.builder()
-//                    .userId(event.getUserId())
-//                    .email(event.getEmail())
-//                    .build();
-//            AggregateLifecycle.apply(emailVerifiedEvent);
-//        } catch (Exception e) {
-//            var emailDuplicatedEvent = EmailDuplicatedEvent.builder()
-//                    .userId(event.getUserId())
-//                    .email(event.getEmail())
-//                    .build();
-//            AggregateLifecycle.apply(emailDuplicatedEvent);
-//        }
-//    }
-//
-//    @EventSourcingHandler
-//    public void on(EmailVerifiedEvent event) {
-//        this.userId = event.getUserId();
-//        this.email = event.getEmail();
-//    }
-//
-//    @EventSourcingHandler
-//    public void on(EmailDuplicatedEvent event) {
-//        this.userId = event.getUserId();
-//        this.email = event.getEmail();
-//    }
+    @EventSourcingHandler
+    public void on(EmailVerifiedEvent event) {
+        log.info("Email: {} is verified", event.getEmail());
+        this.userId = event.getUserId();
+        this.email = event.getEmail();
+    }
+
+    @EventSourcingHandler
+    public void on(EmailDuplicatedEvent event) {
+        log.info("Email: {} is duplicated", event.getEmail());
+        this.userId = event.getUserId();
+        this.email = event.getEmail();
+    }
 }
 

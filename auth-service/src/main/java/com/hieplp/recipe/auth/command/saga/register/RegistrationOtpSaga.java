@@ -1,12 +1,9 @@
 package com.hieplp.recipe.auth.command.saga.register;
 
-import com.hieplp.recipe.auth.command.event.register.RegisterOtpCreatedEvent;
-import com.hieplp.recipe.common.command.commands.user.verify.VerifyUsernameCommand;
-import com.hieplp.recipe.common.command.events.user.verify.EmailDuplicatedEvent;
-import com.hieplp.recipe.common.command.events.user.verify.EmailVerifiedEvent;
-import com.hieplp.recipe.common.command.events.user.verify.UsernameDuplicatedEvent;
-import com.hieplp.recipe.common.command.events.user.verify.UsernameVerifiedEvent;
-import lombok.RequiredArgsConstructor;
+import com.hieplp.recipe.auth.command.commands.CancelRegistrationOtpCommand;
+import com.hieplp.recipe.auth.command.event.register.RegistrationOtpCanceledEvent;
+import com.hieplp.recipe.auth.command.event.register.RegistrationOtpCompletedEvent;
+import com.hieplp.recipe.auth.command.event.register.RegistrationOtpCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.modelling.saga.EndSaga;
@@ -16,67 +13,61 @@ import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.UUID;
-
 @Saga
 @Slf4j
-@RequiredArgsConstructor
 public class RegistrationOtpSaga {
+
+    private static final String OTP_ID = "otpId";
+    private static final String USER_ID = "userId";
 
     @Autowired
     private transient CommandGateway commandGateway;
 
     @StartSaga
-    @SagaEventHandler(associationProperty = "otpId")
-    public void handle(RegisterOtpCreatedEvent event) {
-        log.info("RegisterOtpCreatedEvent in Saga for Otp Id : {}", event.getOtpId());
+    @SagaEventHandler(associationProperty = OTP_ID)
+    public void handle(RegistrationOtpCreatedEvent event) {
+        try {
+            log.info("Saga handles registration otp created event: {}", event);
 
-        final String userId = UUID.randomUUID().toString();
-        SagaLifecycle.associateWith("userId", userId);
+            //
+            SagaLifecycle.associateWith(OTP_ID, event.getOtpId());
 
-        //
-        var verifyUsernameCommand = VerifyUsernameCommand.builder()
+            // Validate quota
+
+        } catch (Exception e) {
+            log.error("Error when handle registration otp created event: {}", event, e);
+            cancelOtp(event.getOtpId(), event.getUserId());
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Complete otp
+    // -------------------------------------------------------------------------
+    @EndSaga
+    @SagaEventHandler(associationProperty = OTP_ID)
+    private void handle(RegistrationOtpCompletedEvent event) {
+        log.info("Saga handles registration otp completed event: {}", event);
+        SagaLifecycle.end();
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Cancel otp
+    // -------------------------------------------------------------------------
+    @EndSaga
+    @SagaEventHandler(associationProperty = OTP_ID)
+    private void handle(RegistrationOtpCanceledEvent event) {
+        log.info("Saga handles registration otp canceled event: {}", event);
+        SagaLifecycle.end();
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Private methods
+    // -------------------------------------------------------------------------
+    private void cancelOtp(String otpId, String userId) {
+        var cancelOtpCommand = CancelRegistrationOtpCommand.builder()
+                .otpId(otpId)
                 .userId(userId)
-                .username(event.getUsername())
                 .build();
-        commandGateway.sendAndWait(verifyUsernameCommand);
-
-//        //
-//        var verifyEmailCommand = VerifyEmailCommand.builder()
-//                .userId(UUID.randomUUID().toString())
-//                .email(event.getEmail())
-//                .build();
-//        commandGateway.sendAndWait(verifyEmailCommand);
+        commandGateway.send(cancelOtpCommand);
     }
-
-    // ---
-    //
-    // ---
-
-    @SagaEventHandler(associationProperty = "userId")
-    private void handle(UsernameVerifiedEvent event) {
-        log.info("Username: {} is verified", event.getUsername());
-    }
-
-    @EndSaga
-    @SagaEventHandler(associationProperty = "userId")
-    private void handle(UsernameDuplicatedEvent event) {
-        log.info("Username: {} is duplicated", event.getUsername());
-    }
-
-    // ---
-    //
-    // ---
-
-    @SagaEventHandler(associationProperty = "email")
-    private void handle(EmailVerifiedEvent event) {
-        log.info("Email: {} is verified", event.getEmail());
-    }
-
-    @EndSaga
-    @SagaEventHandler(associationProperty = "email")
-    private void handle(EmailDuplicatedEvent event) {
-        log.info("Email: {} is duplicated", event.getEmail());
-    }
-
 }

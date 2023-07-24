@@ -5,4 +5,8 @@ import com.hieplp.recipe.user.repository.generate.tables.records.UserRecord;
 
 public interface UserRepo extends BaseRepo {
     UserRecord getUserRecord(String userId);
+
+    boolean doesUsernameExist(String username);
+
+    boolean doesEmailExist(String email);
 }

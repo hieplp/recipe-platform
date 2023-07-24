@@ -11,7 +11,7 @@ import com.hieplp.recipe.user.repository.generate.tables.User;
 /**
  * Convenience access to all tables in user.
  */
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
@@ -22,5 +22,5 @@ public class Tables {
     /**
      * The table <code>user.user</code>.
      */
-    public static final com.hieplp.recipe.user.repository.generate.tables.User USER_ = User.USER_;
+    public static final User USER_ = User.USER_;
 }

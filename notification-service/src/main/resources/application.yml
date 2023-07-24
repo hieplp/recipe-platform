@@ -1,0 +1,53 @@
+server:
+  port: 0
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: notification-service
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/notification
+    username: root
+    password: 123456
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: update
+  jooq:
+    sql-dialect: mariadb
+  mvc:
+    converters:
+      preferred-json-mapper: gson
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: helios.email.test@gmail.com
+    password: ltuzwzyrvvhpxjrt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+            required: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8671/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+#axon:
+#  event-handling:
+#    processors:
+#      auth-group:
+#        mode: subscribing

@@ -38,6 +38,12 @@ grpc:
         authority-override: HiepLP # Should be the same with the server's authority
         trustCertCollection: classpath:certificates/trusted-servers-collection.crt.list
 
+app:
+  auth:
+    register-otp:
+      quota: 5
+      expiration-time: 3600
+
 #axon:
 #  event-handling:
 #    processors:

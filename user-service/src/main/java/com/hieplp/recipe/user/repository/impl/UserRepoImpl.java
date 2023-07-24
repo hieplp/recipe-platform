@@ -21,4 +21,16 @@ public class UserRepoImpl extends BaseRepoImpl implements UserRepo {
         log.info("Get user record by userId {}", userId);
         return fetchOneNotNull(USER_, USER_.USERID.eq(userId));
     }
+
+    @Override
+    public boolean doesUsernameExist(String username) {
+        log.info("Check if username exists: {}", username);
+        return fetchExist(USER_, USER_.USERNAME.eq(username));
+    }
+
+    @Override
+    public boolean doesEmailExist(String email) {
+        log.info("Check if email exists: {}", email);
+        return fetchExist(USER_, USER_.EMAIL.eq(email));
+    }
 }

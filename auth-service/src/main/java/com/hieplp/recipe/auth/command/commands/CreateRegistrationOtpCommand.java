@@ -9,8 +9,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public class CreateRegistrationOtpCommand {
     @TargetAggregateIdentifier
     private final String otpId;
+    private String otpCode;
     private String username;
     private String email;
-    private Byte otpStatus;
+    private String userId;
 }
 

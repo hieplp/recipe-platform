@@ -6,6 +6,8 @@ import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Table;
 
+import java.util.Optional;
+
 public interface BaseRepo {
     /**
      * Save record into database
@@ -42,4 +44,36 @@ public interface BaseRepo {
      * @throws ExecuteException  when fetch failed
      */
     <R extends Record> R fetchOneNotNull(Table<R> table, Condition condition);
+
+
+    /**
+     * Fetch one record from database. If record is null, throw exception
+     *
+     * @param table     table
+     * @param condition queried condition
+     * @param type      type of return object
+     * @param <T>       type of return object
+     * @return queried object
+     */
+    <T> T fetchOneNotNull(Table<?> table, Condition condition, Class<? extends T> type);
+
+    /**
+     * Fetch one record from database. If record is null, return empty optional
+     *
+     * @param table     table
+     * @param condition queried condition
+     * @param type      type of return object
+     * @param <T>       type of return object
+     * @return queried object
+     */
+    <T> Optional<T> fetchOne(Table<?> table, Condition condition, Class<? extends T> type);
+
+    /**
+     * Check if record exist in table
+     *
+     * @param table     table to fetch
+     * @param condition condition to filter
+     * @return true if record exist, false otherwise
+     */
+    boolean fetchExist(Table<?> table, Condition condition);
 }
