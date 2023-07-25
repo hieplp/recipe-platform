@@ -40,9 +40,12 @@ grpc:
 
 app:
   auth:
+    rsa:
+      private-key: rsa/private_key.der
+      public-key: rsa/public_key.der
     register-otp:
       quota: 5
-      expiration-time: 3600
+      expiration-time: 300
 
 #axon:
 #  event-handling:

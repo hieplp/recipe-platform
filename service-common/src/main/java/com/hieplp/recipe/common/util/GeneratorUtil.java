@@ -1,19 +1,69 @@
 package com.hieplp.recipe.common.util;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneratorUtil {
-    public static String generateOTP(int length) {
-        // Define the characters allowed in the OTP
-        String allowedChars = "0123456789";
-        StringBuilder otp = new StringBuilder();
+    private static final String CHAR_LIST = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final String CHAR_LIST_NUMBER = "0123456789";
+    private static final String CHAR_LIST_UPPER_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final Integer SALT_SIZE = 64;
+    private static final Integer ITERATION_COUNT = 65536;
+    private static final Integer KEY_LENGTH = 64 * 8;
 
+
+    /**
+     * Generate random otp
+     *
+     * @param length length of OTP
+     * @return random OTP
+     */
+    public static String generateOTP(int length) {
+        StringBuilder otp = new StringBuilder();
         // Build the OTP by selecting random characters from the allowedChars string
         for (int i = 0; i < length; i++) {
-            int index = ThreadLocalRandom.current().nextInt(allowedChars.length());
-            otp.append(allowedChars.charAt(index));
+            int index = ThreadLocalRandom.current().nextInt(CHAR_LIST_NUMBER.length());
+            otp.append(CHAR_LIST_NUMBER.charAt(index));
         }
 
         return otp.toString();
+    }
+
+    public static String randomString(int length) {
+        StringBuilder userId = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int index = ThreadLocalRandom.current().nextInt(CHAR_LIST_UPPER_ALPHABET.length());
+            userId.append(CHAR_LIST_UPPER_ALPHABET.charAt(index));
+        }
+        return userId.toString();
+    }
+
+    /**
+     * Generate salt
+     *
+     * @return salt
+     */
+    public static byte[] generateSalt() {
+        final var sr = new SecureRandom();
+        byte[] salt = new byte[SALT_SIZE];
+        sr.nextBytes(salt);
+        return salt;
+    }
+
+    /**
+     * Hash password with char array password
+     *
+     * @param password - char array password
+     * @param salt     - salt
+     * @return Hashed password
+     */
+    public static byte[] hash(char[] password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        var spec = new PBEKeySpec(password, salt, ITERATION_COUNT, KEY_LENGTH);
+        var skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        return skf.generateSecret(spec).getEncoded();
     }
 }

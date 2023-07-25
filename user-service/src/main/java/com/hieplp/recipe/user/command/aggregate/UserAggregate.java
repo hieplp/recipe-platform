@@ -51,18 +51,6 @@ public class UserAggregate {
         AggregateLifecycle.apply(userCreatedEvent);
     }
 
-    @EventSourcingHandler
-    public void on(UserCreatedEvent event) {
-        this.userId = event.getUserId();
-        this.username = event.getUsername();
-        this.fullName = event.getFullName();
-        this.status = event.getStatus();
-        this.createdBy = event.getCreatedBy();
-        this.createdAt = event.getCreatedAt();
-        this.modifiedBy = event.getModifiedBy();
-        this.modifiedAt = event.getModifiedAt();
-    }
-
     // -------------------------------------------------------------------------
     // XXX Verify username
     // -------------------------------------------------------------------------
@@ -86,20 +74,6 @@ public class UserAggregate {
         }
     }
 
-    @EventSourcingHandler
-    public void on(UsernameVerifiedEvent event) {
-        log.info("Username: {} is verified", event.getUsername());
-        this.userId = event.getUserId();
-        this.username = event.getUsername();
-    }
-
-    @EventSourcingHandler
-    public void on(UsernameDuplicatedEvent event) {
-        log.info("Username: {} is duplicated", event.getUsername());
-        this.userId = event.getUserId();
-        this.username = event.getUsername();
-    }
-
     // -------------------------------------------------------------------------
     // XXX Verify email
     // -------------------------------------------------------------------------
@@ -119,6 +93,32 @@ public class UserAggregate {
                     .build();
             AggregateLifecycle.apply(emailDuplicatedEvent);
         }
+    }
+
+    @EventSourcingHandler
+    public void on(UserCreatedEvent event) {
+        this.userId = event.getUserId();
+        this.username = event.getUsername();
+        this.fullName = event.getFullName();
+        this.status = event.getStatus();
+        this.createdBy = event.getCreatedBy();
+        this.createdAt = event.getCreatedAt();
+        this.modifiedBy = event.getModifiedBy();
+        this.modifiedAt = event.getModifiedAt();
+    }
+
+    @EventSourcingHandler
+    public void on(UsernameVerifiedEvent event) {
+        log.info("Username: {} is verified", event.getUsername());
+        this.userId = event.getUserId();
+        this.username = event.getUsername();
+    }
+
+    @EventSourcingHandler
+    public void on(UsernameDuplicatedEvent event) {
+        log.info("Username: {} is duplicated", event.getUsername());
+        this.userId = event.getUserId();
+        this.username = event.getUsername();
     }
 
     @EventSourcingHandler

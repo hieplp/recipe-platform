@@ -1,11 +1,11 @@
 package com.hieplp.recipe.auth.command.aggregate;
 
-import com.hieplp.recipe.auth.command.commands.CancelRegistrationOtpCommand;
-import com.hieplp.recipe.auth.command.commands.CompleteRegistrationOtpCommand;
-import com.hieplp.recipe.auth.command.commands.CreateRegistrationOtpCommand;
-import com.hieplp.recipe.auth.command.event.register.RegistrationOtpCanceledEvent;
-import com.hieplp.recipe.auth.command.event.register.RegistrationOtpCompletedEvent;
-import com.hieplp.recipe.auth.command.event.register.RegistrationOtpCreatedEvent;
+import com.hieplp.recipe.auth.command.commands.register.CancelRegisterOtpCommand;
+import com.hieplp.recipe.auth.command.commands.register.CompleteRegisterOtpCommand;
+import com.hieplp.recipe.auth.command.commands.register.CreateRegisterOtpCommand;
+import com.hieplp.recipe.auth.command.event.register.RegisterOtpCanceledEvent;
+import com.hieplp.recipe.auth.command.event.register.RegisterOtpCompletedEvent;
+import com.hieplp.recipe.auth.command.event.register.RegisterOtpCreatedEvent;
 import com.hieplp.recipe.common.enums.otp.OtpStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -15,6 +15,7 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Aggregate
@@ -25,6 +26,9 @@ public class OtpAggregate {
     private String otpId;
     private Byte status;
     private String userId;
+    private String otpCode;
+    private LocalDateTime issuedAt;
+    private LocalDateTime expiredAt;
 
     protected OtpAggregate() {
     }
@@ -34,10 +38,10 @@ public class OtpAggregate {
     // -------------------------------------------------------------------------
 
     @CommandHandler
-    public OtpAggregate(CreateRegistrationOtpCommand command) {
+    public OtpAggregate(CreateRegisterOtpCommand command) {
         log.info("Create registration otp command: {}", command);
         //
-        var otpCreatedEvent = new RegistrationOtpCreatedEvent();
+        var otpCreatedEvent = new RegisterOtpCreatedEvent();
         BeanUtils.copyProperties(command, otpCreatedEvent);
         //
         otpCreatedEvent.setStatus(OtpStatus.CREATED.getStatus());
@@ -45,20 +49,13 @@ public class OtpAggregate {
         AggregateLifecycle.apply(otpCreatedEvent);
     }
 
-    @EventSourcingHandler
-    public void on(RegistrationOtpCreatedEvent event) {
-        this.otpId = event.getOtpId();
-        this.status = event.getStatus();
-        this.userId = event.getUserId();
-    }
-
     // -------------------------------------------------------------------------
     // XXX Complete
     // -------------------------------------------------------------------------
     @CommandHandler
-    public OtpAggregate(CompleteRegistrationOtpCommand command) {
+    public OtpAggregate(CompleteRegisterOtpCommand command) {
         log.info("Complete registration otp command: {}", command);
-        var otpCompletedEvent = new RegistrationOtpCompletedEvent();
+        var otpCompletedEvent = new RegisterOtpCompletedEvent();
         BeanUtils.copyProperties(command, otpCompletedEvent);
         //
         otpCompletedEvent.setStatus(OtpStatus.ACTIVATED.getStatus());
@@ -66,20 +63,13 @@ public class OtpAggregate {
         AggregateLifecycle.apply(otpCompletedEvent);
     }
 
-    @EventSourcingHandler
-    public void on(RegistrationOtpCompletedEvent event) {
-        this.otpId = event.getOtpId();
-        this.status = event.getStatus();
-        this.userId = event.getUserId();
-    }
-
     // -------------------------------------------------------------------------
     // XXX Cancel
     // -------------------------------------------------------------------------
     @CommandHandler
-    public OtpAggregate(CancelRegistrationOtpCommand command) {
+    public OtpAggregate(CancelRegisterOtpCommand command) {
         log.info("Cancel registration otp command: {}", command);
-        var otpCanceledEvent = new RegistrationOtpCanceledEvent();
+        var otpCanceledEvent = new RegisterOtpCanceledEvent();
         BeanUtils.copyProperties(command, otpCanceledEvent);
         //
         otpCanceledEvent.setStatus(OtpStatus.CANCELED.getStatus());
@@ -88,10 +78,24 @@ public class OtpAggregate {
     }
 
     @EventSourcingHandler
-    public void on(RegistrationOtpCanceledEvent event) {
+    public void on(RegisterOtpCreatedEvent event) {
         this.otpId = event.getOtpId();
         this.status = event.getStatus();
         this.userId = event.getUserId();
+        this.issuedAt = event.getIssuedAt();
+        this.expiredAt = event.getExpiredAt();
+    }
+
+    @EventSourcingHandler
+    public void on(RegisterOtpCompletedEvent event) {
+        this.otpId = event.getOtpId();
+        this.status = event.getStatus();
+    }
+
+    @EventSourcingHandler
+    public void on(RegisterOtpCanceledEvent event) {
+        this.otpId = event.getOtpId();
+        this.status = event.getStatus();
     }
 
     // -------------------------------------------------------------------------

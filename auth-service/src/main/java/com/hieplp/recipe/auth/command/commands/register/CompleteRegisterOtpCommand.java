@@ -1,17 +1,17 @@
-package com.hieplp.recipe.auth.command.commands;
+package com.hieplp.recipe.auth.command.commands.register;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @Builder
-public class CreateRegistrationOtpCommand {
+public class CompleteRegisterOtpCommand {
     @TargetAggregateIdentifier
+    @NonNull
     private final String otpId;
-    private String otpCode;
-    private String username;
-    private String email;
+    @NonNull
     private String userId;
 }
 

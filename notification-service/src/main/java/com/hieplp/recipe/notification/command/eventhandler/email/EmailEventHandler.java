@@ -11,7 +11,7 @@ import com.hieplp.recipe.notification.common.repository.LogRepo;
 import com.hieplp.recipe.notification.common.repository.generate.tables.records.LogRecord;
 import com.hieplp.recipe.notification.common.util.EmailUtil;
 import com.hieplp.recipe.notification.common.util.TemplateUtil;
-import com.hieplp.recipe.notification.event.events.template.GetTemplateByActionAndSendViaQuery;
+import com.hieplp.recipe.notification.query.queries.template.GetTemplateByActionAndSendViaQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -60,6 +60,7 @@ public class EmailEventHandler {
                     .setSubject(builtTemplate.getSubject())
                     .setContent(builtTemplate.getContent())
                     .setStatus(event.getStatus())
+                    .setReferenceid(event.getReferenceId())
                     .setCreatedby(event.getCreatedBy())
                     .setCreatedat(LocalDateTime.now())
                     .setModifiedby(event.getCreatedBy())
@@ -72,34 +73,54 @@ public class EmailEventHandler {
             // Send email success
             var completeEmailCommand = CompleteEmailCommand.builder()
                     .logId(event.getLogId())
+                    .createdBy(event.getCreatedBy())
+                    .referenceId(event.getReferenceId())
                     .build();
             commandGateway.send(completeEmailCommand);
         } catch (Exception e) {
             log.error("Handle email created event error: {}", e.getMessage());
-            var cancelEmailCommand = CancelEmailCommand.builder()
-                    .logId(event.getLogId())
-                    .build();
-            commandGateway.send(cancelEmailCommand);
+            cancelEmail(event.getLogId(), event.getCreatedBy(), event.getReferenceId());
         }
     }
 
     @EventHandler
     private void handle(EmailCompletedEvent event) {
-        log.info("Handle email sent event: {}", event);
-        var logRecord = new LogRecord()
-                .setLogid(event.getLogId())
-                .setStatus(event.getStatus())
-                .setModifiedat(LocalDateTime.now());
-        logRepo.updateNotNull(logRecord);
+        try {
+            log.info("Handle email sent event: {}", event);
+            var logRecord = new LogRecord()
+                    .setLogid(event.getLogId())
+                    .setStatus(event.getStatus())
+                    .setModifiedby(event.getCreatedBy())
+                    .setModifiedat(LocalDateTime.now());
+            logRepo.updateNotNull(logRecord);
+        } catch (Exception e) {
+            log.error("Handle email sent event error: {}", e.getMessage());
+            cancelEmail(event.getLogId(), event.getCreatedBy(), event.getReferenceId());
+        }
     }
 
     @EventHandler
     private void handle(EmailCanceledEvent event) {
-        log.info("Handle email failed event: {}", event);
-        var logRecord = new LogRecord()
-                .setLogid(event.getLogId())
-                .setStatus(event.getStatus())
-                .setModifiedat(LocalDateTime.now());
-        logRepo.updateNotNull(logRecord);
+        try {
+            log.info("Handle email failed event: {}", event);
+            var logRecord = new LogRecord()
+                    .setLogid(event.getLogId())
+                    .setStatus(event.getStatus())
+                    .setModifiedat(LocalDateTime.now())
+                    .setModifiedat(LocalDateTime.now());
+            logRepo.updateNotNull(logRecord);
+        } catch (Exception e) {
+            // Ignore
+            log.error("Handle email failed event error: {}", e.getMessage());
+        }
+    }
+
+    private void cancelEmail(String logId, String createdBy, String referenceId) {
+        var cancelEmailCommand = CancelEmailCommand.builder()
+                .logId(logId)
+                .createdBy(createdBy)
+                .referenceId(referenceId)
+                .build();
+        commandGateway.send(cancelEmailCommand);
     }
 }

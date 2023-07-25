@@ -9,4 +9,6 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public class CancelEmailCommand {
     @TargetAggregateIdentifier
     private String logId;
+    private String createdBy;
+    private String referenceId;
 }

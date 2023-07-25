@@ -12,4 +12,5 @@ public class EmailSentEvent {
     private String createdBy;
     private String logId;
     private Byte status;
+    private String referenceId;
 }

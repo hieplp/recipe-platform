@@ -1,6 +1,5 @@
 package com.hieplp.recipe.common.command.commands.notification.email;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
@@ -10,4 +9,6 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public class CompleteEmailCommand {
     @TargetAggregateIdentifier
     private String logId;
+    private String createdBy;
+    private String referenceId;
 }

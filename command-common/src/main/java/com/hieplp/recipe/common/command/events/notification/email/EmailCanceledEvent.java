@@ -6,4 +6,6 @@ import lombok.Data;
 public class EmailCanceledEvent {
     private String logId;
     private Byte status;
+    private String createdBy;
+    private String referenceId;
 }

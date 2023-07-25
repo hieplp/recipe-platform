@@ -1,11 +1,10 @@
 package com.hieplp.recipe.auth.command.event.register;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class RegistrationOtpCompletedEvent {
+public class RegisterOtpCanceledEvent {
     private String otpId;
-    private Byte status;
     private String userId;
+    private Byte status;
 }

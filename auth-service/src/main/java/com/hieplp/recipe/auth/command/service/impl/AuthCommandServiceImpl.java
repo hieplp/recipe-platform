@@ -1,5 +1,6 @@
 package com.hieplp.recipe.auth.command.service.impl;
 
+import com.hieplp.recipe.auth.command.commands.register.CreateRegisterOtpCommand;
 import com.hieplp.recipe.auth.command.payload.request.register.GenerateRegisterOtpRequest;
 import com.hieplp.recipe.auth.command.payload.request.register.RegisterRequest;
 import com.hieplp.recipe.auth.command.payload.request.register.VerifyRegisterOtpRequest;
@@ -9,22 +10,20 @@ import com.hieplp.recipe.auth.command.payload.response.auth.VerifyRegisterOtpRes
 import com.hieplp.recipe.auth.command.service.AuthCommandService;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
 import com.hieplp.recipe.auth.query.queries.GetTodayOtpQuotaQuery;
-import com.hieplp.recipe.common.command.commands.notification.email.SendEmailCommand;
-import com.hieplp.recipe.common.enums.notification.TemplateAction;
 import com.hieplp.recipe.common.enums.otp.OtpType;
 import com.hieplp.recipe.common.exception.auth.ExceededOtpQuotaException;
 import com.hieplp.recipe.common.exception.user.DuplicatedUsernameException;
 import com.hieplp.recipe.common.query.queries.user.CheckEmailExistenceQuery;
 import com.hieplp.recipe.common.query.queries.user.CheckUsernameExistenceQuery;
 import com.hieplp.recipe.common.util.GeneratorUtil;
+import com.hieplp.recipe.common.util.MaskUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
@@ -32,6 +31,8 @@ import java.util.UUID;
 public class AuthCommandServiceImpl implements AuthCommandService {
 
     private static final int DEFAULT_OTP_LENGTH = 6;
+    private static final int DEFAULT_OTP_ID_LENGTH = 10;
+    private static final int DEFAULT_USER_ID_LENGTH = 10;
 
     private final CommandGateway commandGateway;
     private final QueryGateway queryGateway;
@@ -40,7 +41,6 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     @Override
     public GenerateRegisterOtpResponse generateRegisterOtp(GenerateRegisterOtpRequest request) {
         log.info("Generate OTP for register with request: {}", request);
-
 
         // Check if username exists
         var doesUsernameExist = queryGateway.query(new CheckUsernameExistenceQuery(request.getUsername()), Boolean.class).join();
@@ -64,33 +64,32 @@ public class AuthCommandServiceImpl implements AuthCommandService {
             throw new ExceededOtpQuotaException("Quota is exceeded");
         }
 
-        // Send OTP
-        var params = new HashMap<String, String>();
-        params.put("otpCode", GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH));
-        var res = commandGateway.sendAndWait(SendEmailCommand.builder()
-                .action(TemplateAction.REGISTER.getAction())
-                .email(request.getEmail())
-                .params(params)
-                .createdBy(request.getUsername())
-                .build());
-        log.info("Send email result: {}", res);
-
         //
-        final var otpId = UUID.randomUUID().toString();
+        final var otpId = GeneratorUtil.randomString(DEFAULT_OTP_ID_LENGTH);
         final var otpCode = GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH);
-        final var userId = UUID.randomUUID().toString();
+        final var userId = GeneratorUtil.randomString(DEFAULT_USER_ID_LENGTH);
+        final var issuedAt = LocalDateTime.now();
+        final var expiredAt = issuedAt.plusSeconds(authConfig.getRegisterOtp().getExpirationTime());
 
         //
-//        final var command = CreateRegistrationOtpCommand.builder()
-//                .otpId(otpId)
-//                .otpCode(otpCode)
-//                .username(request.getUsername())
-//                .email(request.getEmail())
-//                .userId(userId)
-//                .build();
-//        var result = commandGateway.sendAndWait(command);
+        final var command = CreateRegisterOtpCommand.builder()
+                .otpId(otpId)
+                .otpCode(otpCode)
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .fullName(request.getFullName())
+                .password(request.getPassword())
+                .userId(userId)
+                .issuedAt(issuedAt)
+                .expiredAt(expiredAt)
+                .build();
+        commandGateway.sendAndWait(command);
 
-        return null;
+        return GenerateRegisterOtpResponse.builder()
+                .otpId(otpId)
+                .maskedEmail(MaskUtil.maskEmail(request.getEmail()))
+                .expiredIn(authConfig.getRegisterOtp().getExpirationTime())
+                .build();
     }
 
     @Override

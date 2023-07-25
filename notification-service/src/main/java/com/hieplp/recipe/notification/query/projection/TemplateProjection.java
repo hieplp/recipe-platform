@@ -1,8 +1,8 @@
-package com.hieplp.recipe.notification.event.projection;
+package com.hieplp.recipe.notification.query.projection;
 
 import com.hieplp.recipe.notification.common.entity.TemplateEntity;
 import com.hieplp.recipe.notification.common.repository.TemplateRepo;
-import com.hieplp.recipe.notification.event.events.template.GetTemplateByActionAndSendViaQuery;
+import com.hieplp.recipe.notification.query.queries.template.GetTemplateByActionAndSendViaQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.queryhandling.QueryHandler;

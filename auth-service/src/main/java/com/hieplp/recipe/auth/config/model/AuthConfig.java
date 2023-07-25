@@ -9,4 +9,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app.auth")
 public class AuthConfig {
     private OtpConfig registerOtp;
+    private RsaConfig rsa;
+
+    @Data
+    public static class RsaConfig {
+        private String publicKey;
+        private String privateKey;
+    }
 }

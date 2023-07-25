@@ -29,6 +29,7 @@ public class EmailAggregate {
     private String logId;
     private String createdBy;
     private Byte status;
+    private String referenceId;
 
     protected EmailAggregate() {
     }
@@ -41,21 +42,9 @@ public class EmailAggregate {
     @CommandHandler
     public EmailAggregate(SendEmailCommand command) {
         log.info("Send email command: {}", command);
-
-        // Validate
-        if (command.getEmail() == null) {
-            throw new IllegalArgumentException("Email cannot be null");
-        }
-
-        if (command.getAction() == null) {
-            throw new IllegalArgumentException("Action cannot be null");
-        }
-
         //
         var emailCreatedEvent = new EmailSentEvent();
         BeanUtils.copyProperties(command, emailCreatedEvent);
-        //
-        emailCreatedEvent.setLogId(UUID.randomUUID().toString());
         emailCreatedEvent.setStatus(LogStatus.INIT.getStatus());
         //
         AggregateLifecycle.apply(emailCreatedEvent);
@@ -97,6 +86,7 @@ public class EmailAggregate {
         this.logId = event.getLogId();
         this.status = event.getStatus();
         this.createdBy = event.getCreatedBy();
+        this.referenceId = event.getReferenceId();
     }
 
     // -------------------------------------------------------------------------

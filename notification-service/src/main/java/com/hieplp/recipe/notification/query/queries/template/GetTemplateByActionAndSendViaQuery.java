@@ -1,4 +1,4 @@
-package com.hieplp.recipe.notification.event.events.template;
+package com.hieplp.recipe.notification.query.queries.template;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
