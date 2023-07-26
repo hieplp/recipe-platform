@@ -1,4 +1,4 @@
-package com.hieplp.recipe.auth.query.queries;
+package com.hieplp.recipe.auth.query.queries.otp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

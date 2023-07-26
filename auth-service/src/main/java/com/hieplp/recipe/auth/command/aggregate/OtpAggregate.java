@@ -3,10 +3,13 @@ package com.hieplp.recipe.auth.command.aggregate;
 import com.hieplp.recipe.auth.command.commands.register.CancelRegisterOtpCommand;
 import com.hieplp.recipe.auth.command.commands.register.CompleteRegisterOtpCommand;
 import com.hieplp.recipe.auth.command.commands.register.CreateRegisterOtpCommand;
+import com.hieplp.recipe.auth.command.commands.register.VerifyRegisterOtpCommand;
 import com.hieplp.recipe.auth.command.event.register.RegisterOtpCanceledEvent;
 import com.hieplp.recipe.auth.command.event.register.RegisterOtpCompletedEvent;
 import com.hieplp.recipe.auth.command.event.register.RegisterOtpCreatedEvent;
+import com.hieplp.recipe.auth.command.event.register.RegisterOtpVerifiedEvent;
 import com.hieplp.recipe.common.enums.otp.OtpStatus;
+import com.hieplp.recipe.common.enums.otp.OtpType;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -44,6 +47,7 @@ public class OtpAggregate {
         var otpCreatedEvent = new RegisterOtpCreatedEvent();
         BeanUtils.copyProperties(command, otpCreatedEvent);
         //
+        otpCreatedEvent.setType(OtpType.REGISTER.getType());
         otpCreatedEvent.setStatus(OtpStatus.CREATED.getStatus());
         //
         AggregateLifecycle.apply(otpCreatedEvent);
@@ -96,6 +100,20 @@ public class OtpAggregate {
     public void on(RegisterOtpCanceledEvent event) {
         this.otpId = event.getOtpId();
         this.status = event.getStatus();
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Verify
+    // -------------------------------------------------------------------------
+
+    @CommandHandler
+    public OtpAggregate(VerifyRegisterOtpCommand command) {
+        log.info("Verify registration otp command: {}", command);
+        //
+        var otpVerifiedEvent = new RegisterOtpVerifiedEvent();
+        BeanUtils.copyProperties(command, otpVerifiedEvent);
+        //
+        AggregateLifecycle.apply(otpVerifiedEvent);
     }
 
     // -------------------------------------------------------------------------

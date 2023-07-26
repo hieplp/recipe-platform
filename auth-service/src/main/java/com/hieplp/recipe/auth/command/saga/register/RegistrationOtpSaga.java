@@ -8,7 +8,7 @@ import com.hieplp.recipe.auth.command.event.register.RegisterOtpCompletedEvent;
 import com.hieplp.recipe.auth.command.event.register.RegisterOtpCreatedEvent;
 import com.hieplp.recipe.auth.command.event.user.TempUserCompletedEvent;
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
-import com.hieplp.recipe.auth.query.queries.GetOtpQuery;
+import com.hieplp.recipe.auth.query.queries.otp.GetOtpQuery;
 import com.hieplp.recipe.common.command.commands.notification.email.SendEmailCommand;
 import com.hieplp.recipe.common.command.events.notification.email.EmailCanceledEvent;
 import com.hieplp.recipe.common.command.events.notification.email.EmailCompletedEvent;

@@ -1,4 +1,4 @@
-package com.hieplp.recipe.auth.config.model;
+package com.hieplp.recipe.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,17 +12,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
+        return http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**")
-                .anonymous()
+                .antMatchers("/api/auth/**").anonymous()
                 .and()
                 .httpBasic()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        return http.build();
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .build();
     }
 }

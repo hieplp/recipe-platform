@@ -45,6 +45,7 @@ app:
       public-key: rsa/public_key.der
     register-otp:
       quota: 5
+      wrong-code: 3
       expiration-time: 300
 
 #axon:

@@ -1,6 +1,7 @@
 package com.hieplp.recipe.auth.config.component;
 
 import com.hieplp.recipe.auth.config.model.AuthConfig;
+import com.hieplp.recipe.common.config.model.RsaConfig;
 import com.hieplp.recipe.common.exception.UnknownException;
 import com.hieplp.recipe.common.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.security.spec.RSAPublicKeySpec;
 @Slf4j
 public class UserRSAEncryption {
 
-    private final AuthConfig.RsaConfig rsaConfig;
+    private final RsaConfig rsaConfig;
     private final KeyFactory kf;
     private PrivateKey privateKey;
     private PublicKey publicKey;

@@ -9,6 +9,7 @@ public class RegisterOtpCreatedEvent {
     private String otpId;
     private String otpCode;
     private Byte status;
+    private Byte type;
     private String username;
     private String email;
     private String password;

@@ -1,5 +1,7 @@
 package com.hieplp.recipe.auth.config.model;
 
+import com.hieplp.recipe.common.config.model.OtpConfig;
+import com.hieplp.recipe.common.config.model.RsaConfig;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +12,4 @@ import org.springframework.context.annotation.Configuration;
 public class AuthConfig {
     private OtpConfig registerOtp;
     private RsaConfig rsa;
-
-    @Data
-    public static class RsaConfig {
-        private String publicKey;
-        private String privateKey;
-    }
 }

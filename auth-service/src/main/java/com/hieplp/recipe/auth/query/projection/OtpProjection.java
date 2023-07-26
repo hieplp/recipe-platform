@@ -2,8 +2,8 @@ package com.hieplp.recipe.auth.query.projection;
 
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.common.repository.OtpRepo;
-import com.hieplp.recipe.auth.query.queries.GetOtpQuery;
-import com.hieplp.recipe.auth.query.queries.GetTodayOtpQuotaQuery;
+import com.hieplp.recipe.auth.query.queries.otp.GetOtpQuery;
+import com.hieplp.recipe.auth.query.queries.otp.GetTodayOtpQuotaQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.queryhandling.QueryHandler;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class OtpProjection {
 
     private final OtpRepo otpRepo;

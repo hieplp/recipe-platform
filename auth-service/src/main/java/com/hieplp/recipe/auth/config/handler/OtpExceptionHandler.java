@@ -13,11 +13,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Slf4j
 public class OtpExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(ExceededOtpQuotaException.class)
     public ResponseEntity<CommonResponse> handleExceededOtpQuotaException(ExceededOtpQuotaException e) {
         log.error("ExceededOtpQuotaException: {}", e.getMessage());
         return new ResponseEntity<>(new CommonResponse(ErrorCode.QUOTA_EXCEEDED), HttpStatus.OK);
     }
-
 }
