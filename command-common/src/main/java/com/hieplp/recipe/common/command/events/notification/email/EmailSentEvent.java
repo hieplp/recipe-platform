@@ -6,7 +6,7 @@ import java.util.Map;
 
 @Data
 public class EmailSentEvent {
-    private String email;
+    private String sendTo;
     private String action;
     private Map<String, String> params;
     private String createdBy;

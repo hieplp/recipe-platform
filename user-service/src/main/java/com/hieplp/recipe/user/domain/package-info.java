@@ -1,0 +1,1 @@
+package com.hieplp.recipe.user.domain;

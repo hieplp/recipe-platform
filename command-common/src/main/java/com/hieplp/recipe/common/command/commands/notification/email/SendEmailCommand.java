@@ -14,7 +14,7 @@ public class SendEmailCommand {
     @NonNull
     private final String logId;
     @NonNull
-    private final String email;
+    private final String sendTo;
     @NonNull
     private final String action;
     @NonNull

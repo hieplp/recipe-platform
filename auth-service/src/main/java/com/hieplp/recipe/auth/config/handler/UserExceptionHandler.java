@@ -6,6 +6,8 @@ import com.hieplp.recipe.common.exception.user.DuplicatedEmailException;
 import com.hieplp.recipe.common.exception.user.DuplicatedUsernameException;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DuplicatedUsernameException.class)
