@@ -3,7 +3,7 @@ package com.hieplp.recipe.auth.domain.command.eventhandler.user;
 import com.hieplp.recipe.auth.common.repository.TempUserRepo;
 import com.hieplp.recipe.auth.common.repository.generate.tables.records.TempUserRecord;
 import com.hieplp.recipe.auth.config.component.UserRSAEncryption;
-import com.hieplp.recipe.auth.domain.command.commands.user.CompleteTempUserCommand;
+import com.hieplp.recipe.auth.domain.command.commands.user.create.CompleteTempUserCreationCommand;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCreatedEvent;
 import com.hieplp.recipe.common.util.EncryptUtil;
 import com.hieplp.recipe.common.util.GeneratorUtil;
@@ -38,6 +38,7 @@ public class UserEventHandler {
             // Save temporary user to database
             var tempUser = new TempUserRecord()
                     .setUserid(event.getUserId())
+                    .setOtpid(event.getReferenceId())
                     .setUsername(event.getUsername())
                     .setFullname(event.getFullName())
                     .setEmail(event.getEmail())
@@ -51,7 +52,7 @@ public class UserEventHandler {
             tempUserRepo.save(tempUser);
 
             // Complete command
-            var completeCommand = CompleteTempUserCommand.builder()
+            var completeCommand = CompleteTempUserCreationCommand.builder()
                     .userId(event.getUserId())
                     .username(event.getUsername())
                     .email(event.getEmail())

@@ -11,7 +11,7 @@ import com.hieplp.recipe.notification.common.repository.generate.tables.Template
 /**
  * Convenience access to all tables in notification.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Tables {
 
     /**

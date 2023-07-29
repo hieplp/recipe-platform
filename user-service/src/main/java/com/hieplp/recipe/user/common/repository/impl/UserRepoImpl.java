@@ -1,8 +1,8 @@
 package com.hieplp.recipe.user.common.repository.impl;
 
 import com.hieplp.recipe.common.jooq.base.BaseRepoImpl;
-import com.hieplp.recipe.user.common.repository.generate.Tables;
 import com.hieplp.recipe.user.common.repository.UserRepo;
+import com.hieplp.recipe.user.common.repository.generate.Tables;
 import com.hieplp.recipe.user.common.repository.generate.tables.records.UserRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;

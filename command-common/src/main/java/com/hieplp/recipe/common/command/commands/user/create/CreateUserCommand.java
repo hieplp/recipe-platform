@@ -11,4 +11,9 @@ public class CreateUserCommand {
     private String userId;
     private String username;
     private String email;
+    private String fullName;
+    private String createdBy;
+    private byte[] password;
+    private byte[] salt;
+    private String referenceId;
 }

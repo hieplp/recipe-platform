@@ -73,12 +73,11 @@ public class EmailEventHandler {
             // Send email success
             var completeEmailCommand = CompleteEmailCommand.builder()
                     .logId(event.getLogId())
-                    .createdBy(event.getCreatedBy())
                     .referenceId(event.getReferenceId())
                     .build();
-            commandGateway.send(completeEmailCommand);
+            commandGateway.sendAndWait(completeEmailCommand);
         } catch (Exception e) {
-            log.error("Handle email created event error: {}", e.getMessage());
+            log.error("Handle email created event error:", e);
             cancelEmail(event.getLogId(), event.getCreatedBy(), event.getReferenceId());
         }
     }
@@ -94,7 +93,7 @@ public class EmailEventHandler {
                     .setModifiedat(LocalDateTime.now());
             logRepo.updateNotNull(logRecord);
         } catch (Exception e) {
-            log.error("Handle email sent event error: {}", e.getMessage());
+            log.error("Handle email sent event error:", e);
             cancelEmail(event.getLogId(), event.getCreatedBy(), event.getReferenceId());
         }
     }
@@ -111,7 +110,7 @@ public class EmailEventHandler {
             logRepo.updateNotNull(logRecord);
         } catch (Exception e) {
             // Ignore
-            log.error("Handle email failed event error: {}", e.getMessage());
+            log.error("Handle email failed event error:", e);
         }
     }
 

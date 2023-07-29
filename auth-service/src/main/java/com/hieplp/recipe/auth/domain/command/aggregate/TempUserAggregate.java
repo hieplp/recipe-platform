@@ -1,7 +1,7 @@
 package com.hieplp.recipe.auth.domain.command.aggregate;
 
-import com.hieplp.recipe.auth.domain.command.commands.user.CompleteTempUserCommand;
-import com.hieplp.recipe.auth.domain.command.commands.user.CreateTempUserCommand;
+import com.hieplp.recipe.auth.domain.command.commands.user.create.CompleteTempUserCreationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.user.create.CreateTempUserCommand;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCreatedEvent;
 import com.hieplp.recipe.common.enums.user.TempUserStatus;
@@ -57,7 +57,7 @@ public class TempUserAggregate {
     // -------------------------------------------------------------------------
 
     @CommandHandler
-    public void handle(CompleteTempUserCommand command) {
+    public void handle(CompleteTempUserCreationCommand command) {
         log.info("Complete temp user command: {}", command);
         var tempUserCompletedEvent = new TempUserCompletedEvent();
         BeanUtils.copyProperties(command, tempUserCompletedEvent);

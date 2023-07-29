@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 0
   error:
     include-message: always
     include-binding-errors: always
@@ -14,19 +14,15 @@ spring:
     username: root
     password: 123456
     driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: update
   jooq:
     sql-dialect: mariadb
   mvc:
     converters:
       preferred-json-mapper: gson
-
-#grpc:
-#  server:
-#    security:
-#      enabled: true
-#      certificate-chain: classpath:certificates/cert.crt
-#      private-key: classpath:certificates/private.key
-#    port: 0
 
 eureka:
   client:
@@ -34,9 +30,3 @@ eureka:
       defaultZone: http://localhost:8671/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
-axon:
-  event-handling:
-    processors:
-      product-group:
-        mode: subscribing

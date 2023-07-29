@@ -12,7 +12,7 @@ import com.hieplp.recipe.auth.common.repository.generate.tables.TempUser;
 /**
  * Convenience access to all tables in authentication.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Tables {
 
     /**

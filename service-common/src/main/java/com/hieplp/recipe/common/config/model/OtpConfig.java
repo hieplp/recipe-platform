@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OtpConfig {
-    private Integer quota;
-    private Integer wrongQuota;
-    private Integer expirationTime;
+    private int quota;
+    private int wrongQuota;
+    private int expirationTime;
 }

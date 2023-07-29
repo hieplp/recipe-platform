@@ -19,9 +19,9 @@ public class OtpHistoryRepoImpl extends BaseRepoImpl implements OtpHistoryRepo {
     }
 
     @Override
-    public int countOtpHistory(String otpId, Byte type, LocalDate date) {
-        log.info("Count otp history with otpId {}, type: {} and date {}", otpId, type, date);
-        return context.fetchCount(OTPHISTORY, OTPHISTORY.OTPID.eq(otpId)
+    public int countOtpHistory(String sendTo, Byte type, LocalDate date) {
+        log.info("Count otp history with sendTo {}, type: {} and date {}", sendTo, type, date);
+        return context.fetchCount(OTPHISTORY, OTPHISTORY.OTPID.eq(sendTo)
                 .and(OTPHISTORY.TYPE.eq(type))
                 .and(DSL.cast(OTPHISTORY.CREATEDAT, LocalDate.class).eq(date)));
     }

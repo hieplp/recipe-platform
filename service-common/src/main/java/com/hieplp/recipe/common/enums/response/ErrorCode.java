@@ -8,6 +8,9 @@ public enum ErrorCode implements ResponseCode {
     NOT_FOUND("4004", "Not found"),
     UNAUTHORIZED("4005", "Unauthorized"),
     INACTIVE_USER("4006", "Inactive user"),
+    WRONG_OTP("4007", "Wrong OTP"),
+    EXPIRED_OTP("4008", "Expired OTP"),
+    ISSUED_OTP("4009", "Issued OTP"),
     INTERNAL_SERVER_ERROR("5000", "Internal server error"),
     ;
 

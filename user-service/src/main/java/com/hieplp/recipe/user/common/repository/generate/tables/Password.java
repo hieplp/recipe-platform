@@ -35,11 +35,11 @@ public class Password extends TableImpl<PasswordRecord> {
     /**
      * The column <code>user.password.password</code>.
      */
-    public final TableField<PasswordRecord, byte[]> PASSWORD_ = createField(DSL.name("password"), SQLDataType.BINARY(1).defaultValue(DSL.inline("NULL", SQLDataType.BINARY)), this, "");
+    public final TableField<PasswordRecord, byte[]> PASSWORD_ = createField(DSL.name("password"), SQLDataType.BINARY(64).defaultValue(DSL.inline("NULL", SQLDataType.BINARY)), this, "");
     /**
      * The column <code>user.password.salt</code>.
      */
-    public final TableField<PasswordRecord, byte[]> SALT = createField(DSL.name("salt"), SQLDataType.BINARY(1).defaultValue(DSL.inline("NULL", SQLDataType.BINARY)), this, "");
+    public final TableField<PasswordRecord, byte[]> SALT = createField(DSL.name("salt"), SQLDataType.BINARY(64).defaultValue(DSL.inline("NULL", SQLDataType.BINARY)), this, "");
     /**
      * The column <code>user.password.createdBy</code>.
      */

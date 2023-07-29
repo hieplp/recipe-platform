@@ -19,6 +19,13 @@ public interface BaseRepo {
     int save(Record record);
 
     /**
+     * Delete record from database
+     *
+     * @param record record to delete
+     */
+    int delete(Record record);
+
+    /**
      * Update record into database. Only update not null field
      *
      * @param record record to update

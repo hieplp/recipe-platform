@@ -38,6 +38,20 @@ public class BaseRepoImpl implements BaseRepo {
         }
     }
 
+    @Override
+    public int delete(Record record) {
+        try {
+            var table = TableUtil.getTable(record);
+            log.info("Delete record from table: {}", table);
+            return context.deleteFrom(table)
+                    .where(TableUtil.equalKey(table, record))
+                    .execute();
+        } catch (Exception e) {
+            log.error("Error when delete record: {}", e.getMessage());
+            throw new ExecuteException(e.getMessage());
+        }
+    }
+
     @Transactional
     @Override
     public int updateNotNull(Record record) {

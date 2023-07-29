@@ -8,7 +8,6 @@ import com.hieplp.recipe.notification.common.repository.generate.tables.Log;
 import com.hieplp.recipe.notification.common.repository.generate.tables.Template;
 import com.hieplp.recipe.notification.common.repository.generate.tables.records.LogRecord;
 import com.hieplp.recipe.notification.common.repository.generate.tables.records.TemplateRecord;
-
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -16,16 +15,16 @@ import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling foreign key relationships and constraints of tables in 
+ * A class modelling foreign key relationships and constraints of tables in
  * notification.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Keys {
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<LogRecord> KEY_LOG_PRIMARY = Internal.createUniqueKey(Log.LOG, DSL.name("KEY_log_PRIMARY"), new TableField[] { Log.LOG.LOGID }, true);
-    public static final UniqueKey<TemplateRecord> KEY_TEMPLATE_PRIMARY = Internal.createUniqueKey(Template.TEMPLATE, DSL.name("KEY_template_PRIMARY"), new TableField[] { Template.TEMPLATE.ACTION, Template.TEMPLATE.SENDVIA }, true);
+    public static final UniqueKey<LogRecord> KEY_LOG_PRIMARY = Internal.createUniqueKey(Log.LOG, DSL.name("KEY_log_PRIMARY"), new TableField[]{Log.LOG.LOGID}, true);
+    public static final UniqueKey<TemplateRecord> KEY_TEMPLATE_PRIMARY = Internal.createUniqueKey(Template.TEMPLATE, DSL.name("KEY_template_PRIMARY"), new TableField[]{Template.TEMPLATE.ACTION, Template.TEMPLATE.SENDVIA}, true);
 }

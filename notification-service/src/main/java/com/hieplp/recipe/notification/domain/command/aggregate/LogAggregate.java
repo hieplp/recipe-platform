@@ -49,10 +49,11 @@ public class LogAggregate {
 
     @EventSourcingHandler
     public void on(EmailSentEvent event) {
+        log.info("Email created event: {}", event);
+        this.logId = event.getLogId();
         this.sendTo = event.getSendTo();
         this.action = event.getAction();
         this.params = event.getParams();
-        this.logId = event.getLogId();
         this.status = event.getStatus();
         this.createdBy = event.getCreatedBy();
         this.referenceId = event.getReferenceId();
@@ -63,12 +64,13 @@ public class LogAggregate {
     // -------------------------------------------------------------------------
 
     @CommandHandler
-    public LogAggregate(CompleteEmailCommand command) {
+    public void handle(CompleteEmailCommand command) {
         log.info("Complete email command: {}", command);
         //
         var emailCompletedEvent = new EmailCompletedEvent();
         BeanUtils.copyProperties(command, emailCompletedEvent);
         //
+        emailCompletedEvent.setCreatedBy(this.createdBy);
         emailCompletedEvent.setStatus(LogStatus.SUCCESS.getStatus());
         //
         AggregateLifecycle.apply(emailCompletedEvent);
@@ -76,6 +78,7 @@ public class LogAggregate {
 
     @EventSourcingHandler
     public void on(EmailCompletedEvent event) {
+        log.warn("Email completed event: {} ------- {}", event, this.logId);
         this.status = event.getStatus();
     }
 
@@ -97,6 +100,7 @@ public class LogAggregate {
 
     @EventSourcingHandler
     public void on(EmailCanceledEvent event) {
+        log.info("Email canceled event: {} ---- {}", event, this.logId);
         this.status = event.getStatus();
     }
 }
