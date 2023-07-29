@@ -3,6 +3,7 @@ package com.hieplp.recipe.auth.domain.command.eventhandler.otp;
 import com.hieplp.recipe.auth.common.repository.OtpHistoryRepo;
 import com.hieplp.recipe.auth.common.repository.generate.tables.records.OtphistoryRecord;
 import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CancelOtpHistoryCreationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CompleteOtpHistoryCreationCommand;
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreatedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCanceledEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCompletedEvent;
@@ -35,6 +36,12 @@ public class OtpHistoryCreationEventHandler {
                     .setModifiedby(event.getCreatedBy())
                     .setModifiedat(event.getCreatedAt());
             otpHistoryRepo.save(otpHistoryRecord);
+
+            var completedCommand = CompleteOtpHistoryCreationCommand.builder()
+                    .otpHistoryId(event.getOtpHistoryId())
+                    .modifiedBy(event.getCreatedBy())
+                    .build();
+            commandGateway.send(completedCommand);
         } catch (Exception e) {
             log.error("Error when handle otp history created event: {}", event, e);
             var cancelCommand = CancelOtpHistoryCreationCommand.builder()

@@ -1,5 +1,7 @@
 package com.hieplp.recipe.common.util;
 
+import com.hieplp.recipe.common.enums.IdLength;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -40,6 +42,10 @@ public class GeneratorUtil {
             userId.append(CHAR_LIST_UPPER_ALPHABET.charAt(index));
         }
         return userId.toString();
+    }
+
+    public static String generateId(IdLength idLength) {
+        return randomString(idLength.getLength());
     }
 
     /**

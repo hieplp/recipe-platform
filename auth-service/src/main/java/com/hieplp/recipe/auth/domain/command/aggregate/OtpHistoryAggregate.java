@@ -7,7 +7,7 @@ import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistory
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCanceledEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCompletedEvent;
 import com.hieplp.recipe.common.enums.otp.OtpHistoryStatus;
-import com.hieplp.recipe.common.util.GeneratorUtil;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Aggregate
+@Data
 public class OtpHistoryAggregate {
-    private static final int DEFAULT_HISTORY_ID_LENGTH = 10;
     //
     @AggregateIdentifier
     private String otpHistoryId;
@@ -46,7 +46,6 @@ public class OtpHistoryAggregate {
         var createdEvent = new OtpHistoryCreatedEvent();
         BeanUtils.copyProperties(command, createdEvent);
         //
-        createdEvent.setOtpHistoryId(GeneratorUtil.randomString(DEFAULT_HISTORY_ID_LENGTH));
         createdEvent.setCreatedAt(LocalDateTime.now());
         //
         AggregateLifecycle.apply(createdEvent);
@@ -55,9 +54,11 @@ public class OtpHistoryAggregate {
     @CommandHandler
     public void handle(CompleteOtpHistoryCreationCommand command) {
         log.info("Handle complete otp history creation command: {}", command);
+        log.info("Otp history id: {}", this);
         var completedEvent = new OtpHistoryCreationCompletedEvent();
         BeanUtils.copyProperties(command, completedEvent);
         //
+        completedEvent.setOtpId(this.otpId);
         completedEvent.setModifiedAt(LocalDateTime.now());
         //
         AggregateLifecycle.apply(completedEvent);
@@ -90,8 +91,6 @@ public class OtpHistoryAggregate {
 
     @EventSourcingHandler
     public void on(OtpHistoryCreationCompletedEvent event) {
-        this.status = event.getStatus();
-        this.modifiedBy = event.getModifiedBy();
         this.modifiedAt = event.getModifiedAt();
     }
 

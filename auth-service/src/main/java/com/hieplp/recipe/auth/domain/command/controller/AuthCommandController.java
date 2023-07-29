@@ -2,6 +2,7 @@ package com.hieplp.recipe.auth.domain.command.controller;
 
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
+import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.service.AuthCommandService;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,11 @@ public class AuthCommandController {
     public CompletableFuture<CommonResponse> confirmRegisterOtp(@RequestBody @Valid ConfirmRegisterOtpRequest request) {
         log.info("Confirm OTP for register with request: {}", request);
         return authService.confirmRegisterOtp(request);
+    }
+
+    @PostMapping("/register/otp/resend")
+    public CompletableFuture<CommonResponse> resendRegisterOtp(@RequestBody @Valid ResendRegisterOtpRequest request) {
+        log.info("Resend OTP for register with request: {}", request);
+        return authService.resendRegisterOtp(request);
     }
 }

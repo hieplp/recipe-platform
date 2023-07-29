@@ -1,13 +1,17 @@
 package com.hieplp.recipe.auth.domain.command.service.impl;
 
+import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.ConfirmRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CreateRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.ResendRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
+import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.response.auth.GenerateRegisterOtpResponse;
-import com.hieplp.recipe.auth.domain.command.payload.response.auth.RegisterResponse;
 import com.hieplp.recipe.auth.domain.command.service.AuthCommandService;
+import com.hieplp.recipe.auth.domain.query.queries.otp.GetOtpQuery;
+import com.hieplp.recipe.common.enums.IdLength;
 import com.hieplp.recipe.common.enums.response.ErrorCode;
 import com.hieplp.recipe.common.enums.response.SuccessCode;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
@@ -28,20 +32,18 @@ import java.util.concurrent.CompletableFuture;
 public class AuthCommandServiceImpl implements AuthCommandService {
 
     private static final int DEFAULT_OTP_LENGTH = 6;
-    private static final int DEFAULT_OTP_ID_LENGTH = 10;
-    private static final int DEFAULT_USER_ID_LENGTH = 10;
 
-    private final CommandGateway commandGateway;
     private final QueryGateway queryGateway;
+    private final CommandGateway commandGateway;
     private final AuthConfig authConfig;
 
     @Override
     public CompletableFuture<CommonResponse> generateRegisterOtp(GenerateRegisterOtpRequest request) {
         log.info("Generate OTP for register with request: {}", request);
         //
-        final var otpId = GeneratorUtil.randomString(DEFAULT_OTP_ID_LENGTH);
+        final var otpId = GeneratorUtil.generateId(IdLength.OTP_ID);
         final var otpCode = GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH);
-        final var userId = GeneratorUtil.randomString(DEFAULT_USER_ID_LENGTH);
+        final var userId = GeneratorUtil.generateId(IdLength.USER_ID);
         final var issuedAt = LocalDateTime.now();
         final var expiredAt = issuedAt.plusSeconds(authConfig.getRegisterOtp().getExpirationTime());
         //
@@ -61,6 +63,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
                     var response = GenerateRegisterOtpResponse.builder()
                             .otpId(otpId)
                             .maskedEmail(MaskUtil.maskEmail(request.getEmail()))
+                            .expiredAt(expiredAt.toString())
                             .expiredIn(authConfig.getRegisterOtp().getExpirationTime())
                             .build();
                     return new CommonResponse(SuccessCode.SUCCESS, response);
@@ -81,7 +84,22 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     }
 
     @Override
-    public RegisterResponse register(ConfirmRegisterOtpRequest request) {
-        return null;
+    public CompletableFuture<CommonResponse> resendRegisterOtp(ResendRegisterOtpRequest request) {
+        log.info("Resend OTP for registration with request: {}", request);
+        var resendCommand = ResendRegisterOtpCommand.builder()
+                .otpId(request.getOtpId())
+                .build();
+        return commandGateway.send(resendCommand)
+                .thenApply(it -> {
+                    var otp = queryGateway.query(new GetOtpQuery(request.getOtpId()), OtpEntity.class).join();
+                    var response = GenerateRegisterOtpResponse.builder()
+                            .otpId(otp.getOtpId())
+                            .maskedEmail(MaskUtil.maskEmail(otp.getSendTo()))
+                            .expiredAt(otp.getExpiredAt().toString())
+                            .expiredIn(authConfig.getRegisterOtp().getExpirationTime())
+                            .build();
+                    return new CommonResponse(SuccessCode.SUCCESS, response);
+                })
+                .exceptionally(t -> new CommonResponse(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 }

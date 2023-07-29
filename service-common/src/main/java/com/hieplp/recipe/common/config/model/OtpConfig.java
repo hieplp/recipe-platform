@@ -6,5 +6,6 @@ import lombok.Data;
 public class OtpConfig {
     private int quota;
     private int wrongQuota;
+    private int resendQuota;
     private int expirationTime;
 }

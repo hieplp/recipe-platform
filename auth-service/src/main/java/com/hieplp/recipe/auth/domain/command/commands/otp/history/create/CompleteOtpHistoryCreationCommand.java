@@ -8,6 +8,6 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @Builder
 public class CompleteOtpHistoryCreationCommand {
     @TargetAggregateIdentifier
-    private String otpId;
-    private byte status;
+    private String otpHistoryId;
+    private String modifiedBy;
 }

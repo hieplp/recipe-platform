@@ -56,8 +56,7 @@ public class RegisterOtpConfirmationSaga {
                     .build();
             commandGateway.sendAndWait(createUserCommand);
         } catch (Exception e) {
-            log.error("Error while sending create user command", e);
-            e.printStackTrace();
+            log.error("Error when handle registration otp confirmed event:", e);
             cancelRegisterOtpConfirmation(event.getOtpId(), event.getUserId());
         }
     }
@@ -71,7 +70,7 @@ public class RegisterOtpConfirmationSaga {
                     .build();
             commandGateway.sendAndWait(completedEvent);
         } catch (Exception e) {
-            log.error("Error while sending complete register otp confirmation command", e);
+            log.error("Error when handle user creation completed event:", e);
             cancelRegisterOtpConfirmation(event.getReferenceId(), event.getUserId());
         }
     }

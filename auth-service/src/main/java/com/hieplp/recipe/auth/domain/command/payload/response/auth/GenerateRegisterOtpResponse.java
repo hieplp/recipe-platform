@@ -8,5 +8,6 @@ import lombok.Data;
 public class GenerateRegisterOtpResponse {
     private String otpId;
     private String maskedEmail;
+    private String expiredAt;
     private Integer expiredIn;
 }

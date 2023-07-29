@@ -103,7 +103,10 @@ GenerationTool.generate(new Configuration()
                 .withDatabase(new Database()
                         .withName("org.jooq.meta.mysql.MySQLDatabase")
                         .withInputSchema("user")
-                        .withOutputSchema("user"))
+                        .withOutputSchema("user")
+                        .withExcludes(
+                                "association_value_entry | dead_letter_entry | domain_event_entry | hibernate_sequence | saga_entry | token_entry | snapshot_event_entry"
+                        ))
                 .withGenerate(new Generate()
                         .withFluentSetters(true)
                         .withPojos(true)
