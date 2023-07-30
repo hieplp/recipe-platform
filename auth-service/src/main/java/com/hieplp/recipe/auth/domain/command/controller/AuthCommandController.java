@@ -6,7 +6,6 @@ import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRe
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.service.AuthCommandService;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
-import io.netty.util.concurrent.CompleteFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,13 +40,13 @@ public class AuthCommandController {
     }
 
     @PostMapping("/forgot/otp")
-    public CompleteFuture<CommonResponse> generateForgotOtp(@RequestBody @Valid GenerateForgotOtpRequest request) {
+    public CompletableFuture<CommonResponse> generateForgotOtp(@RequestBody @Valid GenerateForgotOtpRequest request) {
         log.info("Generate OTP for forgot password with request: {}", request);
-        return null;
+        return authService.generateForgotOtp(request);
     }
 
     @PutMapping("/forgot/otp")
-    public CompleteFuture<CommonResponse> confirmForgotOtp() {
+    public CompletableFuture<CommonResponse> confirmForgotOtp() {
         return null;
     }
 }

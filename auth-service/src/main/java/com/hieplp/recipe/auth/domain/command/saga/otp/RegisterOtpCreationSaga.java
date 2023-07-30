@@ -3,6 +3,9 @@ package com.hieplp.recipe.auth.domain.command.saga.otp;
 import com.hieplp.recipe.auth.domain.command.commands.otp.create.CancelOtpCreationCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.create.CompleteOtpCreationCommand;
 import com.hieplp.recipe.auth.domain.command.commands.user.create.CreateTempUserCommand;
+import com.hieplp.recipe.auth.domain.command.event.otp.create.OtpCreationCanceledEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.create.OtpCreationCompletedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.create.RegisterOtpCreatedEvent;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.helper.OtpHelper;
 import com.hieplp.recipe.common.command.events.notification.email.EmailCanceledEvent;
@@ -47,7 +50,7 @@ public class RegisterOtpCreationSaga {
             var createTempUserCommand = CreateTempUserCommand.builder()
                     .userId(event.getUserId())
                     .username(event.getUsername())
-                    .email(event.getEmail())
+                    .email(event.getSendTo())
                     .fullName(event.getFullName())
                     .password(event.getPassword())
                     .createdBy(event.getUserId())
@@ -105,7 +108,7 @@ public class RegisterOtpCreationSaga {
     // -------------------------------------------------------------------------
     @EndSaga
     @SagaEventHandler(associationProperty = OTP_ID)
-    private void handle(RegisterOtpCompletedEvent event) {
+    private void handle(OtpCreationCompletedEvent event) {
         log.info("Saga handles registration otp completed event: {}", event);
         SagaLifecycle.end();
     }
@@ -115,7 +118,7 @@ public class RegisterOtpCreationSaga {
     // -------------------------------------------------------------------------
     @EndSaga
     @SagaEventHandler(associationProperty = OTP_ID)
-    private void handle(RegisterOtpCanceledEvent event) {
+    private void handle(OtpCreationCanceledEvent event) {
         log.info("Saga handles registration otp canceled event: {}", event);
         SagaLifecycle.end();
     }

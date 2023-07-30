@@ -20,7 +20,7 @@ public class CreateRegisterOtpCommand {
     @NonNull
     private String fullName;
     @NonNull
-    private String email;
+    private String sendTo;
     @NonNull
     private String userId;
     @NonNull

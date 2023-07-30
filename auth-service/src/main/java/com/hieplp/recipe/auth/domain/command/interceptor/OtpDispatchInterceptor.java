@@ -89,14 +89,14 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         }
 
         // Check if email exists
-        var doesEmailExist = queryGateway.query(new CheckEmailExistenceQuery(command.getEmail()), boolean.class).join();
+        var doesEmailExist = queryGateway.query(new CheckEmailExistenceQuery(command.getSendTo()), boolean.class).join();
         if (doesEmailExist) {
-            log.error("Email {} is duplicated", command.getEmail());
-            throw new DuplicatedUsernameException(String.format("Email %s is duplicated", command.getEmail()));
+            log.error("Email {} is duplicated", command.getSendTo());
+            throw new DuplicatedUsernameException(String.format("Email %s is duplicated", command.getSendTo()));
         }
 
         // Check if quota is exceeded
-        var quota = queryGateway.query(new GetTodayOtpQuotaQuery(command.getEmail(), OtpType.REGISTER.getType()), int.class).join();
+        var quota = queryGateway.query(new GetTodayOtpQuotaQuery(command.getSendTo(), OtpType.REGISTER.getType()), int.class).join();
         log.info("Current quota: {} and config quota: {}", quota, authConfig.getRegisterOtp().getQuota());
         if (quota >= authConfig.getRegisterOtp().getQuota()) {
             log.error("Quota is exceeded");

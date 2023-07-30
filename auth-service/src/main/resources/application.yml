@@ -48,6 +48,11 @@ app:
       wrong-quota: 5
       resend-quota: 5
       expiration-time: 30000
+    forgot-otp:
+      quota: 5
+      wrong-quota: 5
+      resend-quota: 5
+      expiration-time: 30000
 
 #axon:
 #  event-handling:

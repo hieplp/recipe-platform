@@ -28,7 +28,7 @@ public class OtpCreationEventHandler {
             var otpRecord = new OtpRecord();
             otpRecord.from(event);
             otpRecord
-                    .setSendto(event.getEmail())
+                    .setSendto(event.getSendTo())
                     .setCreatedby(event.getUserId())
                     .setCreatedat(event.getCreatedAt())
                     .setModifiedby(event.getUserId())

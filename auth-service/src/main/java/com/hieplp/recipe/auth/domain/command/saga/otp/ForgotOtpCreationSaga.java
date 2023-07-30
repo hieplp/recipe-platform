@@ -40,7 +40,7 @@ public class ForgotOtpCreationSaga {
             final var logId = UUID.randomUUID().toString();
             SagaLifecycle.associateWith(LOG_ID, logId);
 
-            otpHelper.sendForgotOtp(event.getOtpId(), event.getSendTo(), logId);
+            otpHelper.sendForgotOtp(event.getOtpId(), logId, event.getSendTo());
         } catch (Exception e) {
             log.error("Error when handle forgot otp created event:", e);
             cancelOtp(event.getOtpId());

@@ -13,7 +13,7 @@ public class RegisterOtpCreatedEvent {
     private Byte status;
     private Byte type;
     private String username;
-    private String email;
+    private String sendTo;
     private String password;
     private String fullName;
     private String userId;

@@ -53,7 +53,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
                 .otpId(otpId)
                 .otpCode(otpCode)
                 .username(request.getUsername())
-                .email(request.getEmail())
+                .sendTo(request.getEmail())
                 .fullName(request.getFullName())
                 .password(request.getPassword())
                 .userId(userId)

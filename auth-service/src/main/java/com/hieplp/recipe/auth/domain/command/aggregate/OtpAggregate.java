@@ -50,6 +50,7 @@ public class OtpAggregate {
     private String modifiedBy;
     private LocalDateTime modifiedAt;
 
+
     protected OtpAggregate() {
     }
 
@@ -73,6 +74,9 @@ public class OtpAggregate {
         AggregateLifecycle.apply(otpCreatedEvent);
     }
 
+    // -------------------------------------------------------------------------
+    // XXX Forgot - Create
+    // -------------------------------------------------------------------------
     @CommandHandler
     public OtpAggregate(CreateForgotOtpCommand command) {
         log.info("Create forgot otp command: {}", command);
@@ -88,11 +92,86 @@ public class OtpAggregate {
         AggregateLifecycle.apply(otpCreatedEvent);
     }
 
+    @EventSourcingHandler
+    private void on(RegisterOtpCreatedEvent event) {
+        this.otpId = event.getOtpId();
+        this.status = event.getStatus();
+        this.type = event.getType();
+        this.sendTo = event.getSendTo();
+        this.issuedAt = event.getIssuedAt();
+        this.expiredAt = event.getExpiredAt();
+        this.createdBy = event.getCreatedBy();
+        this.createdAt = event.getCreatedAt();
+        this.modifiedBy = event.getCreatedBy();
+        this.modifiedAt = event.getCreatedAt();
+    }
+
+    @EventSourcingHandler
+    private void on(ForgotOtpCreatedEvent event) {
+        this.otpId = event.getOtpId();
+        this.status = event.getStatus();
+        this.type = event.getType();
+        this.sendTo = event.getSendTo();
+        this.issuedAt = event.getIssuedAt();
+        this.expiredAt = event.getExpiredAt();
+        this.createdBy = event.getCreatedBy();
+        this.createdAt = event.getCreatedAt();
+        this.modifiedBy = event.getCreatedBy();
+        this.modifiedAt = event.getCreatedAt();
+    }
+
+
+    // -------------------------------------------------------------------------
+    // XXX Creation - Complete
+    // -------------------------------------------------------------------------
+    @CommandHandler
+    private void handle(CompleteOtpCreationCommand command) {
+        log.info("Complete forgot otp command: {}", command);
+
+        var otpCompletedEvent = new OtpCreationCompletedEvent();
+        BeanUtils.copyProperties(command, otpCompletedEvent);
+
+        otpCompletedEvent
+                .setStatus(OtpStatus.ACTIVATED.getStatus())
+                .setModifiedAt(LocalDateTime.now());
+
+        AggregateLifecycle.apply(otpCompletedEvent);
+    }
+
+
+    @EventSourcingHandler
+    private void on(OtpCreationCompletedEvent event) {
+        this.status = event.getStatus();
+        this.modifiedAt = event.getModifiedAt();
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Creation - Cancel
+    // -------------------------------------------------------------------------
+
+    @CommandHandler
+    private void handle(CancelOtpCreationCommand command) {
+        log.info("Cancel forgot otp command: {}", command);
+
+        var otpCanceledEvent = new OtpCreationCanceledEvent();
+        BeanUtils.copyProperties(command, otpCanceledEvent);
+
+        otpCanceledEvent
+                .setStatus(OtpStatus.CANCELED.getStatus())
+                .setModifiedAt(LocalDateTime.now());
+
+        AggregateLifecycle.apply(otpCanceledEvent);
+    }
+
+    @EventSourcingHandler
+    private void on(OtpCreationCanceledEvent event) {
+        this.status = event.getStatus();
+        this.modifiedAt = event.getModifiedAt();
+    }
 
     // -------------------------------------------------------------------------
     // XXX Register - Confirm
     // -------------------------------------------------------------------------
-
 
     @CommandHandler
     private void handle(ConfirmRegisterOtpCommand command) {
@@ -177,66 +256,9 @@ public class OtpAggregate {
     private void on(RegisterOtpResendCompletedEvent event) {
     }
 
-    // -------------------------------------------------------------------------
-    // XXX Forgot - Create
-    // -------------------------------------------------------------------------
 
     @EventSourcingHandler
     private void on(RegisterOtpResendCanceledEvent event) {
-    }
-
-    @CommandHandler
-    private void handle(CompleteOtpCreationCommand command) {
-        log.info("Complete forgot otp command: {}", command);
-
-        var otpCompletedEvent = new OtpCreationCompletedEvent();
-        BeanUtils.copyProperties(command, otpCompletedEvent);
-
-        otpCompletedEvent
-                .setStatus(OtpStatus.ACTIVATED.getStatus())
-                .setModifiedAt(LocalDateTime.now());
-
-        AggregateLifecycle.apply(otpCompletedEvent);
-    }
-
-    @CommandHandler
-    private void handle(CancelOtpCreationCommand command) {
-        log.info("Cancel forgot otp command: {}", command);
-
-        var otpCanceledEvent = new OtpCreationCanceledEvent();
-        BeanUtils.copyProperties(command, otpCanceledEvent);
-
-        otpCanceledEvent
-                .setStatus(OtpStatus.CANCELED.getStatus())
-                .setModifiedAt(LocalDateTime.now());
-
-        AggregateLifecycle.apply(otpCanceledEvent);
-    }
-
-    @EventSourcingHandler
-    private void on(ForgotOtpCreatedEvent event) {
-        this.otpId = event.getOtpId();
-        this.status = event.getStatus();
-        this.type = event.getType();
-        this.sendTo = event.getSendTo();
-        this.issuedAt = event.getIssuedAt();
-        this.expiredAt = event.getExpiredAt();
-        this.createdBy = event.getCreatedBy();
-        this.createdAt = event.getCreatedAt();
-        this.modifiedBy = event.getCreatedBy();
-        this.modifiedAt = event.getCreatedAt();
-    }
-
-    @EventSourcingHandler
-    private void on(OtpCreationCompletedEvent event) {
-        this.status = event.getStatus();
-        this.modifiedAt = event.getModifiedAt();
-    }
-
-    @EventSourcingHandler
-    private void on(OtpCreationCanceledEvent event) {
-        this.status = event.getStatus();
-        this.modifiedAt = event.getModifiedAt();
     }
 
     // -------------------------------------------------------------------------
