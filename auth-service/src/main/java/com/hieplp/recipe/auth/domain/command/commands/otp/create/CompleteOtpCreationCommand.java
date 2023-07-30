@@ -1,4 +1,4 @@
-package com.hieplp.recipe.auth.domain.command.commands.otp.register.create;
+package com.hieplp.recipe.auth.domain.command.commands.otp.create;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,10 +7,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @Builder
-public class CancelRegisterOtpCreateCommand {
+public class CompleteOtpCreationCommand {
     @TargetAggregateIdentifier
     @NonNull
-    private String otpId;
-    @NonNull
-    private String userId;
+    private final String otpId;
 }
+

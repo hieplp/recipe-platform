@@ -2,6 +2,7 @@ package com.hieplp.recipe.auth.domain.command.interceptor;
 
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
+import com.hieplp.recipe.auth.domain.command.commands.otp.forgot.create.CreateForgotOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CreateOtpHistoryCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.ConfirmRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CreateRegisterOtpCommand;
@@ -22,6 +23,7 @@ import com.hieplp.recipe.common.exception.user.DuplicatedUsernameException;
 import com.hieplp.recipe.common.jooq.exception.NotFoundException;
 import com.hieplp.recipe.common.query.queries.user.CheckEmailExistenceQuery;
 import com.hieplp.recipe.common.query.queries.user.CheckUsernameExistenceQuery;
+import com.hieplp.recipe.common.util.DateUtil;
 import com.hieplp.recipe.common.util.GeneratorUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +34,6 @@ import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -63,6 +64,9 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
                 handle(command);
             } else if (ResendRegisterOtpCommand.class.equals(payloadType)) {
                 var command = (ResendRegisterOtpCommand) payload;
+                handle(command);
+            } else if (CreateForgotOtpCommand.class.equals(payloadType)) {
+                var command = (CreateForgotOtpCommand) payload;
                 handle(command);
             }
 
@@ -161,6 +165,29 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
     }
 
     // -------------------------------------------------------------------------
+    // XXX Forgot OTP Creation
+    // -------------------------------------------------------------------------
+    private void handle(CreateForgotOtpCommand command) {
+        log.info("Handle create forgot otp command interceptor: {}", command);
+
+        // Check if email exists
+        var doesEmailExist = queryGateway.query(new CheckEmailExistenceQuery(command.getSendTo()), boolean.class).join();
+        if (!doesEmailExist) {
+            log.error("Email {} is not found", command.getSendTo());
+            throw new NotFoundException(String.format("Email %s is not found", command.getSendTo()));
+        }
+
+        // Check if quota is exceeded
+        var quota = queryGateway.query(new GetTodayOtpQuotaQuery(command.getSendTo(), OtpType.FORGOT_PASSWORD.getType()), int.class).join();
+        log.info("Current quota: {} and config quota: {}", quota, authConfig.getForgotOtp().getQuota());
+        if (quota >= authConfig.getForgotOtp().getQuota()) {
+            log.error("Quota is exceeded");
+            throw new ExceededOtpQuotaException("Quota is exceeded");
+        }
+    }
+
+
+    // -------------------------------------------------------------------------
     // XXX Common methods
     // -------------------------------------------------------------------------
     private OtpEntity validateOtp(String otpId) {
@@ -179,13 +206,13 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         }
 
         // Check OTP issuedAt
-        if (otp.getIssuedAt().isAfter(LocalDateTime.now())) {
+        if (otp.getIssuedAt().isAfter(DateUtil.now())) {
             log.error("OTP {} is not issued yet", otpId);
             throw new BadRequestException("OTP is not issued yet");
         }
 
         // Check if OTP is expired
-        if (otp.getExpiredAt().isBefore(LocalDateTime.now())) {
+        if (otp.getExpiredAt().isBefore(DateUtil.now())) {
             log.error("OTP {} is expired", otpId);
             throw new ExpiredOtpException("OTP is expired");
         }

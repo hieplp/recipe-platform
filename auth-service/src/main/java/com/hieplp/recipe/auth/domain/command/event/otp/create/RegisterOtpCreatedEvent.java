@@ -1,10 +1,12 @@
-package com.hieplp.recipe.auth.domain.command.event.otp.register.create;
+package com.hieplp.recipe.auth.domain.command.event.otp.create;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
 @Data
+@Accessors(chain = true)
 public class RegisterOtpCreatedEvent {
     private String otpId;
     private String otpCode;
@@ -17,4 +19,6 @@ public class RegisterOtpCreatedEvent {
     private String userId;
     private LocalDateTime issuedAt;
     private LocalDateTime expiredAt;
+    private String createdBy;
+    private LocalDateTime createdAt;
 }

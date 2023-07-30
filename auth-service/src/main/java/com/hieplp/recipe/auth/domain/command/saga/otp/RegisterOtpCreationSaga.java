@@ -1,11 +1,8 @@
 package com.hieplp.recipe.auth.domain.command.saga.otp;
 
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CancelRegisterOtpCreateCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CompleteRegisterOtpCreateCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CancelOtpCreationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CompleteOtpCreationCommand;
 import com.hieplp.recipe.auth.domain.command.commands.user.create.CreateTempUserCommand;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.create.RegisterOtpCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.create.RegisterOtpCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.create.RegisterOtpCreatedEvent;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.helper.OtpHelper;
 import com.hieplp.recipe.common.command.events.notification.email.EmailCanceledEvent;
@@ -45,12 +42,8 @@ public class RegisterOtpCreationSaga {
         try {
             log.info("Saga handles registration otp created event: {}", event);
 
-            //
-            SagaLifecycle.associateWith(OTP_ID, event.getOtpId());
-            //
             SagaLifecycle.associateWith(USER_ID, event.getUserId());
 
-            //
             var createTempUserCommand = CreateTempUserCommand.builder()
                     .userId(event.getUserId())
                     .username(event.getUsername())
@@ -63,7 +56,7 @@ public class RegisterOtpCreationSaga {
             commandGateway.send(createTempUserCommand);
         } catch (Exception e) {
             log.error("Error when handle registration otp created event: {}", event, e);
-            cancelOtp(event.getOtpId(), event.getUserId());
+            cancelOtp(event.getOtpId());
         }
     }
 
@@ -81,7 +74,7 @@ public class RegisterOtpCreationSaga {
             otpHelper.sendRegisterOtp(event.getReferenceId(), logId, event.getUserId());
         } catch (Exception e) {
             log.error("Error when handle temp user completed event: {}", event, e);
-            cancelOtp(event.getReferenceId(), event.getCreatedBy());
+            cancelOtp(event.getReferenceId());
         }
     }
 
@@ -92,20 +85,19 @@ public class RegisterOtpCreationSaga {
     private void handle(EmailCompletedEvent event) {
         try {
             log.info("Saga handles email completed event: {}", event);
-            commandGateway.send(CompleteRegisterOtpCreateCommand.builder()
+            commandGateway.send(CompleteOtpCreationCommand.builder()
                     .otpId(event.getReferenceId())
-                    .userId(event.getCreatedBy())
                     .build());
         } catch (Exception e) {
             log.error("Error when handle email completed event: {}", event, e);
-            cancelOtp(event.getReferenceId(), event.getCreatedBy());
+            cancelOtp(event.getReferenceId());
         }
     }
 
     @SagaEventHandler(associationProperty = LOG_ID)
     private void handle(EmailCanceledEvent event) {
         log.info("Saga handles email canceled event: {}", event);
-        cancelOtp(event.getReferenceId(), event.getCreatedBy());
+        cancelOtp(event.getReferenceId());
     }
 
     // -------------------------------------------------------------------------
@@ -131,10 +123,9 @@ public class RegisterOtpCreationSaga {
     // -------------------------------------------------------------------------
     // XXX Private methods
     // -------------------------------------------------------------------------
-    private void cancelOtp(String otpId, String userId) {
-        commandGateway.send(CancelRegisterOtpCreateCommand.builder()
+    private void cancelOtp(String otpId) {
+        commandGateway.send(CancelOtpCreationCommand.builder()
                 .otpId(otpId)
-                .userId(userId)
                 .build());
     }
 }

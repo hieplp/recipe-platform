@@ -1,6 +1,7 @@
 package com.hieplp.recipe.auth.domain.command.service;
 
 
+import com.hieplp.recipe.auth.domain.command.payload.request.forgot.GenerateForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
@@ -18,4 +19,8 @@ public interface AuthCommandService {
 
     CompletableFuture<CommonResponse> resendRegisterOtp(ResendRegisterOtpRequest request);
 
+    // -------------------------------------------------------------------------
+    // XXX Forgot
+    // -------------------------------------------------------------------------
+    CompletableFuture<CommonResponse> generateForgotOtp(GenerateForgotOtpRequest request);
 }

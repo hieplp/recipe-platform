@@ -2,6 +2,7 @@ package com.hieplp.recipe.common.enums.notification;
 
 public enum TemplateAction {
     REGISTER("register"),
+    FORGOT("forgot"),
     ;
 
     private final String action;

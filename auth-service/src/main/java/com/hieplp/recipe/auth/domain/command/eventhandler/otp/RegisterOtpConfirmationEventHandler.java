@@ -5,13 +5,12 @@ import com.hieplp.recipe.auth.common.repository.generate.tables.records.OtpRecor
 import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCanceledEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmedEvent;
+import com.hieplp.recipe.common.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @Slf4j
@@ -28,7 +27,7 @@ public class RegisterOtpConfirmationEventHandler {
                 .setOtpid(event.getOtpId())
                 .setStatus(event.getStatus())
                 .setModifiedby(event.getUserId())
-                .setModifiedat(LocalDateTime.now());
+                .setModifiedat(DateUtil.now());
         otpRepo.updateNotNull(otpRecord);
     }
 
@@ -44,7 +43,7 @@ public class RegisterOtpConfirmationEventHandler {
                 .setOtpid(event.getOtpId())
                 .setStatus(event.getStatus())
                 .setModifiedby(event.getModifiedBy())
-                .setModifiedat(LocalDateTime.now());
+                .setModifiedat(DateUtil.now());
         otpRepo.updateNotNull(otpRecord);
     }
 }

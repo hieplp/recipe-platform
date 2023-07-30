@@ -7,6 +7,7 @@ import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistory
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCanceledEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCompletedEvent;
 import com.hieplp.recipe.common.enums.otp.OtpHistoryStatus;
+import com.hieplp.recipe.common.util.DateUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -46,7 +47,7 @@ public class OtpHistoryAggregate {
         var createdEvent = new OtpHistoryCreatedEvent();
         BeanUtils.copyProperties(command, createdEvent);
         //
-        createdEvent.setCreatedAt(LocalDateTime.now());
+        createdEvent.setCreatedAt(DateUtil.now());
         //
         AggregateLifecycle.apply(createdEvent);
     }
@@ -59,7 +60,7 @@ public class OtpHistoryAggregate {
         BeanUtils.copyProperties(command, completedEvent);
         //
         completedEvent.setOtpId(this.otpId);
-        completedEvent.setModifiedAt(LocalDateTime.now());
+        completedEvent.setModifiedAt(DateUtil.now());
         //
         AggregateLifecycle.apply(completedEvent);
     }
@@ -70,7 +71,7 @@ public class OtpHistoryAggregate {
         var canceledEvent = new OtpHistoryCreationCanceledEvent();
         BeanUtils.copyProperties(command, canceledEvent);
         //
-        canceledEvent.setModifiedAt(LocalDateTime.now());
+        canceledEvent.setModifiedAt(DateUtil.now());
         canceledEvent.setStatus(OtpHistoryStatus.CANCELED.getStatus());
         //
         AggregateLifecycle.apply(canceledEvent);

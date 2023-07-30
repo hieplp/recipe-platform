@@ -5,6 +5,7 @@ import com.hieplp.recipe.auth.common.repository.generate.tables.records.TempUser
 import com.hieplp.recipe.auth.config.component.UserRSAEncryption;
 import com.hieplp.recipe.auth.domain.command.commands.user.create.CompleteTempUserCreationCommand;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCreatedEvent;
+import com.hieplp.recipe.common.util.DateUtil;
 import com.hieplp.recipe.common.util.EncryptUtil;
 import com.hieplp.recipe.common.util.GeneratorUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
@@ -46,9 +46,9 @@ public class UserEventHandler {
                     .setPassword(password)
                     .setSalt(salt)
                     .setCreatedby(event.getCreatedBy())
-                    .setCreatedat(LocalDateTime.now())
+                    .setCreatedat(DateUtil.now())
                     .setModifiedby(event.getCreatedBy())
-                    .setModifiedat(LocalDateTime.now());
+                    .setModifiedat(DateUtil.now());
             tempUserRepo.save(tempUser);
 
             // Complete command

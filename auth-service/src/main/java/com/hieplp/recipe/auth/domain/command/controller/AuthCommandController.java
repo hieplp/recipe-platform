@@ -1,10 +1,12 @@
 package com.hieplp.recipe.auth.domain.command.controller;
 
+import com.hieplp.recipe.auth.domain.command.payload.request.forgot.GenerateForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.service.AuthCommandService;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
+import io.netty.util.concurrent.CompleteFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +38,16 @@ public class AuthCommandController {
     public CompletableFuture<CommonResponse> resendRegisterOtp(@RequestBody @Valid ResendRegisterOtpRequest request) {
         log.info("Resend OTP for register with request: {}", request);
         return authService.resendRegisterOtp(request);
+    }
+
+    @PostMapping("/forgot/otp")
+    public CompleteFuture<CommonResponse> generateForgotOtp(@RequestBody @Valid GenerateForgotOtpRequest request) {
+        log.info("Generate OTP for forgot password with request: {}", request);
+        return null;
+    }
+
+    @PutMapping("/forgot/otp")
+    public CompleteFuture<CommonResponse> confirmForgotOtp() {
+        return null;
     }
 }

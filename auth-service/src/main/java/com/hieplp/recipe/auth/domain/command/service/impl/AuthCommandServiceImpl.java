@@ -2,9 +2,11 @@ package com.hieplp.recipe.auth.domain.command.service.impl;
 
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
+import com.hieplp.recipe.auth.domain.command.commands.otp.forgot.create.CreateForgotOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.ConfirmRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CreateRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.payload.request.forgot.GenerateForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
@@ -15,6 +17,7 @@ import com.hieplp.recipe.common.enums.IdLength;
 import com.hieplp.recipe.common.enums.response.ErrorCode;
 import com.hieplp.recipe.common.enums.response.SuccessCode;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
+import com.hieplp.recipe.common.util.DateUtil;
 import com.hieplp.recipe.common.util.GeneratorUtil;
 import com.hieplp.recipe.common.util.MaskUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -44,7 +46,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         final var otpId = GeneratorUtil.generateId(IdLength.OTP_ID);
         final var otpCode = GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH);
         final var userId = GeneratorUtil.generateId(IdLength.USER_ID);
-        final var issuedAt = LocalDateTime.now();
+        final var issuedAt = DateUtil.now();
         final var expiredAt = issuedAt.plusSeconds(authConfig.getRegisterOtp().getExpirationTime());
         //
         final var command = CreateRegisterOtpCommand.builder()
@@ -97,6 +99,35 @@ public class AuthCommandServiceImpl implements AuthCommandService {
                             .maskedEmail(MaskUtil.maskEmail(otp.getSendTo()))
                             .expiredAt(otp.getExpiredAt().toString())
                             .expiredIn(authConfig.getRegisterOtp().getExpirationTime())
+                            .build();
+                    return new CommonResponse(SuccessCode.SUCCESS, response);
+                })
+                .exceptionally(t -> new CommonResponse(ErrorCode.INTERNAL_SERVER_ERROR));
+    }
+
+    @Override
+    public CompletableFuture<CommonResponse> generateForgotOtp(GenerateForgotOtpRequest request) {
+        log.info("Generate OTP for forgot password with request: {}", request);
+
+        final var otpId = GeneratorUtil.generateId(IdLength.OTP_ID);
+        final var otpCode = GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH);
+        final var issuedAt = DateUtil.now();
+        final var expiredAt = issuedAt.plusSeconds(authConfig.getForgotOtp().getExpirationTime());
+
+        final var command = CreateForgotOtpCommand.builder()
+                .otpId(otpId)
+                .otpCode(otpCode)
+                .sendTo(request.getEmail())
+                .issuedAt(issuedAt)
+                .expiredAt(expiredAt)
+                .build();
+        return commandGateway.send(command)
+                .thenApply(it -> {
+                    var response = GenerateRegisterOtpResponse.builder()
+                            .otpId(otpId)
+                            .maskedEmail(MaskUtil.maskEmail(request.getEmail()))
+                            .expiredAt(expiredAt.toString())
+                            .expiredIn(authConfig.getForgotOtp().getExpirationTime())
                             .build();
                     return new CommonResponse(SuccessCode.SUCCESS, response);
                 })

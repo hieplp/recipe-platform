@@ -11,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app.auth")
 public class AuthConfig {
     private OtpConfig registerOtp;
+    private OtpConfig forgotOtp;
     private RsaConfig rsa;
 }

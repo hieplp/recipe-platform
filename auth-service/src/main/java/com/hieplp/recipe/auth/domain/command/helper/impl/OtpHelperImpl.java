@@ -23,7 +23,18 @@ public class OtpHelperImpl implements OtpHelper {
 
     @Override
     public void sendRegisterOtp(String otpId, String logId, String sentBy) {
-        log.info("Send register otp via email: {}", otpId);
+        sendOtp(otpId, logId, sentBy, TemplateAction.REGISTER);
+    }
+
+    @Override
+    public void sendForgotOtp(String otpId, String logId, String sentBy) {
+        sendOtp(otpId, logId, sentBy, TemplateAction.FORGOT);
+    }
+
+    @Override
+    public void sendOtp(String otpId, String logId, String sentBy, TemplateAction action) {
+        log.debug("Send otp via email: {} with logId:{}, sentBy: {} and action: {}", otpId, logId, sentBy, action);
+
         var otp = queryGateway.query(new GetOtpQuery(otpId), OtpEntity.class).join();
         if (otp == null) {
             throw new IllegalArgumentException("Otp not found");
@@ -36,7 +47,7 @@ public class OtpHelperImpl implements OtpHelper {
         // Send OTP via email
         commandGateway.send(SendEmailCommand.builder()
                 .logId(logId)
-                .action(TemplateAction.REGISTER.getAction())
+                .action(action.getAction())
                 .sendTo(otp.getSendTo())
                 .params(params)
                 .referenceId(otp.getOtpId())
