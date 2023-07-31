@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum IdLength {
     USER_ID(10),
     OTP_ID(10),
@@ -11,7 +14,4 @@ public enum IdLength {
         this.length = length;
     }
 
-    public int getLength() {
-        return length;
-    }
 }

@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.otp;
 
+import lombok.Getter;
+
+@Getter
 public enum OtpHistoryStatus {
     INIT(0),
     CANCELED(1),
@@ -13,7 +16,4 @@ public enum OtpHistoryStatus {
         this.status = status.byteValue();
     }
 
-    public Byte getStatus() {
-        return status;
-    }
 }

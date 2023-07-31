@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.user;
 
+import lombok.Getter;
+
+@Getter
 public enum TempUserStatus {
     PENDING(0),
     ACTIVE(1),
@@ -12,7 +15,4 @@ public enum TempUserStatus {
         this.status = status.byteValue();
     }
 
-    public Byte getStatus() {
-        return status;
-    }
 }

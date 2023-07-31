@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.otp;
 
+import lombok.Getter;
+
+@Getter
 public enum OtpStatus {
     CREATED(0),
     ACTIVATED(1),
@@ -11,9 +14,5 @@ public enum OtpStatus {
 
     OtpStatus(Integer status) {
         this.status = status.byteValue();
-    }
-
-    public Byte getStatus() {
-        return status;
     }
 }

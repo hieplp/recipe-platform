@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.notification;
 
+import lombok.Getter;
+
+@Getter
 public enum SendVia {
     EMAIL(0),
     ;
@@ -8,9 +11,5 @@ public enum SendVia {
 
     SendVia(Integer sendVia) {
         this.sendVia = sendVia.byteValue();
-    }
-
-    public Byte getSendVia() {
-        return sendVia;
     }
 }

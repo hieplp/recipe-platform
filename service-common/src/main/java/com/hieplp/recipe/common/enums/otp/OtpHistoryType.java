@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.otp;
 
+import lombok.Getter;
+
+@Getter
 public enum OtpHistoryType {
     CONFIRM(0),
     RESEND(1);
@@ -8,9 +11,5 @@ public enum OtpHistoryType {
 
     OtpHistoryType(Integer type) {
         this.type = type.byteValue();
-    }
-
-    public Byte getType() {
-        return type;
     }
 }

@@ -2,11 +2,14 @@ package com.hieplp.recipe.auth.domain.command.service.impl;
 
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
-import com.hieplp.recipe.auth.domain.command.commands.otp.forgot.create.CreateForgotOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.ConfirmRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CreateRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.payload.request.forgot.ConfirmForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.forgot.GenerateForgotOtpRequest;
+import com.hieplp.recipe.auth.domain.command.payload.request.forgot.ResendForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
@@ -127,6 +130,35 @@ public class AuthCommandServiceImpl implements AuthCommandService {
                             .otpId(otpId)
                             .maskedEmail(MaskUtil.maskEmail(request.getEmail()))
                             .expiredAt(expiredAt.toString())
+                            .expiredIn(authConfig.getForgotOtp().getExpirationTime())
+                            .build();
+                    return new CommonResponse(SuccessCode.SUCCESS, response);
+                })
+                .exceptionally(t -> new CommonResponse(ErrorCode.INTERNAL_SERVER_ERROR));
+    }
+
+    @Override
+    public CompletableFuture<CommonResponse> confirmForgotOtp(ConfirmForgotOtpRequest request) {
+        log.info("Confirm OTP for forgot password with request: {}", request);
+
+
+
+        return null;
+    }
+
+    @Override
+    public CompletableFuture<CommonResponse> resendForgotOtp(ResendForgotOtpRequest request) {
+        log.info("Resend OTP for forgot password with request: {}", request);
+        var resendCommand = ResendForgotOtpCommand.builder()
+                .otpId(request.getOtpId())
+                .build();
+        return commandGateway.send(resendCommand)
+                .thenApply(it -> {
+                    var otp = queryGateway.query(new GetOtpQuery(request.getOtpId()), OtpEntity.class).join();
+                    var response = GenerateRegisterOtpResponse.builder()
+                            .otpId(otp.getOtpId())
+                            .maskedEmail(MaskUtil.maskEmail(otp.getSendTo()))
+                            .expiredAt(otp.getExpiredAt().toString())
                             .expiredIn(authConfig.getForgotOtp().getExpirationTime())
                             .build();
                     return new CommonResponse(SuccessCode.SUCCESS, response);

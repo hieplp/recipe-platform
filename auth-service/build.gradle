@@ -86,29 +86,29 @@ tasks.named('test') {
 // XXX: Generate SQL. Should be commented after first run
 // ------------------------------------------------------------
 
-import org.jooq.codegen.GenerationTool
-import org.jooq.meta.jaxb.*
-
-GenerationTool.generate(new Configuration()
-
-        .withJdbc(new Jdbc()
-                .withDriver('org.mariadb.jdbc.Driver')
-                .withUrl('jdbc:mariadb://127.0.0.1:3306/authentication')
-                .withUser('root')
-                .withPassword('123456'))
-
-        .withGenerator(new Generator()
-                .withDatabase(new Database()
-                        .withName("org.jooq.meta.mysql.MySQLDatabase")
-                        .withInputSchema("authentication")
-                        .withOutputSchema("authentication")
-                        .withExcludes(
-                                "association_value_entry | dead_letter_entry | domain_event_entry | hibernate_sequence | saga_entry | token_entry | snapshot_event_entry"
-                        ))
-                .withGenerate(new Generate()
-                        .withFluentSetters(true)
-                        .withPojos(true)
-                        .withDaos(true))
-                .withTarget(new Target()
-                        .withPackageName('com.hieplp.recipe.auth.common.repository.generate')
-                        .withDirectory('/home/hieplp/Projects/recipe-sharing-platform/auth-service/src/main/java'))))
+//import org.jooq.codegen.GenerationTool
+//import org.jooq.meta.jaxb.*
+//
+//GenerationTool.generate(new Configuration()
+//
+//        .withJdbc(new Jdbc()
+//                .withDriver('org.mariadb.jdbc.Driver')
+//                .withUrl('jdbc:mariadb://127.0.0.1:3306/authentication')
+//                .withUser('root')
+//                .withPassword('123456'))
+//
+//        .withGenerator(new Generator()
+//                .withDatabase(new Database()
+//                        .withName("org.jooq.meta.mysql.MySQLDatabase")
+//                        .withInputSchema("authentication")
+//                        .withOutputSchema("authentication")
+//                        .withExcludes(
+//                                "association_value_entry | dead_letter_entry | domain_event_entry | hibernate_sequence | saga_entry | token_entry | snapshot_event_entry"
+//                        ))
+//                .withGenerate(new Generate()
+//                        .withFluentSetters(true)
+//                        .withPojos(true)
+//                        .withDaos(true))
+//                .withTarget(new Target()
+//                        .withPackageName('com.hieplp.recipe.auth.common.repository.generate')
+//                        .withDirectory('/home/hieplp/Projects/recipe-sharing-platform/auth-service/src/main/java'))))

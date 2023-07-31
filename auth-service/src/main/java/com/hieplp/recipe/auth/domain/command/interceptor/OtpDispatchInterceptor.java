@@ -2,11 +2,15 @@ package com.hieplp.recipe.auth.domain.command.interceptor;
 
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
-import com.hieplp.recipe.auth.domain.command.commands.otp.forgot.create.CreateForgotOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CreateOtpHistoryCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.ConfirmRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CreateRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.history.create.CreateOtpHistoryCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.helper.OtpHelper;
 import com.hieplp.recipe.auth.domain.query.queries.history.GetTodayOtpHistoryQuotaQuery;
 import com.hieplp.recipe.auth.domain.query.queries.otp.GetOtpQuery;
 import com.hieplp.recipe.auth.domain.query.queries.otp.GetTodayOtpQuotaQuery;
@@ -42,11 +46,10 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 public class OtpDispatchInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
 
-    private static final int DEFAULT_HISTORY_ID_LENGTH = 10;
-
     private final AuthConfig authConfig;
     private final QueryGateway queryGateway;
     private final CommandGateway commandGateway;
+    private final OtpHelper otpHelper;
 
     @NonNull
     @Override
@@ -67,6 +70,12 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
                 handle(command);
             } else if (CreateForgotOtpCommand.class.equals(payloadType)) {
                 var command = (CreateForgotOtpCommand) payload;
+                handle(command);
+            } else if (ConfirmForgotOtpCommand.class.equals(payloadType)) {
+                var command = (ConfirmForgotOtpCommand) payload;
+                handle(command);
+            } else if (ResendForgotOtpCommand.class.equals(payloadType)) {
+                var command = (ResendForgotOtpCommand) payload;
                 handle(command);
             }
 
@@ -96,12 +105,7 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         }
 
         // Check if quota is exceeded
-        var quota = queryGateway.query(new GetTodayOtpQuotaQuery(command.getSendTo(), OtpType.REGISTER.getType()), int.class).join();
-        log.info("Current quota: {} and config quota: {}", quota, authConfig.getRegisterOtp().getQuota());
-        if (quota >= authConfig.getRegisterOtp().getQuota()) {
-            log.error("Quota is exceeded");
-            throw new ExceededOtpQuotaException("Quota is exceeded");
-        }
+        validateQuota(command.getSendTo(), authConfig.getRegisterOtp().getQuota(), OtpType.REGISTER);
     }
 
     // -------------------------------------------------------------------------
@@ -112,39 +116,20 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
             log.info("Handle confirm register otp command interceptor: {}", command);
 
             // Validate OTP
-            var otp = validateOtp(command.getOtpId());
+            var otp = validateOtp(command.getOtpId(), OtpType.REGISTER);
 
             // Check if OTP issue times is exceeded
-            var quota = queryGateway.query(new GetTodayOtpHistoryQuotaQuery(otp.getOtpId(), OtpHistoryType.CONFIRM.getType()), int.class).join();
-            log.info("Current quota: {} and config quota: {}", quota, authConfig.getRegisterOtp().getWrongQuota());
-            if (quota >= authConfig.getRegisterOtp().getWrongQuota()) {
-                log.error("Quota is exceeded");
-                throw new ExceededOtpQuotaException("Quota is exceeded");
-            }
+            validateHistoryQuota(otp.getOtpId(), authConfig.getRegisterOtp().getWrongQuota(), OtpHistoryType.CONFIRM);
 
             // Check if OTP code is correct
-            if (!otp.getOtpCode().equals(command.getOtpCode())) {
-                log.error("OTP {} is wrong", command.getOtpId());
-                throw new WrongOtpException("OTP is wrong");
-            }
+            validateOtpCode(command.getOtpCode(), otp.getOtpCode());
 
-            saveRegisterOtpConfirmationHistory(command, OtpHistoryStatus.CORRECT);
+            // Save wrong/ correct OTP confirmation history to prevent brute force attack
+            saveOtpConfirmationHistory(command, OtpHistoryStatus.CORRECT);
         } catch (WrongOtpException e) {
-            saveRegisterOtpConfirmationHistory(command, OtpHistoryStatus.WRONG);
+            saveOtpConfirmationHistory(command, OtpHistoryStatus.WRONG);
             throw e;
         }
-    }
-
-    private void saveRegisterOtpConfirmationHistory(ConfirmRegisterOtpCommand command, OtpHistoryStatus status) {
-        var createOtpHistoryCommand = CreateOtpHistoryCommand.builder()
-                .otpHistoryId(GeneratorUtil.generateId(IdLength.OTP_HISTORY_ID))
-                .otpId(command.getOtpId())
-                .otpCode(command.getOtpCode())
-                .type(OtpHistoryType.CONFIRM.getType())
-                .status(status.getStatus())
-                .createdBy("anonymous")
-                .build();
-        commandGateway.sendAndWait(createOtpHistoryCommand);
     }
 
     // -------------------------------------------------------------------------
@@ -152,16 +137,12 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
     // -------------------------------------------------------------------------
     private void handle(ResendRegisterOtpCommand command) {
         log.info("Validate resend register otp command: {}", command);
-        // Validate OTP
-        validateOtp(command.getOtpId());
 
-        // Check if quota is exceeded
-        var quota = queryGateway.query(new GetTodayOtpHistoryQuotaQuery(command.getOtpId(), OtpHistoryType.RESEND.getType()), int.class).join();
-        log.info("Current quota: {} and config quota: {}", quota, authConfig.getRegisterOtp().getWrongQuota());
-        if (quota >= authConfig.getRegisterOtp().getResendQuota()) {
-            log.error("Quota is exceeded");
-            throw new ExceededOtpQuotaException("Quota is exceeded");
-        }
+        // Validate OTP
+        validateOtp(command.getOtpId(), OtpType.REGISTER);
+
+        // Validate total resend times
+        validateHistoryQuota(command.getOtpId(), authConfig.getRegisterOtp().getResendQuota(), OtpHistoryType.RESEND);
     }
 
     // -------------------------------------------------------------------------
@@ -178,19 +159,63 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         }
 
         // Check if quota is exceeded
-        var quota = queryGateway.query(new GetTodayOtpQuotaQuery(command.getSendTo(), OtpType.FORGOT_PASSWORD.getType()), int.class).join();
-        log.info("Current quota: {} and config quota: {}", quota, authConfig.getForgotOtp().getQuota());
-        if (quota >= authConfig.getForgotOtp().getQuota()) {
-            log.error("Quota is exceeded");
-            throw new ExceededOtpQuotaException("Quota is exceeded");
+        validateQuota(command.getSendTo(), authConfig.getForgotOtp().getQuota(), OtpType.FORGOT_PASSWORD);
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Forgot OTP Confirmation
+    // -------------------------------------------------------------------------
+    private void handle(ConfirmForgotOtpCommand command) {
+        try {
+            log.info("Handle confirm forgot otp command interceptor: {}", command);
+
+            // Validate OTP
+            var otp = validateOtp(command.getOtpId(), OtpType.FORGOT_PASSWORD);
+
+            // Validate OTP issue times
+            validateHistoryQuota(otp.getOtpId(), authConfig.getForgotOtp().getWrongQuota(), OtpHistoryType.CONFIRM);
+
+            // Check if OTP code is correct
+            validateOtpCode(command.getOtpCode(), otp.getOtpCode());
+
+            // Save wrong/ correct OTP confirmation history to prevent brute force attack
+            saveOtpConfirmationHistory(command, OtpHistoryStatus.CORRECT);
+        } catch (WrongOtpException e) {
+            saveOtpConfirmationHistory(command, OtpHistoryStatus.CORRECT);
+            throw e;
         }
     }
 
+    // -------------------------------------------------------------------------
+    // XXX Forgot OTP Resend
+    // -------------------------------------------------------------------------
+    private void handle(ResendForgotOtpCommand command) {
+        log.info("Handle resend forgot otp command interceptor: {}", command);
 
+        // Validate OTP
+        var otp = validateOtp(command.getOtpId(), OtpType.FORGOT_PASSWORD);
+
+        // Validate total resend times
+        validateHistoryQuota(otp.getOtpId(), authConfig.getForgotOtp().getResendQuota(), OtpHistoryType.RESEND);
+    }
+
+    /**
+     * Validate OTP, such as existence, type, expiration, etc.
+     *
+     * @param otpId   id of OTP
+     * @param otpType type of OTP {@link OtpType}
+     * @return {@link OtpEntity}
+     * @throws NotFoundException   if OTP is not found
+     * @throws ExpiredOtpException if OTP is expired
+     * @throws BadRequestException if OTP is not for register.
+     *                             if OTP is not for forgot password
+     *                             if OTP is not issued yet
+     *                             if OTP is used
+     */
     // -------------------------------------------------------------------------
     // XXX Common methods
     // -------------------------------------------------------------------------
-    private OtpEntity validateOtp(String otpId) {
+    private OtpEntity validateOtp(String otpId, OtpType otpType) {
         var otp = queryGateway.query(new GetOtpQuery(otpId), OtpEntity.class).join();
 
         // Check if OTP exists
@@ -200,9 +225,9 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         }
 
         // Check if OTP is for register
-        if (!OtpType.REGISTER.getType().equals(otp.getType())) {
-            log.error("OTP {} is not for register", otpId);
-            throw new BadRequestException("OTP is not for register");
+        if (!otpType.getType().equals(otp.getType())) {
+            log.error("OTP {} is not for {}", otpId, otpType.getType());
+            throw new BadRequestException(String.format("OTP is not for %s", otpType.getType()));
         }
 
         // Check OTP issuedAt
@@ -224,5 +249,74 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         }
 
         return otp;
+    }
+
+    /**
+     * Validate quota for OTP. like quota for register, forgot password, etc.
+     *
+     * @param sendTo      email or phone number
+     * @param configQuota quota from config
+     * @param otpType     otp type {@link OtpType}
+     * @throws ExceededOtpQuotaException if quota is exceeded
+     */
+    private void validateQuota(String sendTo,
+                               int configQuota,
+                               OtpType otpType) {
+        var quota = queryGateway.query(new GetTodayOtpQuotaQuery(sendTo, otpType.getType()), int.class).join();
+        log.info("Current quota: {} and config quota: {}", quota, configQuota);
+        if (quota >= configQuota) {
+            log.error("Quota is exceeded");
+            throw new ExceededOtpQuotaException("Quota is exceeded");
+        }
+    }
+
+    /**
+     * Validate quota for OTP history. like wrong quota, resend quota, etc.
+     *
+     * @param otpId       otpId to validate
+     * @param configQuota quota from config
+     * @param historyType history type  {@link OtpHistoryType}
+     * @throws ExceededOtpQuotaException if quota is exceeded
+     */
+    private void validateHistoryQuota(String otpId,
+                                      int configQuota,
+                                      OtpHistoryType historyType) {
+        var quota = queryGateway.query(new GetTodayOtpHistoryQuotaQuery(otpId, historyType.getType()), int.class).join();
+        log.info("Current quota: {} and config quota: {}", quota, configQuota);
+        if (quota >= configQuota) {
+            log.error("Quota is exceeded");
+            throw new ExceededOtpQuotaException("Quota is exceeded");
+        }
+    }
+
+    /**
+     * Validate if otpCode from request is match with otpCode in database.
+     *
+     * @param otpCodeFromRequest otpCode from request
+     * @param otpCodeInDb        otpCode in database
+     * @throws WrongOtpException if otpCode from request is not match with otpCode in database
+     */
+    private void validateOtpCode(String otpCodeFromRequest, String otpCodeInDb) {
+        if (!otpCodeInDb.equals(otpCodeFromRequest)) {
+            log.error("OTP code is wrong");
+            throw new WrongOtpException("OTP code is wrong");
+        }
+    }
+
+    /**
+     * Save otp confirmation history
+     *
+     * @param command command extends {@link ConfirmOtpCommand}
+     * @param status  {@link OtpHistoryStatus}
+     */
+    private void saveOtpConfirmationHistory(ConfirmOtpCommand command, OtpHistoryStatus status) {
+        otpHelper.sendCreateOtpHistoryCommand(CreateOtpHistoryCommand.builder()
+                .otpHistoryId(GeneratorUtil.generateId(IdLength.OTP_HISTORY_ID))
+                .otpId(command.getOtpId())
+                .otpCode(command.getOtpCode())
+                .type(OtpHistoryType.CONFIRM.getType())
+                .status(status.getStatus())
+                .createdBy("anonymous")
+                .build());
     }
 }

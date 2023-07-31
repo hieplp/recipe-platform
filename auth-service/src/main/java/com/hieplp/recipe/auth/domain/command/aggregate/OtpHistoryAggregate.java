@@ -1,11 +1,11 @@
 package com.hieplp.recipe.auth.domain.command.aggregate;
 
-import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CancelOtpHistoryCreationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CompleteOtpHistoryCreationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.history.create.CreateOtpHistoryCommand;
-import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreatedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.history.create.OtpHistoryCreationCompletedEvent;
+import com.hieplp.recipe.auth.domain.command.commands.history.create.CancelOtpHistoryCreationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.history.create.CompleteOtpHistoryCreationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.history.create.CreateOtpHistoryCommand;
+import com.hieplp.recipe.auth.domain.command.event.history.create.OtpHistoryCreatedEvent;
+import com.hieplp.recipe.auth.domain.command.event.history.create.OtpHistoryCreationCanceledEvent;
+import com.hieplp.recipe.auth.domain.command.event.history.create.OtpHistoryCreationCompletedEvent;
 import com.hieplp.recipe.common.enums.otp.OtpHistoryStatus;
 import com.hieplp.recipe.common.util.DateUtil;
 import lombok.Data;

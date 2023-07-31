@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.notification;
 
+import lombok.Getter;
+
+@Getter
 public enum TemplateAction {
     REGISTER("register"),
     FORGOT("forgot"),
@@ -11,7 +14,4 @@ public enum TemplateAction {
         this.action = action;
     }
 
-    public String getAction() {
-        return action;
-    }
 }

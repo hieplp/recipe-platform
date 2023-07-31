@@ -1,28 +1,33 @@
 package com.hieplp.recipe.auth.domain.command.aggregate;
 
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.CancelOtpConfirmationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.CompleteOtpConfirmationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.create.CancelOtpCreationCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.create.CompleteOtpCreationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.forgot.create.CreateForgotOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.CancelRegisterOtpConfirmationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.CompleteRegisterOtpConfirmationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.ConfirmRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.create.CreateRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.CancelRegisterOtpResendCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.CompleteRegisterOtpResendCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.CancelOtpResendCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.CompleteOtpResendCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendRegisterOtpCommand;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.ForgotOtpConfirmedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.OtpConfirmationCanceledEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.OtpConfirmationCompletedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.RegisterOtpConfirmedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.create.ForgotOtpCreatedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.create.OtpCreationCanceledEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.create.OtpCreationCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.create.RegisterOtpCreatedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.resent.RegisterOtpResendCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.resent.RegisterOtpResendCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.resent.RegisterOtpResentEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.resend.ForgotOtpResentEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.resend.OtpResendCanceledEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.resend.OtpResendCompletedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.resend.RegisterOtpResentEvent;
 import com.hieplp.recipe.common.enums.otp.OtpStatus;
 import com.hieplp.recipe.common.enums.otp.OtpType;
 import com.hieplp.recipe.common.util.DateUtil;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -33,8 +38,9 @@ import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-@Aggregate
+@Data
 @Slf4j
+@Aggregate
 public class OtpAggregate {
     @AggregateIdentifier
     private String otpId;
@@ -94,32 +100,19 @@ public class OtpAggregate {
 
     @EventSourcingHandler
     private void on(RegisterOtpCreatedEvent event) {
-        this.otpId = event.getOtpId();
-        this.status = event.getStatus();
-        this.type = event.getType();
-        this.sendTo = event.getSendTo();
-        this.issuedAt = event.getIssuedAt();
-        this.expiredAt = event.getExpiredAt();
-        this.createdBy = event.getCreatedBy();
-        this.createdAt = event.getCreatedAt();
+        BeanUtils.copyProperties(event, this);
         this.modifiedBy = event.getCreatedBy();
         this.modifiedAt = event.getCreatedAt();
     }
 
     @EventSourcingHandler
     private void on(ForgotOtpCreatedEvent event) {
-        this.otpId = event.getOtpId();
-        this.status = event.getStatus();
-        this.type = event.getType();
-        this.sendTo = event.getSendTo();
-        this.issuedAt = event.getIssuedAt();
-        this.expiredAt = event.getExpiredAt();
-        this.createdBy = event.getCreatedBy();
-        this.createdAt = event.getCreatedAt();
+        log.info("Forgot otp created event: {}", event.getOtpId());
+        BeanUtils.copyProperties(event, this);
         this.modifiedBy = event.getCreatedBy();
         this.modifiedAt = event.getCreatedAt();
+        log.info("Forgot otp created event: {}", this);
     }
-
 
     // -------------------------------------------------------------------------
     // XXX Creation - Complete
@@ -170,7 +163,74 @@ public class OtpAggregate {
     }
 
     // -------------------------------------------------------------------------
-    // XXX Register - Confirm
+    // XXX Register - Resend
+    // -------------------------------------------------------------------------
+    @CommandHandler
+    private void handle(ResendRegisterOtpCommand command) {
+        log.info("Resend registration otp command: {}", command);
+        var otpCreatedEvent = new RegisterOtpResentEvent();
+        BeanUtils.copyProperties(command, otpCreatedEvent);
+        //
+        AggregateLifecycle.apply(otpCreatedEvent);
+    }
+
+    @EventSourcingHandler
+    private void on(RegisterOtpResentEvent event) {
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Resend - Forgot
+    // -------------------------------------------------------------------------
+    @CommandHandler
+    private void handle(ResendForgotOtpCommand command) {
+        log.info("Resend forgot otp command: {}", command);
+
+        var otpResentEvent = new ForgotOtpResentEvent();
+        BeanUtils.copyProperties(command, otpResentEvent);
+
+        AggregateLifecycle.apply(otpResentEvent);
+    }
+
+    @CommandHandler
+    private void on(ForgotOtpResentEvent event) {
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Resend - Complete
+    // -------------------------------------------------------------------------
+
+    @CommandHandler
+    private void handle(CompleteOtpResendCommand command) {
+        log.info("Complete otp resend command: {}", command);
+        var otpCompletedEvent = new OtpResendCompletedEvent();
+        BeanUtils.copyProperties(command, otpCompletedEvent);
+        //
+        AggregateLifecycle.apply(otpCompletedEvent);
+    }
+
+    @EventSourcingHandler
+    private void on(OtpResendCompletedEvent event) {
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Resend - Cancel
+    // -------------------------------------------------------------------------
+
+    @CommandHandler
+    private void handle(CancelOtpResendCommand command) {
+        log.info("Cancel otp resend command: {}", command);
+        var otpCanceledEvent = new OtpResendCanceledEvent();
+        BeanUtils.copyProperties(command, otpCanceledEvent);
+        //
+        AggregateLifecycle.apply(otpCanceledEvent);
+    }
+
+    @EventSourcingHandler
+    private void on(OtpResendCanceledEvent event) {
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Confirmation - Register
     // -------------------------------------------------------------------------
 
     @CommandHandler
@@ -184,84 +244,60 @@ public class OtpAggregate {
         AggregateLifecycle.apply(confirmedEvent);
     }
 
-    @CommandHandler
-    private void handle(CompleteRegisterOtpConfirmationCommand command) {
-        log.info("Complete registration otp confirmation command: {}", command);
-        var completedEvent = new RegisterOtpConfirmationCompletedEvent();
-        BeanUtils.copyProperties(command, completedEvent);
-        //
-        AggregateLifecycle.apply(completedEvent);
-    }
-
-    @CommandHandler
-    private void handle(CancelRegisterOtpConfirmationCommand command) {
-        log.info("Cancel registration otp confirmation command: {}", command);
-        var canceledEvent = new RegisterOtpConfirmationCanceledEvent();
-        BeanUtils.copyProperties(command, canceledEvent);
-        //
-        AggregateLifecycle.apply(canceledEvent);
-    }
-
     @EventSourcingHandler
     private void on(RegisterOtpConfirmedEvent event) {
         this.otpId = event.getOtpId();
         this.status = event.getStatus();
     }
 
+    // -------------------------------------------------------------------------
+    // XXX Confirmation - Forgot
+    // -------------------------------------------------------------------------
+
+    @CommandHandler
+    private void handle(ConfirmForgotOtpCommand command) {
+        log.info("Confirm forgot otp command: {}", command);
+        var confirmedEvent = new ForgotOtpConfirmedEvent();
+        BeanUtils.copyProperties(command, confirmedEvent);
+        //
+        confirmedEvent.setStatus(OtpStatus.CONFIRMED.getStatus());
+        //
+        AggregateLifecycle.apply(confirmedEvent);
+    }
+
+    // -------------------------------------------------------------------------
+    // XXX Confirmation - Complete
+    // -------------------------------------------------------------------------
+
+    @CommandHandler
+    private void handle(CompleteOtpConfirmationCommand command) {
+        log.info("Complete registration otp confirmation command: {}", command);
+        var completedEvent = new OtpConfirmationCompletedEvent();
+        BeanUtils.copyProperties(command, completedEvent);
+        //
+        AggregateLifecycle.apply(completedEvent);
+    }
+
     @EventSourcingHandler
-    private void on(RegisterOtpConfirmationCompletedEvent event) {
+    private void on(OtpConfirmationCompletedEvent event) {
         this.status = event.getStatus();
     }
 
+    // -------------------------------------------------------------------------
+    // XXX Confirmation - Cancel
+    // -------------------------------------------------------------------------
+    @CommandHandler
+    private void handle(CancelOtpConfirmationCommand command) {
+        log.info("Cancel registration otp confirmation command: {}", command);
+        var canceledEvent = new OtpConfirmationCanceledEvent();
+        BeanUtils.copyProperties(command, canceledEvent);
+        //
+        AggregateLifecycle.apply(canceledEvent);
+    }
+
     @EventSourcingHandler
-    private void on(RegisterOtpConfirmationCanceledEvent event) {
+    private void on(OtpConfirmationCanceledEvent event) {
         this.status = event.getStatus();
     }
 
-    // -------------------------------------------------------------------------
-    // XXX Register - Resend
-    // -------------------------------------------------------------------------
-    @CommandHandler
-    private void handle(ResendRegisterOtpCommand command) {
-        log.info("Resend registration otp command: {}", command);
-        var otpCreatedEvent = new RegisterOtpResentEvent();
-        BeanUtils.copyProperties(command, otpCreatedEvent);
-        //
-        AggregateLifecycle.apply(otpCreatedEvent);
-    }
-
-    @CommandHandler
-    private void handle(CompleteRegisterOtpResendCommand command) {
-        log.info("Complete registration otp resend command: {}", command);
-        var otpCompletedEvent = new RegisterOtpResendCompletedEvent();
-        BeanUtils.copyProperties(command, otpCompletedEvent);
-        //
-        AggregateLifecycle.apply(otpCompletedEvent);
-    }
-
-    @CommandHandler
-    private void handle(CancelRegisterOtpResendCommand command) {
-        log.info("Cancel registration otp resend command: {}", command);
-        var otpCanceledEvent = new RegisterOtpResendCanceledEvent();
-        BeanUtils.copyProperties(command, otpCanceledEvent);
-        //
-        AggregateLifecycle.apply(otpCanceledEvent);
-    }
-
-    @EventSourcingHandler
-    private void on(RegisterOtpResentEvent event) {
-    }
-
-    @EventSourcingHandler
-    private void on(RegisterOtpResendCompletedEvent event) {
-    }
-
-
-    @EventSourcingHandler
-    private void on(RegisterOtpResendCanceledEvent event) {
-    }
-
-    // -------------------------------------------------------------------------
-    // XXX Private methods
-    // -------------------------------------------------------------------------
 }

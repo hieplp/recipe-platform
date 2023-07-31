@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.notification;
 
+import lombok.Getter;
+
+@Getter
 public enum LogStatus {
     INIT(0),
     SUCCESS(1),
@@ -9,9 +12,5 @@ public enum LogStatus {
 
     LogStatus(Integer status) {
         this.status = status.byteValue();
-    }
-
-    public Byte getStatus() {
-        return status;
     }
 }

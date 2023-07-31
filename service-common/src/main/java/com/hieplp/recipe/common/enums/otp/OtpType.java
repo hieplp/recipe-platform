@@ -1,5 +1,8 @@
 package com.hieplp.recipe.common.enums.otp;
 
+import lombok.Getter;
+
+@Getter
 public enum OtpType {
     REGISTER(0),
     FORGOT_PASSWORD(1)
@@ -9,9 +12,5 @@ public enum OtpType {
 
     OtpType(Integer type) {
         this.type = type.byteValue();
-    }
-
-    public Byte getType() {
-        return type;
     }
 }

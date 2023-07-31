@@ -1,11 +1,11 @@
 package com.hieplp.recipe.auth.domain.command.saga.otp;
 
 import com.hieplp.recipe.auth.common.entity.TempUserEntity;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.CancelRegisterOtpConfirmationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.register.confirm.CompleteRegisterOtpConfirmationCommand;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmedEvent;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.CancelOtpConfirmationCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.CompleteOtpConfirmationCommand;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.OtpConfirmationCanceledEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.OtpConfirmationCompletedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.RegisterOtpConfirmedEvent;
 import com.hieplp.recipe.auth.domain.query.queries.tempuser.GetTempUserByOtpIdQuery;
 import com.hieplp.recipe.common.command.commands.user.create.CreateUserCommand;
 import com.hieplp.recipe.common.command.events.user.create.UserCreationCanceledEvent;
@@ -65,7 +65,7 @@ public class RegisterOtpConfirmationSaga {
     public void handle(UserCreationCompletedEvent event) {
         try {
             log.info("Saga handles user creation completed event: {}", event);
-            var completedEvent = CompleteRegisterOtpConfirmationCommand.builder()
+            var completedEvent = CompleteOtpConfirmationCommand.builder()
                     .otpId(event.getReferenceId())
                     .build();
             commandGateway.sendAndWait(completedEvent);
@@ -83,20 +83,20 @@ public class RegisterOtpConfirmationSaga {
 
     @EndSaga
     @SagaEventHandler(associationProperty = OTP_ID)
-    public void handle(RegisterOtpConfirmationCompletedEvent command) {
+    public void handle(OtpConfirmationCompletedEvent command) {
         log.info("Saga handles complete register otp confirmation command: {}", command);
         SagaLifecycle.end();
     }
 
     @EndSaga
     @SagaEventHandler(associationProperty = OTP_ID)
-    public void handle(RegisterOtpConfirmationCanceledEvent event) {
+    public void handle(OtpConfirmationCanceledEvent event) {
         log.info("Saga handles cancel register otp confirmation command: {}", event);
         SagaLifecycle.end();
     }
 
     private void cancelRegisterOtpConfirmation(String otpId, String modifiedBy) {
-        var cancelCommand = CancelRegisterOtpConfirmationCommand.builder()
+        var cancelCommand = CancelOtpConfirmationCommand.builder()
                 .otpId(otpId)
                 .modifiedBy(modifiedBy)
                 .build();

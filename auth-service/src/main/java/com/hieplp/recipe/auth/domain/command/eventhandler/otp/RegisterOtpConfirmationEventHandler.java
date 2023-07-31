@@ -2,9 +2,9 @@ package com.hieplp.recipe.auth.domain.command.eventhandler.otp;
 
 import com.hieplp.recipe.auth.common.repository.OtpRepo;
 import com.hieplp.recipe.auth.common.repository.generate.tables.records.OtpRecord;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmationCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.register.confirm.RegisterOtpConfirmedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.OtpConfirmationCanceledEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.OtpConfirmationCompletedEvent;
+import com.hieplp.recipe.auth.domain.command.event.otp.confirm.RegisterOtpConfirmedEvent;
 import com.hieplp.recipe.common.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +32,12 @@ public class RegisterOtpConfirmationEventHandler {
     }
 
     @EventHandler
-    private void handle(RegisterOtpConfirmationCompletedEvent event) {
+    private void handle(OtpConfirmationCompletedEvent event) {
         log.info("Handle registration otp confirmation completed event: {}", event);
     }
 
     @EventHandler
-    private void handle(RegisterOtpConfirmationCanceledEvent event) {
+    private void handle(OtpConfirmationCanceledEvent event) {
         log.info("Handle registration otp confirmation canceled event: {}", event);
         var otpRecord = new OtpRecord()
                 .setOtpid(event.getOtpId())
