@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetUserIdByEmailQuery {
-    private final String email;
+public class GetUserByUserIdQuery {
+    private final String userId;
 }

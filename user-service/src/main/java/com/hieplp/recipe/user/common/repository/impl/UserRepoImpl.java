@@ -1,5 +1,6 @@
 package com.hieplp.recipe.user.common.repository.impl;
 
+import com.hieplp.recipe.common.entity.user.UserEntity;
 import com.hieplp.recipe.common.jooq.base.BaseRepoImpl;
 import com.hieplp.recipe.user.common.repository.UserRepo;
 import com.hieplp.recipe.user.common.repository.generate.tables.records.UserRecord;
@@ -40,5 +41,17 @@ public class UserRepoImpl extends BaseRepoImpl implements UserRepo {
     public Optional<String> getUserIdByEmail(String email) {
         log.info("Get user id by email: {}", email);
         return fetchOne(USER_, USER_.EMAIL.eq(email), String.class, USER_.USERID);
+    }
+
+    @Override
+    public Optional<UserEntity> getUserByUsername(String username) {
+        log.info("Get user by username: {}", username);
+        return fetchOne(USER_, USER_.USERNAME.eq(username), UserEntity.class);
+    }
+
+    @Override
+    public Optional<UserEntity> getUserByUserId(String userId) {
+        log.info("Get user by userId: {}", userId);
+        return fetchOne(USER_, USER_.USERID.eq(userId), UserEntity.class);
     }
 }

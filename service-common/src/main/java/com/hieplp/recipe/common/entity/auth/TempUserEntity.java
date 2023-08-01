@@ -1,4 +1,4 @@
-package com.hieplp.recipe.auth.common.entity;
+package com.hieplp.recipe.common.entity.auth;
 
 import lombok.Data;
 

@@ -3,6 +3,7 @@ package com.hieplp.recipe.auth.domain.command.controller;
 import com.hieplp.recipe.auth.domain.command.payload.request.forgot.ConfirmForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.forgot.GenerateForgotOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.forgot.ResendForgotOtpRequest;
+import com.hieplp.recipe.auth.domain.command.payload.request.login.LoginRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ConfirmRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.GenerateRegisterOtpRequest;
 import com.hieplp.recipe.auth.domain.command.payload.request.register.ResendRegisterOtpRequest;
@@ -57,5 +58,11 @@ public class AuthCommandController {
     public CompletableFuture<CommonResponse> resendForgotOtp(@RequestBody @Valid ResendForgotOtpRequest request) {
         log.info("Resend OTP for forgot password with request: {}", request);
         return authService.resendForgotOtp(request);
+    }
+
+    @PostMapping("/login")
+    public CommonResponse login(@RequestBody @Valid LoginRequest request) {
+        log.info("Login with request: {}", request);
+        return authService.login(request);
     }
 }

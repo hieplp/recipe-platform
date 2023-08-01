@@ -1,7 +1,7 @@
 package com.hieplp.recipe.auth.common.repository.impl;
 
-import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.common.repository.OtpRepo;
+import com.hieplp.recipe.common.entity.auth.OtpEntity;
 import com.hieplp.recipe.common.enums.otp.OtpStatus;
 import com.hieplp.recipe.common.jooq.base.BaseRepoImpl;
 import lombok.extern.slf4j.Slf4j;

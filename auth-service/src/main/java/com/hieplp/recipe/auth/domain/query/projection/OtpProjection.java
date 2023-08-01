@@ -1,9 +1,9 @@
 package com.hieplp.recipe.auth.domain.query.projection;
 
-import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.common.repository.OtpRepo;
 import com.hieplp.recipe.auth.domain.query.queries.otp.GetOtpQuery;
 import com.hieplp.recipe.auth.domain.query.queries.otp.GetTodayOtpQuotaQuery;
+import com.hieplp.recipe.common.entity.auth.OtpEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.queryhandling.QueryHandler;

@@ -1,12 +1,12 @@
 package com.hieplp.recipe.auth.domain.command.saga.otp.confirm;
 
-import com.hieplp.recipe.auth.common.entity.TempUserEntity;
 import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.CompleteOtpConfirmationCommand;
 import com.hieplp.recipe.auth.domain.command.event.otp.confirm.RegisterOtpConfirmedEvent;
 import com.hieplp.recipe.auth.domain.query.queries.tempuser.GetTempUserByOtpIdQuery;
 import com.hieplp.recipe.common.command.commands.user.create.CreateUserCommand;
 import com.hieplp.recipe.common.command.events.user.create.UserCreationCanceledEvent;
 import com.hieplp.recipe.common.command.events.user.create.UserCreationCompletedEvent;
+import com.hieplp.recipe.common.entity.auth.TempUserEntity;
 import com.hieplp.recipe.common.enums.IdLength;
 import com.hieplp.recipe.common.util.GeneratorUtil;
 import lombok.extern.slf4j.Slf4j;

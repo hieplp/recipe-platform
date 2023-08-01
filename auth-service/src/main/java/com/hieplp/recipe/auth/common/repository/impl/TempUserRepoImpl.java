@@ -1,7 +1,7 @@
 package com.hieplp.recipe.auth.common.repository.impl;
 
-import com.hieplp.recipe.auth.common.entity.TempUserEntity;
 import com.hieplp.recipe.auth.common.repository.TempUserRepo;
+import com.hieplp.recipe.common.entity.auth.TempUserEntity;
 import com.hieplp.recipe.common.jooq.base.BaseRepoImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;

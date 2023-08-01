@@ -1,8 +1,7 @@
 package com.hieplp.recipe.user.domain.query.projection;
 
-import com.hieplp.recipe.common.query.queries.user.CheckEmailExistenceQuery;
-import com.hieplp.recipe.common.query.queries.user.CheckUsernameExistenceQuery;
-import com.hieplp.recipe.common.query.queries.user.GetUserIdByEmailQuery;
+import com.hieplp.recipe.common.entity.user.UserEntity;
+import com.hieplp.recipe.common.query.queries.user.*;
 import com.hieplp.recipe.user.common.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,5 +31,17 @@ public class UserProjection {
     private String handle(GetUserIdByEmailQuery query) {
         log.info("Get user id by email: {}", query);
         return userRepo.getUserIdByEmail(query.getEmail()).orElse(null);
+    }
+
+    @QueryHandler
+    private UserEntity handle(GetUserByUsernameQuery query) {
+        log.info("Get user by username: {}", query);
+        return userRepo.getUserByUsername(query.getUsername()).orElse(null);
+    }
+
+    @QueryHandler
+    private UserEntity handle(GetUserByUserIdQuery query) {
+        log.info("Get user by userId: {}", query);
+        return userRepo.getUserByUserId(query.getUserId()).orElse(null);
     }
 }

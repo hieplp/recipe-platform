@@ -1,11 +1,11 @@
-package com.hieplp.recipe.auth.domain.command.payload.response.auth;
+package com.hieplp.recipe.auth.domain.command.payload.response.otp;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class GenerateRegisterOtpResponse {
+public class OtpResponse {
     private String otpId;
     private String maskedEmail;
     private String expiredAt;

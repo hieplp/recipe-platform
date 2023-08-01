@@ -20,9 +20,9 @@ spring:
       ddl-auto: update
   jooq:
     sql-dialect: mariadb
-  mvc:
-    converters:
-      preferred-json-mapper: gson
+  jackson:
+    time-zone: Etc/UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
 
 eureka:
   client:
@@ -31,18 +31,15 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-grpc:
-  client:
-    user-service:
-      security:
-        authority-override: HiepLP # Should be the same with the server's authority
-        trustCertCollection: classpath:certificates/trusted-servers-collection.crt.list
-
 app:
   auth:
     rsa:
       private-key: rsa/private_key.der
       public-key: rsa/public_key.der
+    access-token:
+      active-time: 300000
+    refresh-token:
+      active-time: 86400000
     register-otp:
       quota: 5
       wrong-quota: 5
@@ -53,9 +50,3 @@ app:
       wrong-quota: 5
       resend-quota: 5
       expiration-time: 30000
-
-#axon:
-#  event-handling:
-#    processors:
-#      auth-group:
-#        mode: subscribing

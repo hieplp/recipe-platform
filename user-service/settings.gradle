@@ -8,6 +8,3 @@ project(":jooq-common").projectDir = file("../jooq-common")
 
 include(":command-common")
 project(":command-common").projectDir = file("../command-common")
-
-//include(":grpc-common")
-//project(":grpc-common").projectDir = file("../grpc-common")

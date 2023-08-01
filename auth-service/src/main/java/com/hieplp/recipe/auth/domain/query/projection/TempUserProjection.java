@@ -1,9 +1,9 @@
 package com.hieplp.recipe.auth.domain.query.projection;
 
 
-import com.hieplp.recipe.auth.common.entity.TempUserEntity;
 import com.hieplp.recipe.auth.common.repository.TempUserRepo;
 import com.hieplp.recipe.auth.domain.query.queries.tempuser.GetTempUserByOtpIdQuery;
+import com.hieplp.recipe.common.entity.auth.TempUserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.queryhandling.QueryHandler;

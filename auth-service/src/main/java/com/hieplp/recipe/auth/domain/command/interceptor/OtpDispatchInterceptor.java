@@ -1,6 +1,5 @@
 package com.hieplp.recipe.auth.domain.command.interceptor;
 
-import com.hieplp.recipe.auth.common.entity.OtpEntity;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
 import com.hieplp.recipe.auth.domain.command.commands.history.create.CreateOtpHistoryCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmForgotOtpCommand;
@@ -14,6 +13,7 @@ import com.hieplp.recipe.auth.domain.command.helper.OtpHelper;
 import com.hieplp.recipe.auth.domain.query.queries.history.GetTodayOtpHistoryQuotaQuery;
 import com.hieplp.recipe.auth.domain.query.queries.otp.GetOtpQuery;
 import com.hieplp.recipe.auth.domain.query.queries.otp.GetTodayOtpQuotaQuery;
+import com.hieplp.recipe.common.entity.auth.OtpEntity;
 import com.hieplp.recipe.common.enums.IdLength;
 import com.hieplp.recipe.common.enums.otp.OtpHistoryStatus;
 import com.hieplp.recipe.common.enums.otp.OtpHistoryType;
