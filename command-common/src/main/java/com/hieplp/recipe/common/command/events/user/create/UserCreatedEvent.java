@@ -17,5 +17,4 @@ public class UserCreatedEvent {
     private LocalDateTime createdAt;
     private byte[] password;
     private byte[] salt;
-    private String referenceId;
 }

@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 public class ConfirmForgotOtpRequest {
     @NotNull(message = "OtpId is required")
     private String otpId;
+    @NotNull(message = "OtpCode is required")
+    private String otpCode;
     @NotNull(message = "Password is required")
     private String password;
 }

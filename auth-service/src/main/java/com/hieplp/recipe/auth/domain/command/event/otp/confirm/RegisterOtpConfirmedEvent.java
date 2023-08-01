@@ -1,10 +1,13 @@
 package com.hieplp.recipe.auth.domain.command.event.otp.confirm;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Data
-public class RegisterOtpConfirmedEvent {
-    private String otpId;
-    private Byte status;
-    private String userId;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class RegisterOtpConfirmedEvent extends OtpConfirmedEvent {
 }

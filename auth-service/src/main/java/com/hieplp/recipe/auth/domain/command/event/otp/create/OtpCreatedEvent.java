@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class OtpCreatedEvent {
     private String otpId;
     private String otpCode;
+    private String userId;
     private String sendTo;
     private String createdBy;
     private LocalDateTime createdAt;

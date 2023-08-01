@@ -27,7 +27,6 @@ public class LogAggregate {
     private Map<String, String> params;
     private String createdBy;
     private Byte status;
-    private String referenceId;
 
     protected LogAggregate() {
     }
@@ -56,7 +55,6 @@ public class LogAggregate {
         this.params = event.getParams();
         this.status = event.getStatus();
         this.createdBy = event.getCreatedBy();
-        this.referenceId = event.getReferenceId();
     }
 
     // -------------------------------------------------------------------------

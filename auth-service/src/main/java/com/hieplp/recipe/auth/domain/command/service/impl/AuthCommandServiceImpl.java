@@ -1,10 +1,12 @@
 package com.hieplp.recipe.auth.domain.command.service.impl;
 
 import com.hieplp.recipe.auth.common.entity.OtpEntity;
+import com.hieplp.recipe.auth.config.component.UserRSAEncryption;
 import com.hieplp.recipe.auth.config.model.AuthConfig;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmForgotOtpCommand;
+import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateForgotOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.create.CreateRegisterOtpCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.confirm.ConfirmRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendForgotOtpCommand;
 import com.hieplp.recipe.auth.domain.command.commands.otp.resend.ResendRegisterOtpCommand;
 import com.hieplp.recipe.auth.domain.command.payload.request.forgot.ConfirmForgotOtpRequest;
@@ -21,6 +23,7 @@ import com.hieplp.recipe.common.enums.response.ErrorCode;
 import com.hieplp.recipe.common.enums.response.SuccessCode;
 import com.hieplp.recipe.common.payload.response.CommonResponse;
 import com.hieplp.recipe.common.util.DateUtil;
+import com.hieplp.recipe.common.util.EncryptUtil;
 import com.hieplp.recipe.common.util.GeneratorUtil;
 import com.hieplp.recipe.common.util.MaskUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -41,39 +45,52 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final QueryGateway queryGateway;
     private final CommandGateway commandGateway;
     private final AuthConfig authConfig;
+    private final UserRSAEncryption userRSAEncryption;
 
     @Override
     public CompletableFuture<CommonResponse> generateRegisterOtp(GenerateRegisterOtpRequest request) {
-        log.info("Generate OTP for register with request: {}", request);
-        //
-        final var otpId = GeneratorUtil.generateId(IdLength.OTP_ID);
-        final var otpCode = GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH);
-        final var userId = GeneratorUtil.generateId(IdLength.USER_ID);
-        final var issuedAt = DateUtil.now();
-        final var expiredAt = issuedAt.plusSeconds(authConfig.getRegisterOtp().getExpirationTime());
-        //
-        final var command = CreateRegisterOtpCommand.builder()
-                .otpId(otpId)
-                .otpCode(otpCode)
-                .username(request.getUsername())
-                .sendTo(request.getEmail())
-                .fullName(request.getFullName())
-                .password(request.getPassword())
-                .userId(userId)
-                .issuedAt(issuedAt)
-                .expiredAt(expiredAt)
-                .build();
-        return commandGateway.send(command)
-                .thenApply(it -> {
-                    var response = GenerateRegisterOtpResponse.builder()
-                            .otpId(otpId)
-                            .maskedEmail(MaskUtil.maskEmail(request.getEmail()))
-                            .expiredAt(expiredAt.toString())
-                            .expiredIn(authConfig.getRegisterOtp().getExpirationTime())
-                            .build();
-                    return new CommonResponse(SuccessCode.SUCCESS, response);
-                })
-                .exceptionally(t -> new CommonResponse(ErrorCode.INTERNAL_SERVER_ERROR));
+        var password = new byte[0];
+        try {
+            log.info("Generate OTP for register with request: {}", request);
+            //
+            final var otpId = GeneratorUtil.generateId(IdLength.OTP_ID);
+            final var otpCode = GeneratorUtil.generateOTP(DEFAULT_OTP_LENGTH);
+            final var userId = GeneratorUtil.generateId(IdLength.USER_ID);
+            final var issuedAt = DateUtil.now();
+            final var expiredAt = issuedAt.plusSeconds(authConfig.getRegisterOtp().getExpirationTime());
+
+            // Get password and salt
+            var salt = GeneratorUtil.generateSalt();
+            password = EncryptUtil.generatePassword(request.getPassword(), userRSAEncryption.getPrivateKey(), salt);
+
+            //
+            final var command = CreateRegisterOtpCommand.builder()
+                    .otpId(otpId)
+                    .otpCode(otpCode)
+                    .username(request.getUsername())
+                    .sendTo(request.getEmail())
+                    .fullName(request.getFullName())
+                    .password(password)
+                    .salt(salt)
+                    .userId(userId)
+                    .issuedAt(issuedAt)
+                    .expiredAt(expiredAt)
+                    .build();
+            return commandGateway.send(command)
+                    .thenApply(it -> {
+                        var response = GenerateRegisterOtpResponse.builder()
+                                .otpId(otpId)
+                                .maskedEmail(MaskUtil.maskEmail(request.getEmail()))
+                                .expiredAt(expiredAt.toString())
+                                .expiredIn(authConfig.getRegisterOtp().getExpirationTime())
+                                .build();
+                        return new CommonResponse(SuccessCode.SUCCESS, response);
+                    })
+                    .exceptionally(t -> new CommonResponse(ErrorCode.INTERNAL_SERVER_ERROR));
+        } finally {
+            // Clear password in memory for security
+            Arrays.fill(password, Byte.MIN_VALUE);
+        }
     }
 
     @Override
@@ -139,11 +156,27 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 
     @Override
     public CompletableFuture<CommonResponse> confirmForgotOtp(ConfirmForgotOtpRequest request) {
-        log.info("Confirm OTP for forgot password with request: {}", request);
+        var password = new byte[0];
+        try {
+            log.info("Confirm OTP for forgot password with request: {}", request);
 
+            // Get password and salt
+            var salt = GeneratorUtil.generateSalt();
+            password = EncryptUtil.generatePassword(request.getPassword(), userRSAEncryption.getPrivateKey(), salt);
 
-
-        return null;
+            var confirmCommand = ConfirmForgotOtpCommand.builder()
+                    .otpId(request.getOtpId())
+                    .otpCode(request.getOtpCode())
+                    .password(password)
+                    .salt(salt)
+                    .build();
+            return commandGateway.send(confirmCommand)
+                    .thenApply(it -> new CommonResponse(SuccessCode.SUCCESS))
+                    .exceptionally(t -> new CommonResponse(ErrorCode.INTERNAL_SERVER_ERROR));
+        } finally {
+            // Clear password in memory for security
+            Arrays.fill(password, Byte.MIN_VALUE);
+        }
     }
 
     @Override

@@ -72,6 +72,8 @@ public class OtpAggregate {
         BeanUtils.copyProperties(command, otpCreatedEvent);
 
         otpCreatedEvent
+                .setPassword(command.getPassword())
+                .setSalt(command.getSalt())
                 .setType(OtpType.REGISTER.getType())
                 .setStatus(OtpStatus.CREATED.getStatus())
                 .setCreatedBy(command.getUserId())
@@ -93,6 +95,7 @@ public class OtpAggregate {
         otpCreatedEvent
                 .setType(OtpType.FORGOT_PASSWORD.getType())
                 .setStatus(OtpStatus.CREATED.getStatus())
+                .setCreatedBy(command.getUserId())
                 .setCreatedAt(LocalDateTime.now());
 
         AggregateLifecycle.apply(otpCreatedEvent);
@@ -236,17 +239,17 @@ public class OtpAggregate {
     @CommandHandler
     private void handle(ConfirmRegisterOtpCommand command) {
         log.info("Confirm registration otp command: {}", command);
-        var confirmedEvent = new RegisterOtpConfirmedEvent();
-        BeanUtils.copyProperties(command, confirmedEvent);
-        //
-        confirmedEvent.setStatus(OtpStatus.CONFIRMED.getStatus());
-        //
+        var confirmedEvent = RegisterOtpConfirmedEvent.builder()
+                .otpId(command.getOtpId())
+                .userId(command.getUserId())
+                .status(OtpStatus.CONFIRMED.getStatus())
+                .modifiedAt(DateUtil.now())
+                .build();
         AggregateLifecycle.apply(confirmedEvent);
     }
 
     @EventSourcingHandler
     private void on(RegisterOtpConfirmedEvent event) {
-        this.otpId = event.getOtpId();
         this.status = event.getStatus();
     }
 
@@ -257,11 +260,14 @@ public class OtpAggregate {
     @CommandHandler
     private void handle(ConfirmForgotOtpCommand command) {
         log.info("Confirm forgot otp command: {}", command);
-        var confirmedEvent = new ForgotOtpConfirmedEvent();
-        BeanUtils.copyProperties(command, confirmedEvent);
-        //
-        confirmedEvent.setStatus(OtpStatus.CONFIRMED.getStatus());
-        //
+        var confirmedEvent = ForgotOtpConfirmedEvent.builder()
+                .otpId(command.getOtpId())
+                .userId(command.getUserId())
+                .status(OtpStatus.CONFIRMED.getStatus())
+                .modifiedAt(DateUtil.now())
+                .password(command.getPassword())
+                .salt(command.getSalt())
+                .build();
         AggregateLifecycle.apply(confirmedEvent);
     }
 
@@ -272,15 +278,21 @@ public class OtpAggregate {
     @CommandHandler
     private void handle(CompleteOtpConfirmationCommand command) {
         log.info("Complete registration otp confirmation command: {}", command);
+
         var completedEvent = new OtpConfirmationCompletedEvent();
         BeanUtils.copyProperties(command, completedEvent);
-        //
+
+        completedEvent
+                .setStatus(OtpStatus.CONFIRMED.getStatus())
+                .setModifiedAt(DateUtil.now());
+
         AggregateLifecycle.apply(completedEvent);
     }
 
     @EventSourcingHandler
     private void on(OtpConfirmationCompletedEvent event) {
         this.status = event.getStatus();
+        this.modifiedAt = event.getModifiedAt();
     }
 
     // -------------------------------------------------------------------------
@@ -289,15 +301,20 @@ public class OtpAggregate {
     @CommandHandler
     private void handle(CancelOtpConfirmationCommand command) {
         log.info("Cancel registration otp confirmation command: {}", command);
+
         var canceledEvent = new OtpConfirmationCanceledEvent();
         BeanUtils.copyProperties(command, canceledEvent);
-        //
+
+        canceledEvent
+                .setStatus(OtpStatus.CANCELED.getStatus())
+                .setModifiedAt(DateUtil.now());
+
         AggregateLifecycle.apply(canceledEvent);
     }
 
     @EventSourcingHandler
     private void on(OtpConfirmationCanceledEvent event) {
         this.status = event.getStatus();
+        this.modifiedAt = event.getModifiedAt();
     }
-
 }

@@ -6,5 +6,4 @@ import lombok.Data;
 public class UserCreationCanceledEvent {
     private String userId;
     private Byte status;
-    private String referenceId;
 }

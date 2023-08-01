@@ -57,10 +57,6 @@ public class Log extends TableImpl<LogRecord> {
      */
     public final TableField<LogRecord, Byte> STATUS = createField(DSL.name("status"), SQLDataType.TINYINT.defaultValue(DSL.inline("NULL", SQLDataType.TINYINT)), this, "");
     /**
-     * The column <code>notification.log.referenceId</code>.
-     */
-    public final TableField<LogRecord, String> REFERENCEID = createField(DSL.name("referenceId"), SQLDataType.VARCHAR(255).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "");
-    /**
      * The column <code>notification.log.createdBy</code>.
      */
     public final TableField<LogRecord, String> CREATEDBY = createField(DSL.name("createdBy"), SQLDataType.VARCHAR(255).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "");
@@ -160,11 +156,11 @@ public class Log extends TableImpl<LogRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row12 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row12<String, String, Byte, String, String, String, Byte, String, String, LocalDateTime, String, LocalDateTime> fieldsRow() {
-        return (Row12) super.fieldsRow();
+    public Row11<String, String, Byte, String, String, String, Byte, String, LocalDateTime, String, LocalDateTime> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }

@@ -7,5 +7,4 @@ public class EmailCompletedEvent {
     private String logId;
     private Byte status;
     private String createdBy;
-    private String referenceId;
 }

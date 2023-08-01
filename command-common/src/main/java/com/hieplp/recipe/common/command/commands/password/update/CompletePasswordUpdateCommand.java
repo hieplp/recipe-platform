@@ -1,12 +1,12 @@
-package com.hieplp.recipe.common.command.commands.notification.email;
+package com.hieplp.recipe.common.command.commands.password.update;
 
 import lombok.Builder;
 import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-@Builder
 @Data
-public class CompleteEmailCommand {
+@Builder
+public class CompletePasswordUpdateCommand {
     @TargetAggregateIdentifier
-    private String logId;
+    private String userId;
 }

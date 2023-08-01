@@ -24,7 +24,9 @@ public class CreateRegisterOtpCommand {
     @NonNull
     private String userId;
     @NonNull
-    private String password;
+    private byte[] password;
+    @NonNull
+    private byte[] salt;
     @NonNull
     private LocalDateTime issuedAt;
     @NonNull

@@ -18,7 +18,9 @@ public class CreateTempUserCommand {
     @NonNull
     private String fullName;
     @NonNull
-    private String password;
+    private byte[] password;
+    @NonNull
+    private byte[] salt;
     @NonNull
     private String createdBy;
     @NonNull

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public class OtpEntity {
     private String otpId;
     private String otpCode;
-    private String userId;
     private String sendTo;
     private LocalDateTime issuedAt;
     private LocalDateTime expiredAt;

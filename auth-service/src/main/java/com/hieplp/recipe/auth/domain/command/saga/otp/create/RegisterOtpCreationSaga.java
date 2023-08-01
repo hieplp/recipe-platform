@@ -1,134 +1,59 @@
 package com.hieplp.recipe.auth.domain.command.saga.otp.create;
 
-import com.hieplp.recipe.auth.domain.command.commands.otp.create.CancelOtpCreationCommand;
-import com.hieplp.recipe.auth.domain.command.commands.otp.create.CompleteOtpCreationCommand;
 import com.hieplp.recipe.auth.domain.command.commands.user.create.CreateTempUserCommand;
-import com.hieplp.recipe.auth.domain.command.event.otp.create.OtpCreationCanceledEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.create.OtpCreationCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.create.RegisterOtpCreatedEvent;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.helper.OtpHelper;
-import com.hieplp.recipe.common.command.events.notification.email.EmailCanceledEvent;
-import com.hieplp.recipe.common.command.events.notification.email.EmailCompletedEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
-import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
 @Saga
 @Slf4j
-public class RegisterOtpCreationSaga {
-
-    private static final String OTP_ID = "otpId";
-    private static final String LOG_ID = "logId";
-    private static final String USER_ID = "userId";
-
-    // transient indicates that the field should not be part of the serialization process
-    @Autowired
-    private transient CommandGateway commandGateway;
-    @Autowired
-    private transient QueryGateway queryGateway;
-    @Autowired
-    private transient OtpHelper otpHelper;
-
-
+public class RegisterOtpCreationSaga extends OtpCreationSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = OTP_ID)
-    private void handle(RegisterOtpCreatedEvent event) {
+    void handle(RegisterOtpCreatedEvent event) {
         try {
             log.info("Saga handles registration otp created event: {}", event);
 
-            SagaLifecycle.associateWith(USER_ID, event.getUserId());
+            this.otpId = event.getOtpId();
+            this.userId = event.getUserId();
+
+            SagaLifecycle.associateWith(USER_ID, this.userId);
 
             var createTempUserCommand = CreateTempUserCommand.builder()
-                    .userId(event.getUserId())
+                    .userId(this.userId)
                     .username(event.getUsername())
                     .email(event.getSendTo())
                     .fullName(event.getFullName())
                     .password(event.getPassword())
-                    .createdBy(event.getUserId())
-                    .referenceId(event.getOtpId())
+                    .salt(event.getSalt())
+                    .createdBy(this.userId)
+                    .referenceId(this.otpId)
                     .build();
             commandGateway.send(createTempUserCommand);
         } catch (Exception e) {
             log.error("Error when handle registration otp created event: {}", event, e);
-            cancelOtp(event.getOtpId());
+            cancelOtpCreation();
         }
     }
 
-    // -------------------------------------------------------------------------
-    // XXX Temporary user is completely created
-    // -------------------------------------------------------------------------
     @SagaEventHandler(associationProperty = USER_ID)
     private void handle(TempUserCompletedEvent event) {
         try {
             log.info("Saga handles temp user completed event: {}", event);
 
-            final var logId = UUID.randomUUID().toString();
-            SagaLifecycle.associateWith(LOG_ID, logId);
+            this.logId = UUID.randomUUID().toString();
+            SagaLifecycle.associateWith(LOG_ID, this.logId);
 
-            otpHelper.sendRegisterOtp(event.getReferenceId(), logId, event.getUserId());
+            otpHelper.sendRegisterOtp(event.getReferenceId(), this.logId, event.getUserId());
         } catch (Exception e) {
             log.error("Error when handle temp user completed event: {}", event, e);
-            cancelOtp(event.getReferenceId());
+            cancelOtpCreation();
         }
-    }
-
-    // -------------------------------------------------------------------------
-    // XXX Events from email
-    // -------------------------------------------------------------------------
-    @SagaEventHandler(associationProperty = LOG_ID)
-    private void handle(EmailCompletedEvent event) {
-        try {
-            log.info("Saga handles email completed event: {}", event);
-            commandGateway.send(CompleteOtpCreationCommand.builder()
-                    .otpId(event.getReferenceId())
-                    .build());
-        } catch (Exception e) {
-            log.error("Error when handle email completed event: {}", event, e);
-            cancelOtp(event.getReferenceId());
-        }
-    }
-
-    @SagaEventHandler(associationProperty = LOG_ID)
-    private void handle(EmailCanceledEvent event) {
-        log.info("Saga handles email canceled event: {}", event);
-        cancelOtp(event.getReferenceId());
-    }
-
-    // -------------------------------------------------------------------------
-    // XXX Complete otp
-    // -------------------------------------------------------------------------
-    @EndSaga
-    @SagaEventHandler(associationProperty = OTP_ID)
-    private void handle(OtpCreationCompletedEvent event) {
-        log.info("Saga handles registration otp completed event: {}", event);
-        SagaLifecycle.end();
-    }
-
-    // -------------------------------------------------------------------------
-    // XXX Cancel otp
-    // -------------------------------------------------------------------------
-    @EndSaga
-    @SagaEventHandler(associationProperty = OTP_ID)
-    private void handle(OtpCreationCanceledEvent event) {
-        log.info("Saga handles registration otp canceled event: {}", event);
-        SagaLifecycle.end();
-    }
-
-    // -------------------------------------------------------------------------
-    // XXX Private methods
-    // -------------------------------------------------------------------------
-    private void cancelOtp(String otpId) {
-        commandGateway.send(CancelOtpCreationCommand.builder()
-                .otpId(otpId)
-                .build());
     }
 }

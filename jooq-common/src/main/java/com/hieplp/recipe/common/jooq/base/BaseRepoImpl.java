@@ -5,10 +5,7 @@ import com.hieplp.recipe.common.jooq.exception.NotFoundException;
 import com.hieplp.recipe.common.jooq.exception.QueryException;
 import com.hieplp.recipe.common.jooq.util.TableUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.Condition;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Table;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,6 +105,22 @@ public class BaseRepoImpl implements BaseRepo {
     public <T> Optional<T> fetchOne(Table<?> table, Condition condition, Class<? extends T> type) {
         try {
             return Optional.of(context.fetch(table, condition).into(type).get(0));
+        } catch (IndexOutOfBoundsException e) {
+            log.error("Not found record: {}", e.getMessage());
+            return Optional.empty();
+        } catch (Exception e) {
+            log.error("Error when fetch one not null record: {}", e.getMessage());
+            throw new QueryException(e.getMessage());
+        }
+    }
+
+    @Override
+    public <T> Optional<T> fetchOne(Table<?> table, Condition condition, Class<? extends T> type, Field<?>... fields) {
+        try {
+            return Optional.of(context.select(fields)
+                    .from(table)
+                    .where(condition)
+                    .fetchInto(type).get(0));
         } catch (IndexOutOfBoundsException e) {
             log.error("Not found record: {}", e.getMessage());
             return Optional.empty();

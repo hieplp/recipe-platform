@@ -144,20 +144,6 @@ public class LogDao extends DAOImpl<LogRecord, com.hieplp.recipe.notification.co
     }
 
     /**
-     * Fetch records that have <code>referenceId BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.hieplp.recipe.notification.common.repository.generate.tables.pojos.Log> fetchRangeOfReferenceid(String lowerInclusive, String upperInclusive) {
-        return fetchRange(Log.LOG.REFERENCEID, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>referenceId IN (values)</code>
-     */
-    public List<com.hieplp.recipe.notification.common.repository.generate.tables.pojos.Log> fetchByReferenceid(String... values) {
-        return fetch(Log.LOG.REFERENCEID, values);
-    }
-
-    /**
      * Fetch records that have <code>createdBy BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.hieplp.recipe.notification.common.repository.generate.tables.pojos.Log> fetchRangeOfCreatedby(String lowerInclusive, String upperInclusive) {

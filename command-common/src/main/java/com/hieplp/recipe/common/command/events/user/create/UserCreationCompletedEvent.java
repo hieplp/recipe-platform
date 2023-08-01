@@ -6,5 +6,4 @@ import lombok.Data;
 public class UserCreationCompletedEvent {
     private String userId;
     private Byte status;
-    private String referenceId;
 }

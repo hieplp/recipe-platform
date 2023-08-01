@@ -3,6 +3,7 @@ package com.hieplp.recipe.common.jooq.base;
 import com.hieplp.recipe.common.jooq.exception.ExecuteException;
 import com.hieplp.recipe.common.jooq.exception.NotFoundException;
 import org.jooq.Condition;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Table;
 
@@ -74,6 +75,18 @@ public interface BaseRepo {
      * @return queried object
      */
     <T> Optional<T> fetchOne(Table<?> table, Condition condition, Class<? extends T> type);
+
+    /**
+     * Fetch one record from database. If record is null, return empty optional
+     *
+     * @param table     table
+     * @param condition queried condition
+     * @param type      type of return object
+     * @param fields    fields to fetch
+     * @param <T>       type of return object
+     * @return queried object
+     */
+    <T> Optional<T> fetchOne(Table<?> table, Condition condition, Class<? extends T> type, Field<?>... fields);
 
     /**
      * Check if record exist in table

@@ -24,6 +24,8 @@ public class TempUserAggregate {
     private Byte status;
     private String createdBy;
     private String referenceId;
+    private byte[] password;
+    private byte[] salt;
 
     protected TempUserAggregate() {
     }

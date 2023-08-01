@@ -19,7 +19,5 @@ public class SendEmailCommand {
     private final String action;
     @NonNull
     private final String createdBy;
-    @NonNull
-    private final String referenceId;
     private final Map<String, String> params;
 }

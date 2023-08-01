@@ -23,7 +23,6 @@ public class Log implements Serializable {
     private String content;
     private String sendto;
     private Byte status;
-    private String referenceid;
     private String createdby;
     private LocalDateTime createdat;
     private String modifiedby;
@@ -40,7 +39,6 @@ public class Log implements Serializable {
         this.content = value.content;
         this.sendto = value.sendto;
         this.status = value.status;
-        this.referenceid = value.referenceid;
         this.createdby = value.createdby;
         this.createdat = value.createdat;
         this.modifiedby = value.modifiedby;
@@ -55,7 +53,6 @@ public class Log implements Serializable {
             String content,
             String sendto,
             Byte status,
-            String referenceid,
             String createdby,
             LocalDateTime createdat,
             String modifiedby,
@@ -68,7 +65,6 @@ public class Log implements Serializable {
         this.content = content;
         this.sendto = sendto;
         this.status = status;
-        this.referenceid = referenceid;
         this.createdby = createdby;
         this.createdat = createdat;
         this.modifiedby = modifiedby;
@@ -181,21 +177,6 @@ public class Log implements Serializable {
     }
 
     /**
-     * Getter for <code>notification.log.referenceId</code>.
-     */
-    public String getReferenceid() {
-        return this.referenceid;
-    }
-
-    /**
-     * Setter for <code>notification.log.referenceId</code>.
-     */
-    public Log setReferenceid(String referenceid) {
-        this.referenceid = referenceid;
-        return this;
-    }
-
-    /**
      * Getter for <code>notification.log.createdBy</code>.
      */
     public String getCreatedby() {
@@ -266,7 +247,6 @@ public class Log implements Serializable {
         sb.append(", ").append(content);
         sb.append(", ").append(sendto);
         sb.append(", ").append(status);
-        sb.append(", ").append(referenceid);
         sb.append(", ").append(createdby);
         sb.append(", ").append(createdat);
         sb.append(", ").append(modifiedby);

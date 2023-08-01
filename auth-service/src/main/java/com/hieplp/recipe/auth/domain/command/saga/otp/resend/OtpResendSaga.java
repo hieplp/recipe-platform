@@ -5,7 +5,6 @@ import com.hieplp.recipe.auth.domain.command.commands.otp.resend.CompleteOtpRese
 import com.hieplp.recipe.auth.domain.command.event.history.create.OtpHistoryCreationCompletedEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.resend.OtpResendCanceledEvent;
 import com.hieplp.recipe.auth.domain.command.event.otp.resend.OtpResendCompletedEvent;
-import com.hieplp.recipe.auth.domain.command.event.otp.resend.OtpResentEvent;
 import com.hieplp.recipe.auth.domain.command.helper.OtpHelper;
 import com.hieplp.recipe.common.command.events.notification.email.EmailCanceledEvent;
 import com.hieplp.recipe.common.command.events.notification.email.EmailCompletedEvent;
@@ -16,13 +15,12 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
-import org.axonframework.modelling.saga.StartSaga;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
 @Slf4j
-public abstract class OtpResendSaga<T extends OtpResentEvent> {
+public abstract class OtpResendSaga {
 
     static final String OTP_ID = "otpId";
     static final String OTP_HISTORY_ID = "otpHistoryId";
@@ -33,9 +31,8 @@ public abstract class OtpResendSaga<T extends OtpResentEvent> {
     @Autowired
     protected transient OtpHelper otpHelper;
 
-    @StartSaga
-    @SagaEventHandler(associationProperty = OTP_ID)
-    abstract void handle(T event);
+    String otpId;
+    String otpHistoryId;
 
     @SagaEventHandler(associationProperty = OTP_HISTORY_ID)
     abstract void handle(OtpHistoryCreationCompletedEvent event);
@@ -45,19 +42,24 @@ public abstract class OtpResendSaga<T extends OtpResentEvent> {
         try {
             log.info("Saga handles email completed event: {}", event);
             var completeCommand = CompleteOtpResendCommand.builder()
-                    .otpId(event.getReferenceId())
+                    .otpId(this.otpId)
                     .build();
             commandGateway.send(completeCommand);
         } catch (Exception e) {
             log.error("Error when handle email completed event:", e);
-            cancelOtpResend(event.getReferenceId());
+            cancelOtpResend();
         }
     }
 
     @SagaEventHandler(associationProperty = LOG_ID)
     void handle(EmailCanceledEvent event) {
-        log.info("Saga handles email canceled event: {}", event);
-        cancelOtpResend(event.getReferenceId());
+        try {
+            log.info("Saga handles email canceled event: {}", event);
+            cancelOtpResend();
+        } catch (Exception e) {
+            log.error("Error when handle email canceled event:", e);
+            cancelOtpResend();
+        }
     }
 
     @EndSaga
@@ -74,9 +76,9 @@ public abstract class OtpResendSaga<T extends OtpResentEvent> {
         SagaLifecycle.end();
     }
 
-    void cancelOtpResend(String otpId) {
+    void cancelOtpResend() {
         commandGateway.send(CancelOtpResendCommand.builder()
-                .otpId(otpId)
+                .otpId(this.otpId)
                 .build());
     }
 

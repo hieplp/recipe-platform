@@ -60,7 +60,6 @@ public class EmailEventHandler {
                     .setSubject(builtTemplate.getSubject())
                     .setContent(builtTemplate.getContent())
                     .setStatus(event.getStatus())
-                    .setReferenceid(event.getReferenceId())
                     .setCreatedby(event.getCreatedBy())
                     .setCreatedat(LocalDateTime.now())
                     .setModifiedby(event.getCreatedBy())
@@ -73,12 +72,11 @@ public class EmailEventHandler {
             // Send email success
             var completeEmailCommand = CompleteEmailCommand.builder()
                     .logId(event.getLogId())
-                    .referenceId(event.getReferenceId())
                     .build();
             commandGateway.sendAndWait(completeEmailCommand);
         } catch (Exception e) {
             log.error("Handle email created event error:", e);
-            cancelEmail(event.getLogId(), event.getCreatedBy(), event.getReferenceId());
+            cancelEmail(event.getLogId(), event.getCreatedBy());
         }
     }
 
@@ -94,7 +92,7 @@ public class EmailEventHandler {
             logRepo.updateNotNull(logRecord);
         } catch (Exception e) {
             log.error("Handle email sent event error:", e);
-            cancelEmail(event.getLogId(), event.getCreatedBy(), event.getReferenceId());
+            cancelEmail(event.getLogId(), event.getCreatedBy());
         }
     }
 
@@ -114,11 +112,10 @@ public class EmailEventHandler {
         }
     }
 
-    private void cancelEmail(String logId, String createdBy, String referenceId) {
+    private void cancelEmail(String logId, String createdBy) {
         var cancelEmailCommand = CancelEmailCommand.builder()
                 .logId(logId)
                 .createdBy(createdBy)
-                .referenceId(referenceId)
                 .build();
         commandGateway.send(cancelEmailCommand);
     }

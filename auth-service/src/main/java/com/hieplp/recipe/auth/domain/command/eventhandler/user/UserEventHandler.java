@@ -6,15 +6,11 @@ import com.hieplp.recipe.auth.config.component.UserRSAEncryption;
 import com.hieplp.recipe.auth.domain.command.commands.user.create.CompleteTempUserCreationCommand;
 import com.hieplp.recipe.auth.domain.command.event.user.TempUserCreatedEvent;
 import com.hieplp.recipe.common.util.DateUtil;
-import com.hieplp.recipe.common.util.EncryptUtil;
-import com.hieplp.recipe.common.util.GeneratorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 @Slf4j
@@ -27,15 +23,9 @@ public class UserEventHandler {
 
     @EventHandler
     private void handle(TempUserCreatedEvent event) {
-        byte[] password = new byte[0];
         try {
             log.info("Handle temporary user created event: {}", event);
 
-            // Get password and salt
-            var salt = GeneratorUtil.generateSalt();
-            password = EncryptUtil.generatePassword(event.getPassword(), userRSAEncryption.getPrivateKey(), salt);
-
-            // Save temporary user to database
             var tempUser = new TempUserRecord()
                     .setUserid(event.getUserId())
                     .setOtpid(event.getReferenceId())
@@ -43,8 +33,8 @@ public class UserEventHandler {
                     .setFullname(event.getFullName())
                     .setEmail(event.getEmail())
                     .setStatus(event.getStatus())
-                    .setPassword(password)
-                    .setSalt(salt)
+                    .setPassword(event.getPassword())
+                    .setSalt(event.getSalt())
                     .setCreatedby(event.getCreatedBy())
                     .setCreatedat(DateUtil.now())
                     .setModifiedby(event.getCreatedBy())
@@ -62,11 +52,7 @@ public class UserEventHandler {
                     .build();
             commandGateway.sendAndWait(completeCommand);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Error when handle temporary user created event: {}", e.getMessage());
-        } finally {
-            // Clear password in memory for security
-            Arrays.fill(password, Byte.MIN_VALUE);
         }
     }
 }

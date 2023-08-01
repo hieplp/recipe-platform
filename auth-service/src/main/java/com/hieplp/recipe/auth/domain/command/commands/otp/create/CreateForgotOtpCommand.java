@@ -15,4 +15,5 @@ public class CreateForgotOtpCommand {
     private final String sendTo;
     private final LocalDateTime issuedAt;
     private final LocalDateTime expiredAt;
+    private String userId;
 }

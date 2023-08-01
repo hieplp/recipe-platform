@@ -10,4 +10,5 @@ public class ConfirmOtpCommand {
     @TargetAggregateIdentifier
     private final String otpId;
     private final String otpCode;
+    private String userId;
 }

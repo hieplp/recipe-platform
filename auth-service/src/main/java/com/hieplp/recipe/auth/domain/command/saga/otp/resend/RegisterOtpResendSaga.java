@@ -9,17 +9,18 @@ import org.axonframework.spring.stereotype.Saga;
 
 @Saga
 @Slf4j
-public class RegisterOtpResendSaga extends OtpResendSaga<RegisterOtpResentEvent> {
+public class RegisterOtpResendSaga extends OtpResendSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = OTP_ID)
     void handle(RegisterOtpResentEvent event) {
         try {
             log.info("Saga handles registration otp resent event: {}", event);
-            final var otpHistoryId = generateOtpHistoryId();
-            otpHelper.sendCreateOtpHistoryCommand(otpHistoryId, event);
+            this.otpId = event.getOtpId();
+            this.otpHistoryId = generateOtpHistoryId();
+            otpHelper.sendCreateOtpHistoryCommand(this.otpHistoryId, event);
         } catch (Exception e) {
             log.error("Error when handle registration otp resent event:", e);
-            cancelOtpResend(event.getOtpId());
+            cancelOtpResend();
         }
     }
 
@@ -28,10 +29,10 @@ public class RegisterOtpResendSaga extends OtpResendSaga<RegisterOtpResentEvent>
         try {
             log.info("Saga handles otp history creation completed event: {}", event);
             final var logId = generateLogId();
-            otpHelper.sendForgotOtp(event.getOtpId(), logId, event.getModifiedBy());
+            otpHelper.sendRegisterOtp(event.getOtpId(), logId, event.getModifiedBy());
         } catch (Exception e) {
             log.error("Error when handle otp history creation completed event:", e);
-            cancelOtpResend(event.getOtpId());
+            cancelOtpResend();
         }
     }
 }

@@ -2,6 +2,7 @@ package com.hieplp.recipe.user.domain.query.projection;
 
 import com.hieplp.recipe.common.query.queries.user.CheckEmailExistenceQuery;
 import com.hieplp.recipe.common.query.queries.user.CheckUsernameExistenceQuery;
+import com.hieplp.recipe.common.query.queries.user.GetUserIdByEmailQuery;
 import com.hieplp.recipe.user.common.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,5 +26,11 @@ public class UserProjection {
     private boolean handle(CheckEmailExistenceQuery query) {
         log.info("Check if email exists: {}", query);
         return userRepo.doesEmailExist(query.getEmail());
+    }
+
+    @QueryHandler
+    private String handle(GetUserIdByEmailQuery query) {
+        log.info("Get user id by email: {}", query);
+        return userRepo.getUserIdByEmail(query.getEmail()).orElse(null);
     }
 }

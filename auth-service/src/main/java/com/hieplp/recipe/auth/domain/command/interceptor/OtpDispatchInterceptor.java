@@ -27,14 +27,15 @@ import com.hieplp.recipe.common.exception.user.DuplicatedUsernameException;
 import com.hieplp.recipe.common.jooq.exception.NotFoundException;
 import com.hieplp.recipe.common.query.queries.user.CheckEmailExistenceQuery;
 import com.hieplp.recipe.common.query.queries.user.CheckUsernameExistenceQuery;
+import com.hieplp.recipe.common.query.queries.user.GetUserIdByEmailQuery;
 import com.hieplp.recipe.common.util.DateUtil;
 import com.hieplp.recipe.common.util.GeneratorUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.axonframework.messaging.MetaData;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.stereotype.Component;
 
@@ -46,9 +47,10 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 public class OtpDispatchInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
 
+    private static final String USER_ID = "userId";
+
     private final AuthConfig authConfig;
     private final QueryGateway queryGateway;
-    private final CommandGateway commandGateway;
     private final OtpHelper otpHelper;
 
     @NonNull
@@ -71,9 +73,15 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
             } else if (CreateForgotOtpCommand.class.equals(payloadType)) {
                 var command = (CreateForgotOtpCommand) payload;
                 handle(command);
+                // Update metadata
+                var metaData = MetaData.with(USER_ID, command.getUserId());
+                m.andMetaData(metaData);
             } else if (ConfirmForgotOtpCommand.class.equals(payloadType)) {
                 var command = (ConfirmForgotOtpCommand) payload;
                 handle(command);
+                // Update metadata
+                var metaData = MetaData.with(USER_ID, command.getUserId());
+                m.andMetaData(metaData);
             } else if (ResendForgotOtpCommand.class.equals(payloadType)) {
                 var command = (ResendForgotOtpCommand) payload;
                 handle(command);
@@ -152,11 +160,12 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
         log.info("Handle create forgot otp command interceptor: {}", command);
 
         // Check if email exists
-        var doesEmailExist = queryGateway.query(new CheckEmailExistenceQuery(command.getSendTo()), boolean.class).join();
-        if (!doesEmailExist) {
+        var userId = queryGateway.query(new GetUserIdByEmailQuery(command.getSendTo()), String.class).join();
+        if (userId == null) {
             log.error("Email {} is not found", command.getSendTo());
             throw new NotFoundException(String.format("Email %s is not found", command.getSendTo()));
         }
+        command.setUserId(userId);
 
         // Check if quota is exceeded
         validateQuota(command.getSendTo(), authConfig.getForgotOtp().getQuota(), OtpType.FORGOT_PASSWORD);
@@ -171,6 +180,9 @@ public class OtpDispatchInterceptor implements MessageDispatchInterceptor<Comman
 
             // Validate OTP
             var otp = validateOtp(command.getOtpId(), OtpType.FORGOT_PASSWORD);
+
+            // Update userId in command for further use
+            command.setUserId(otp.getCreatedBy());
 
             // Validate OTP issue times
             validateHistoryQuota(otp.getOtpId(), authConfig.getForgotOtp().getWrongQuota(), OtpHistoryType.CONFIRM);

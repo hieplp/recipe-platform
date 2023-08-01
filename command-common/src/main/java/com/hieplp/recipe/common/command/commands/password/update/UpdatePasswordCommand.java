@@ -1,4 +1,4 @@
-package com.hieplp.recipe.common.command.commands.user.create;
+package com.hieplp.recipe.common.command.commands.password.update;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,13 +6,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @Builder
-public class CreateUserCommand {
+public class UpdatePasswordCommand {
     @TargetAggregateIdentifier
     private String userId;
-    private String username;
-    private String email;
-    private String fullName;
-    private String createdBy;
     private byte[] password;
     private byte[] salt;
 }

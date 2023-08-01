@@ -69,7 +69,6 @@ public class OtpHelperImpl implements OtpHelper {
                 .action(action.getAction())
                 .sendTo(otp.getSendTo())
                 .params(params)
-                .referenceId(otp.getOtpId())
                 .createdBy(sentBy)
                 .build());
     }

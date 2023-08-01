@@ -9,7 +9,8 @@ public class TempUserCreatedEvent {
     private String username;
     private String email;
     private String fullName;
-    private String password;
+    private byte[] password;
+    private byte[] salt;
     private String createdBy;
     private String referenceId;
 }
